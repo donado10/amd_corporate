@@ -14,11 +14,11 @@ const app = new Hono()
     return c.json({ user });
   })
   .post("/login", zValidator("json", loginSchema), async (c) => {
-    const { username, password } = c.req.valid("json"); 
+    const { username, password } = c.req.valid("json");
 
     const { account } = await createAdminClient();
 
-    const email = `${username.toLowerCase()}@tbo.sn`;
+    const email = `${username.toLowerCase()}@amd.sn`;
     const password_ = `${password}123456789`;
 
     const session = await account.createEmailPasswordSession(email, password_);
@@ -51,7 +51,7 @@ const app = new Hono()
 
     const { account } = await createAdminClient();
 
-    const email = `${username.toLowerCase()}@tbo.sn`;
+    const email = `${username.toLowerCase()}@amd.sn`;
     const password_ = `${password}123456789`;
 
     await account.create(ID.unique(), email, password_, username);
