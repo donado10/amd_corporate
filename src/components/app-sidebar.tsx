@@ -57,6 +57,7 @@ const data = {
       title: "Gestion des ressources",
       url: "#",
       icon: Bot,
+      isActive: true,
       items: [
         {
           title: "Chauffeurs",
@@ -136,7 +137,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain section="Tableau de bord" items={data.NavDashboard} />
         <NavMain section="Gestion" items={data.NavGestion} />
-        <NavMain section="Paramètres" items={data.NavSettings} />
+        {/* <NavMain section="Paramètres" items={data.NavSettings} /> */}
       </SidebarContent>
       <SidebarFooter></SidebarFooter>
     </Sidebar>
