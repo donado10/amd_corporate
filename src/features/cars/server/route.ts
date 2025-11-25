@@ -7,7 +7,7 @@ import { setCookie } from "hono/cookie";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { AUTH_COOKIE } from "@/lib/constants";
 import { client } from "@/lib/db-pgsql";
-import { driverSchema } from "../schema";
+import { carSchema } from "../schema";
 
 const app = new Hono()
   .get("/", async (c) => {
@@ -15,7 +15,7 @@ const app = new Hono()
 
     return c.json({ result: result.rows });
   })
-  .post("/", zValidator("json", driverSchema), async (c) => {
+  .post("/", zValidator("json", carSchema), async (c) => {
     const values = await c.req.valid("json");
 
     const result = await client.query(
@@ -37,7 +37,7 @@ const app = new Hono()
 
     return c.json({ message: "chauffeur crée" });
   })
-  .delete("/", zValidator("json", driverSchema), async (c) => {
+  .delete("/", zValidator("json", carSchema), async (c) => {
     const values = await c.req.valid("json");
 
     const result = await client.query(
