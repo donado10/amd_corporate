@@ -44,7 +44,7 @@ const app = new Hono()
     const values = await c.req.valid("json");
 
     const result = await client.query(
-      "DELETE FROM public.f_cars WHERE em_no=$1",
+      "DELETE FROM public.f_cars WHERE car_no=$1",
       [values.car_no]
     );
 
