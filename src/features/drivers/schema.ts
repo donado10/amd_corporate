@@ -2,7 +2,7 @@ import { EPermission } from "@/lib/enum";
 import { z } from "zod";
 
 export const driverSchema = z.object({
-  em_no: z.number(),
+  em_no: z.string(),
   em_firstname: z.string().min(3, {
     message: "Veuillez renseigner le prénom du chauffeur",
   }),
@@ -28,6 +28,6 @@ export const driverSchema = z.object({
     .min(9, { message: "Veuillez renseigner le numéro du chauffeur" })
     .max(14),
   em_email: z.email(),
-  em_type: z.number(),
+  em_type: z.string(),
   em_addons: z.object(),
 });
