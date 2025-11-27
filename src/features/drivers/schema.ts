@@ -29,5 +29,13 @@ export const driverSchema = z.object({
     .max(14),
   em_email: z.email(),
   em_type: z.string(),
-  em_addons: z.object(),
+  em_addons: z.object({
+    permis: z.string(),
+    date_embauche: z.string(),
+    cnss: z.string(),
+    base_salary: z.string(),
+    matricule: z.string(),
+    ipm: z.string(),
+    contract_type: z.string(),
+  }),
 });
