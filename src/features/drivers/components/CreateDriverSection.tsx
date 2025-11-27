@@ -17,6 +17,7 @@ import CustomFormField from "@/components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TemplateUserIcon from "@/assets/images/template_user.svg";
+import FilesUpload from "@/components/fileZone";
 
 const CreateDriverSection = () => {
   const form = useForm<z.infer<typeof driverSchema>>({
@@ -308,7 +309,14 @@ const CreateDriverSection = () => {
               )}
             />
           </div>
-          <Button variant="default" type="submit">
+          <div className="col-start-1 col-end-1 row-start-11 -row-end-1 ">
+            <FilesUpload />
+          </div>
+          <Button
+            className="col-start-2 col-end-2 row-start-11 -row-end-1"
+            variant="default"
+            type="submit"
+          >
             Confirmer
           </Button>
         </form>

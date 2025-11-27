@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="h-screen">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-gray-500-900">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <BreadcrumbContainer />
           </div>
         </header>
-        {children}
+        <main className="  overflow-scroll">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
