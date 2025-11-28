@@ -35,7 +35,7 @@ const CreateDriverSection = () => {
         ipm: "",
         matricule: "",
       },
-      em_type: "",
+      em_type: "1",
       em_address: "",
       em_birthday: "",
       em_birthplace: "",
@@ -48,6 +48,8 @@ const CreateDriverSection = () => {
       em_phonenumber: "",
     },
   });
+
+  console.log(form.formState.errors);
 
   const onSubmit = (values: z.infer<typeof driverSchema>) => {
     console.log(values);
@@ -198,7 +200,7 @@ const CreateDriverSection = () => {
           </div>
           <div className="col-start-2 col-end-2 row-start-2 row-end-3">
             <FormField
-              name={"em_firstname"}
+              name={"em_lastname"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
