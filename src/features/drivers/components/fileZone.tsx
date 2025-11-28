@@ -5,9 +5,10 @@ import {
   DropzoneEmptyState,
 } from "@/components/ui/shadcn-io/dropzone";
 import Image from "next/image";
-import { useState } from "react";
-import { Button } from "./ui/button";
+import { createContext, ReactNode, useContext, useState } from "react";
+import { Button } from "../../../components/ui/button";
 import FileImportLogo from "@/assets/import_files.svg";
+import { FileUploadContext } from "@/features/drivers/components/context/file-upload";
 
 const FilesUploadExemple = () => {
   const [files, setFiles] = useState<File[] | undefined>();
@@ -27,11 +28,29 @@ const FilesUploadExemple = () => {
     </Dropzone>
   );
 };
-export const FilesUpload = () => {
-  const [files, setFiles] = useState<File[] | undefined>();
+
+export const FilesUploadContainer = () => {
+  const fileUploadCtx = useContext(FileUploadContext);
+  console.log(fileUploadCtx.files);
+  return (
+    <>
+      <FileUpload
+        files={fileUploadCtx.files?.map((file) => file.file)}
+        addFiles={fileUploadCtx.addFiles!}
+      />
+    </>
+  );
+};
+
+const FileUpload = ({
+  files,
+  addFiles,
+}: {
+  files: File[] | undefined;
+  addFiles: (file: { file: File; nom: string }[] | undefined) => void;
+}) => {
   const handleDrop = (files: File[]) => {
-    console.log(files);
-    setFiles(files);
+    addFiles(files.map((file) => ({ file: file, nom: "" })));
   };
   return (
     <Button
@@ -41,7 +60,7 @@ export const FilesUpload = () => {
       className="flex items-center justify-between flex-row p-2 w-fit gap-4"
     >
       <Dropzone
-        maxFiles={3}
+        maxFiles={1000}
         onDrop={handleDrop}
         onError={console.error}
         src={files}
@@ -57,4 +76,3 @@ export const FilesUpload = () => {
     </Button>
   );
 };
-export default FilesUpload;

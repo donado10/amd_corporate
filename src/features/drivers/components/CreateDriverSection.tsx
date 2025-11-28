@@ -17,7 +17,11 @@ import CustomFormField from "@/components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TemplateUserIcon from "@/assets/images/template_user.svg";
-import FilesUpload from "@/components/fileZone";
+import FilesUpload, {
+  FilesUploadContainer,
+} from "@/features/drivers/components/fileZone";
+import { FilesUploadProvider } from "./context/file-upload";
+import TableFilesUploadContainer from "./TableFilesUploadContainer";
 
 const CreateDriverSection = () => {
   const form = useForm<z.infer<typeof driverSchema>>({
@@ -44,14 +48,14 @@ const CreateDriverSection = () => {
 
   return (
     <section className="flex flex-col gap-4 p-4 min-h-full ">
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center mb-4">
         <span className="font-bold text-primary text-2xl">
           Ajouter un chauffeur
         </span>
       </div>
       <Form {...form}>
         <form
-          className="grid grid-cols-2 grid-rows-12 h-full gap-x-8"
+          className="grid grid-cols-2 grid-rows-16 h-full gap-x-8"
           onSubmit={() => form.handleSubmit(onSubmit)}
         >
           <div className="rounded-md w-fit p-4 mb-4 bg-[#D9D9D9]  row-span-2 flex items-center justify-center">
@@ -309,16 +313,32 @@ const CreateDriverSection = () => {
               )}
             />
           </div>
-          <div className="col-start-1 col-end-1 row-start-11 -row-end-1 ">
-            <FilesUpload />
+          <div className="col-start-1 col-end-1 row-start-10 -row-end-1 ">
+            <FilesUploadProvider>
+              <div className="flex flex-col gap-4">
+                <FilesUploadContainer />
+                <TableFilesUploadContainer />
+              </div>
+            </FilesUploadProvider>
           </div>
-          <Button
-            className="col-start-2 col-end-2 row-start-11 -row-end-1"
-            variant="default"
-            type="submit"
-          >
-            Confirmer
-          </Button>
+          <div className="col-start-2 col-end-2 row-start-11 -row-end-1">
+            <div className="ml-auto gap-4 flex items-center w-fit">
+              <Button
+                variant="destructive"
+                type="submit"
+                className=" text-white"
+              >
+                Annuler
+              </Button>
+              <Button
+                variant="default"
+                type="submit"
+                className="bg-[#34C759] text-white"
+              >
+                Confirmer
+              </Button>
+            </div>
+          </div>
         </form>
         {/* <form className="grid grid-cols-2 grid-rows-12 h-full" action="">
           <div></div>
