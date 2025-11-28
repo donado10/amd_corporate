@@ -31,7 +31,6 @@ const FilesUploadExemple = () => {
 
 export const FilesUploadContainer = () => {
   const fileUploadCtx = useContext(FileUploadContext);
-  console.log(fileUploadCtx.files);
   return (
     <>
       <FileUpload

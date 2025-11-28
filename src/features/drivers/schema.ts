@@ -2,8 +2,8 @@ import { EPermission } from "@/lib/enum";
 import { z } from "zod";
 
 const driverDocumentSchema = z.object({
-  file_name: z.string(),
-  name: z.string(),
+  file: z.file(),
+  nom: z.string(),
 });
 
 export const driverSchema = z.object({

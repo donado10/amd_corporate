@@ -25,7 +25,16 @@ const CreateDriverSection = () => {
   const form = useForm<z.infer<typeof driverSchema>>({
     resolver: zodResolver(driverSchema),
     defaultValues: {
-      em_addons: {},
+      em_addons: {
+        permis: "",
+        base_salary: "",
+        cnss: "",
+        contract_type: "",
+        date_embauche: "",
+        documents: [],
+        ipm: "",
+        matricule: "",
+      },
       em_type: "",
       em_address: "",
       em_birthday: "",
@@ -34,14 +43,14 @@ const CreateDriverSection = () => {
       em_emergencynumber: "",
       em_firstname: "",
       em_lastname: "",
-      em_no: "",
+      em_no: "0",
       em_nationality: "",
       em_phonenumber: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof driverSchema>) => {
-    console.log("first");
+    console.log(values);
   };
 
   return (
@@ -54,7 +63,7 @@ const CreateDriverSection = () => {
       <Form {...form}>
         <form
           className="grid grid-cols-2 grid-rows-16 h-full gap-x-8"
-          onSubmit={() => form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="rounded-md w-fit p-4 mb-4 bg-[#D9D9D9]  row-span-2 flex items-center justify-center">
             <Image src={TemplateUserIcon} alt="aa" />
@@ -313,10 +322,16 @@ const CreateDriverSection = () => {
           </div>
           <div className="col-start-1 col-end-1 row-start-10 -row-end-1 ">
             <FilesUploadProvider>
-              <div className="flex flex-col gap-4">
-                <FilesUploadContainer />
-                <TableFilesUploadContainer />
-              </div>
+              <FormField
+                name="em_addons.documents"
+                control={form.control}
+                render={({ field }) => (
+                  <div className="flex flex-col gap-4">
+                    <FilesUploadContainer />
+                    <TableFilesUploadContainer form={form} />
+                  </div>
+                )}
+              />
             </FilesUploadProvider>
           </div>
           <div className="col-start-2 col-end-2 row-start-11 -row-end-1">

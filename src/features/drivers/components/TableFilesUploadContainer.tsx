@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/table";
 import { FileUploadContext } from "./context/file-upload";
 import { Input } from "@/components/ui/input";
+import { UseFormReturn } from "react-hook-form";
+import { driverSchema } from "../schema";
+import z from "zod";
 
 type Props = {};
 
@@ -21,8 +24,18 @@ const invoices = [
   },
 ];
 
-const TableFilesUploadContainer = (props: Props) => {
+const TableFilesUploadContainer = ({
+  form,
+}: {
+  form: UseFormReturn<z.infer<typeof driverSchema>>;
+}) => {
   const fileUploadCtx = useContext(FileUploadContext);
+
+  useEffect(() => {
+    if (fileUploadCtx.files) {
+      form.setValue("em_addons.documents", fileUploadCtx.files);
+    }
+  }, [JSON.stringify(fileUploadCtx.files)]);
 
   return (
     <Table className="w-fit rounded-md  overflow-hidden">
