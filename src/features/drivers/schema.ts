@@ -1,6 +1,11 @@
 import { EPermission } from "@/lib/enum";
 import { z } from "zod";
 
+const driverDocumentSchema = z.object({
+  file_name: z.string(),
+  name: z.string(),
+});
+
 export const driverSchema = z.object({
   em_no: z.string(),
   em_firstname: z.string().min(3, {
@@ -37,5 +42,6 @@ export const driverSchema = z.object({
     matricule: z.string(),
     ipm: z.string(),
     contract_type: z.string(),
+    documents: z.array(driverDocumentSchema),
   }),
 });

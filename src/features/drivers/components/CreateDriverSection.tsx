@@ -17,9 +17,7 @@ import CustomFormField from "@/components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TemplateUserIcon from "@/assets/images/template_user.svg";
-import FilesUpload, {
-  FilesUploadContainer,
-} from "@/features/drivers/components/fileZone";
+import { FilesUploadContainer } from "@/features/drivers/components/fileZone";
 import { FilesUploadProvider } from "./context/file-upload";
 import TableFilesUploadContainer from "./TableFilesUploadContainer";
 
@@ -340,10 +338,6 @@ const CreateDriverSection = () => {
             </div>
           </div>
         </form>
-        {/* <form className="grid grid-cols-2 grid-rows-12 h-full" action="">
-          <div></div>
-          <div></div>
-        </form> */}
       </Form>
     </section>
   );
