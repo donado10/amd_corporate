@@ -20,6 +20,7 @@ import TemplateUserIcon from "@/assets/images/template_user.svg";
 import { FilesUploadContainer } from "@/features/drivers/components/fileZone";
 import { FilesUploadProvider } from "./context/file-upload";
 import TableFilesUploadContainer from "./TableFilesUploadContainer";
+import useCreateDriver from "../api/use-create-driver";
 
 const CreateDriverSection = () => {
   const form = useForm<z.infer<typeof driverSchema>>({
@@ -49,10 +50,11 @@ const CreateDriverSection = () => {
     },
   });
 
+  const { mutate } = useCreateDriver();
   console.log(form.formState.errors);
 
   const onSubmit = (values: z.infer<typeof driverSchema>) => {
-    console.log(values);
+    mutate({ json: values });
   };
 
   return (

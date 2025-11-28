@@ -1,11 +1,5 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { loginSchema, registerSchema } from "@/features/schema";
-import createAdminClient from "@/lib/appwrite";
-import { ID } from "node-appwrite";
-import { setCookie } from "hono/cookie";
-import { sessionMiddleware } from "@/lib/session-middleware";
-import { AUTH_COOKIE } from "@/lib/constants";
 import { client } from "@/lib/db-pgsql";
 import { driverSchema } from "../schema";
 
@@ -17,8 +11,10 @@ const app = new Hono()
   })
   .post("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");
+    console.log("first");
+    console.log(values);
 
-    const result = await client.query(
+    /* const result = await client.query(
       "CALL public.create_employee ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
       [
         values.em_firstname,
@@ -33,7 +29,7 @@ const app = new Hono()
         values.em_type,
         values.em_addons,
       ]
-    );
+    ); */
 
     return c.json({ message: "chauffeur crée" });
   })
