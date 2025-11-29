@@ -21,6 +21,18 @@ import { FilesUploadContainer } from "@/features/drivers/components/fileZone";
 import { FilesUploadProvider } from "./context/file-upload";
 import TableFilesUploadContainer from "./TableFilesUploadContainer";
 import useCreateDriver from "../api/use-create-driver";
+import useUploadDocumentDriver from "../api/use-upload-documents-driver";
+
+function formDataToObject(formData: FormData) {
+  const obj: Record<string, any> = {};
+
+  formData.forEach((value, key) => {
+    // If the value is a File, keep it as-is
+    obj[key] = value instanceof File ? value : value.toString();
+  });
+
+  return obj;
+}
 
 const CreateDriverSection = () => {
   const form = useForm<z.infer<typeof driverSchema>>({
@@ -51,10 +63,25 @@ const CreateDriverSection = () => {
   });
 
   const { mutate } = useCreateDriver();
+  const { mutate: mutateUploadDocuments } = useUploadDocumentDriver();
   console.log(form.formState.errors);
 
   const onSubmit = (values: z.infer<typeof driverSchema>) => {
-    mutate({ json: values });
+    console.log(values);
+
+    for (let index = 0; index < values.em_addons.documents.length; index++) {
+      const form = new FormData();
+
+      form.append(`file`, values.em_addons.documents[index].file);
+      form.append(`nom`, values.em_addons.documents[index].nom);
+
+      mutateUploadDocuments({
+        form: {
+          file: form.get("file") as File,
+          nom: form.get("nom") as string,
+        },
+      });
+    }
   };
 
   return (

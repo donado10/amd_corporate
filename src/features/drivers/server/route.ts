@@ -1,7 +1,15 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
+import { loginSchema, registerSchema } from "@/features/schema";
+import createAdminClient from "@/lib/appwrite";
+import { ID } from "node-appwrite";
+import { setCookie } from "hono/cookie";
+import { sessionMiddleware } from "@/lib/session-middleware";
+import { AUTH_COOKIE } from "@/lib/constants";
 import { client } from "@/lib/db-pgsql";
-import { driverSchema } from "../schema";
+import { driverDocumentSchema, driverSchema } from "../schema";
+import { InputFile } from "node-appwrite/file";
+import z from "zod";
 
 const app = new Hono()
   .get("/", async (c) => {
@@ -11,7 +19,7 @@ const app = new Hono()
   })
   .post("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");
-    console.log("first");
+
     console.log(values);
 
     /* const result = await client.query(
@@ -32,6 +40,26 @@ const app = new Hono()
     ); */
 
     return c.json({ message: "chauffeur crée" });
+  })
+  .post("/uploadFiles", zValidator("form", driverDocumentSchema), async (c) => {
+    const fileSchema = z.instanceof(File);
+    const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_ID!;
+
+    const file = c.req.valid("form");
+
+    const storage = (await createAdminClient()).storage;
+
+    if (fileSchema.safeParse(file.file)) {
+      const response = await storage.createFile(
+        bucket_id,
+        ID.unique(),
+        InputFile.fromBuffer(file.file, file.nom)
+      );
+
+      console.log(response);
+    }
+
+    return c.json({ message: "files uploaded" });
   })
   .delete("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");

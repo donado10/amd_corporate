@@ -33,7 +33,7 @@ const TableFilesUploadContainer = ({
 
   useEffect(() => {
     if (fileUploadCtx.files) {
-      form.setValue("em_addons.documents", fileUploadCtx.files);
+      form.setValue("em_addons.documents", [...fileUploadCtx.files]);
     }
   }, [JSON.stringify(fileUploadCtx.files)]);
 
