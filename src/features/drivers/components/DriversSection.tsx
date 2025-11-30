@@ -23,7 +23,7 @@ const DriverCardStatus = ({
   color: string;
 }) => {
   return (
-    <Card className="relative bg-secondary p-2 flex gap-0 flex-col    w-1/4">
+    <Card className="relative bg-secondary p-2 flex gap-0 flex-col border-none   w-1/4">
       <span
         className={cn("rounded-full w-6 h-6 absolute  top-2 right-2  ", color)}
       ></span>
@@ -52,18 +52,20 @@ const DriversSection = (props: Props) => {
         <DriverCardStatus title="Conforme" value={10} color="bg-[#34C759]" />
         <DriverCardStatus title="Disponible" value={40} color="bg-[#FFCC00]" />
       </div>
-      <Button
-        className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
-        variant={"outline"}
-        asChild
-      >
-        <Link href={pathname + "/create"} className="w-fit">
-          <span>
-            <Image src={AddIcon} alt="" width={24} height={24} className="" />
-          </span>
-          <span>Ajouter un chauffeur</span>
-        </Link>
-      </Button>
+      <div>
+        <Button
+          className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
+          variant={"outline"}
+          asChild
+        >
+          <Link href={pathname + "/create"} className="w-fit">
+            <span>
+              <Image src={AddIcon} alt="" width={24} height={24} className="" />
+            </span>
+            <span>Ajouter un chauffeur</span>
+          </Link>
+        </Button>
+      </div>
     </section>
   );
 };
