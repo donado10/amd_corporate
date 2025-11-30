@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/components/queryProviders";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,7 @@ export default function RootLayout({
         className={`flex min-h-screen w-full items-center justify-center antialiased `}
       >
         <Providers>{children}</Providers>
+        <Toaster duration={3000} position="bottom-right" expand={true} />
       </body>
     </html>
   );

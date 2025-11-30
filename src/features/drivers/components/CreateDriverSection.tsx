@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { driverSchema } from "../schema";
@@ -18,11 +18,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TemplateUserIcon from "@/assets/images/template_user.svg";
 import { FilesUploadContainer } from "@/features/drivers/components/fileZone";
-import { FilesUploadProvider } from "./context/file-upload";
+import { FilesUploadProvider, FileUploadContext } from "./context/file-upload";
 import TableFilesUploadContainer from "./TableFilesUploadContainer";
 import useCreateDriver from "../api/use-create-driver";
 import useUploadDocumentDriver from "../api/use-upload-documents-driver";
 import useDeleteDocumentDriver from "../api/use-delete-documents-driver";
+import { toast } from "sonner";
+import { ToastSuccess } from "@/components/ToastComponents";
 
 function formDataToObject(formData: FormData) {
   const obj: Record<string, any> = {};
@@ -68,6 +70,7 @@ const CreateDriverSection = () => {
   const mutateDeleteDocuments = useDeleteDocumentDriver();
   console.log(form.formState.errors);
 
+  const fileUploadCtx = useContext(FileUploadContext);
   const onSubmit = async (values: z.infer<typeof driverSchema>) => {
     let filesID: string[] = [];
 
@@ -104,6 +107,34 @@ const CreateDriverSection = () => {
       {
         onError: async () => {
           await mutateDeleteDocuments({ json: { files: [...filesID] } });
+        },
+        onSuccess: () => {
+          form.setValue("em_addons.permis", "");
+          form.setValue("em_addons.matricule", "");
+          form.setValue("em_addons.ipm", "");
+          form.setValue("em_addons.documents", []);
+          form.setValue("em_addons.date_embauche", "");
+          form.setValue("em_addons.contract_type", "");
+          form.setValue("em_addons.cnss", "");
+          form.setValue("em_addons.base_salary", "");
+          form.setValue("em_address", "");
+          form.setValue("em_birthday", "");
+          form.setValue("em_birthplace", "");
+          form.setValue("em_email", "");
+          form.setValue("em_emergencynumber", "");
+          form.setValue("em_firstname", "");
+          form.setValue("em_lastname", "");
+          form.setValue("em_nationality", "");
+          form.setValue("em_no", "");
+          form.setValue("em_phonenumber", "");
+          form.setValue("em_type", "");
+
+          fileUploadCtx.cleanFileContext!();
+          toast(<ToastSuccess toastTitle="Chauffeur crée !" />, {
+            style: {
+              backgroundColor: "green",
+            },
+          });
         },
       }
     );
@@ -377,18 +408,16 @@ const CreateDriverSection = () => {
             />
           </div>
           <div className="col-start-1 col-end-1 row-start-10 -row-end-1 ">
-            <FilesUploadProvider>
-              <FormField
-                name="em_addons.documents"
-                control={form.control}
-                render={({ field }) => (
-                  <div className="flex flex-col gap-4">
-                    <FilesUploadContainer />
-                    <TableFilesUploadContainer form={form} />
-                  </div>
-                )}
-              />
-            </FilesUploadProvider>
+            <FormField
+              name="em_addons.documents"
+              control={form.control}
+              render={({ field }) => (
+                <div className="flex flex-col gap-4">
+                  <FilesUploadContainer />
+                  <TableFilesUploadContainer form={form} />
+                </div>
+              )}
+            />
           </div>
           <div className="col-start-2 col-end-2 row-start-11 -row-end-1">
             <div className="ml-auto gap-4 flex items-center w-fit">
