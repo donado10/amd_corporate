@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import AddIcon from "@/assets/add.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,6 +9,7 @@ import { ToastSuccess } from "@/components/ToastComponents";
 import { toast } from "sonner";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import TableDriverContainer from "./TableContainer";
 
 type Props = {};
 
@@ -42,7 +42,7 @@ const DriversSection = (props: Props) => {
       <span className="text-2xl font-semibold text-primary mb-8">
         Chauffeurs
       </span>
-      <div className="flex justify-between gap-4">
+      <div className="flex justify-between gap-4 mb-8">
         <DriverCardStatus title="Non Conforme" value={99} color="bg-red-500" />
         <DriverCardStatus
           title="Indisponible"
@@ -53,18 +53,7 @@ const DriversSection = (props: Props) => {
         <DriverCardStatus title="Disponible" value={40} color="bg-[#FFCC00]" />
       </div>
       <div>
-        <Button
-          className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
-          variant={"outline"}
-          asChild
-        >
-          <Link href={pathname + "/create"} className="w-fit">
-            <span>
-              <Image src={AddIcon} alt="" width={24} height={24} className="" />
-            </span>
-            <span>Ajouter un chauffeur</span>
-          </Link>
-        </Button>
+        <TableDriverContainer />
       </div>
     </section>
   );
