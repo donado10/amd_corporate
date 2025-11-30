@@ -15,15 +15,10 @@ import { UseFormReturn } from "react-hook-form";
 import { driverSchema } from "../schema";
 import z from "zod";
 import { hashString } from "@/lib/utils";
-
-type Props = {};
-
-const invoices = [
-  {
-    file_name: "Ado.pdf",
-    name: "Permis",
-  },
-];
+import { Button } from "@/components/ui/button";
+import DotsIcon from "@/assets/dots.svg";
+import Image from "next/image";
+import { DropdownMenuAction } from "./DropdownMenu";
 
 const TableFilesUploadContainer = ({
   form,
@@ -33,19 +28,21 @@ const TableFilesUploadContainer = ({
   const fileUploadCtx = useContext(FileUploadContext);
 
   useEffect(() => {
+    console.log("checking files");
+    console.log(fileUploadCtx.files);
     if (fileUploadCtx.files) {
       form.setValue("em_addons.documents", [...fileUploadCtx.files]);
     }
   }, [JSON.stringify(fileUploadCtx.files)]);
 
   return (
-    <Table className="w-fit rounded-md  overflow-hidden">
+    <Table className="w-full rounded-md  overflow-hidden">
       <TableCaption>Liste de documents à charger.</TableCaption>
       <TableHeader className="bg-[#E2ECF6]">
         <TableRow>
-          <TableHead className="w-[100px] ">Nom fichier</TableHead>
+          <TableHead className=" ">Nom fichier</TableHead>
           <TableHead>Nom</TableHead>
-          <TableHead>Action</TableHead>
+          <TableHead className="text-right">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -71,7 +68,13 @@ const TableFilesUploadContainer = ({
                   </>
                 }
               </TableCell>
-              <TableCell className="text-right">{"..."}</TableCell>
+              <TableCell className="text-right">
+                <DropdownMenuAction filename={file.file.name}>
+                  <Button variant={"ghost"} type="button">
+                    <Image src={DotsIcon} alt="" width={16} height={16} />{" "}
+                  </Button>
+                </DropdownMenuAction>
+              </TableCell>
             </TableRow>
           ))}
       </TableBody>

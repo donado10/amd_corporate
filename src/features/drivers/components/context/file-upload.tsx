@@ -51,7 +51,7 @@ export const FilesUploadProvider = ({ children }: { children: ReactNode }) => {
             return name !== file.file.name;
           });
 
-          setFiles(filter);
+          setFiles(filter ?? []);
         },
         cleanFileContext: () => setFiles(undefined),
         updateFile: (
