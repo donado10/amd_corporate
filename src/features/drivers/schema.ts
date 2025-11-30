@@ -3,7 +3,9 @@ import { z } from "zod";
 
 export const driverDocumentSchema = z.object({
   file: z.file().or(z.string()),
+  hashname: z.string(),
   nom: z.string(),
+  fileID: z.string().optional(),
 });
 
 export const driverSchema = z.object({
@@ -35,13 +37,13 @@ export const driverSchema = z.object({
   em_email: z.email(),
   em_type: z.string(),
   em_addons: z.object({
-    permis: z.string(),
-    date_embauche: z.string(),
-    cnss: z.string(),
-    base_salary: z.string(),
-    matricule: z.string(),
-    ipm: z.string(),
-    contract_type: z.string(),
+    permis: z.string().optional(),
+    date_embauche: z.string().optional(),
+    cnss: z.string().optional(),
+    base_salary: z.string().optional(),
+    matricule: z.string().optional(),
+    ipm: z.string().optional(),
+    contract_type: z.string().optional(),
     documents: z.array(driverDocumentSchema),
   }),
 });

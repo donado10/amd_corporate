@@ -9,5 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 export function hashString(str: string) {
   const input = str + Date.now();
   const hash = sha256(input);
+  console.log(hash);
   return hash;
 }

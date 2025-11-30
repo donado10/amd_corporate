@@ -19,7 +19,7 @@ const app = new Hono()
     const values = await c.req.valid("json");
 
     await client.query(
-      "CALL public.create_car ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
+      "CALL public.insert_car ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
       [
         values.car_fueltype,
         values.car_tankcapacity,

@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { driverSchema } from "../schema";
 import z from "zod";
+import { hashString } from "@/lib/utils";
 
 type Props = {};
 
@@ -60,6 +61,7 @@ const TableFilesUploadContainer = ({
                       onChange={(e) => {
                         fileUploadCtx.updateFile!(file.file.name, {
                           file: file.file,
+                          hashname: hashString(e.currentTarget.value),
                           nom: e.currentTarget.value,
                         });
                       }}

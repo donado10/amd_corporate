@@ -13,17 +13,15 @@ import z from "zod";
 
 const app = new Hono()
   .get("/", async (c) => {
-    const result = await client.query("SELECT * FROM f_employee");
+    const result = await client.query("SELECT * FROM public.f_employee");
 
     return c.json({ result: result.rows });
   })
   .post("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");
 
-    console.log(values);
-
-    /* const result = await client.query(
-      "CALL public.create_employee ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
+    const result = await client.query(
+      "CALL public.insert_employee ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
       [
         values.em_firstname,
         values.em_lastname,
@@ -32,12 +30,12 @@ const app = new Hono()
         values.em_birthplace,
         values.em_address,
         values.em_phonenumber,
-        values.em_email,
         values.em_emergencynumber,
-        values.em_type,
+        values.em_email,
+        Number(values.em_type),
         values.em_addons,
       ]
-    ); */
+    );
 
     return c.json({ message: "chauffeur crée" });
   })
@@ -48,24 +46,23 @@ const app = new Hono()
     const file = c.req.valid("form");
 
     const storage = (await createAdminClient()).storage;
+    const file_id = ID.unique();
 
     if (fileSchema.safeParse(file.file)) {
       const response = await storage.createFile(
         bucket_id,
-        ID.unique(),
+        file_id,
         InputFile.fromBuffer(file.file, file.nom)
       );
-
-      console.log(response);
     }
 
-    return c.json({ message: "files uploaded" });
+    return c.json({ message: "files uploaded", id: file_id });
   })
   .delete("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");
 
     const result = await client.query(
-      "DELETE FROM public.f_employee WHERE em_no=$1",
+      "DELETE FROM AMD.public.f_employee WHERE em_no=$1",
       [values.em_no]
     );
 

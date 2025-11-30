@@ -63,25 +63,32 @@ const CreateDriverSection = () => {
   });
 
   const { mutate } = useCreateDriver();
-  const { mutate: mutateUploadDocuments } = useUploadDocumentDriver();
+  const mutateUploadDocuments = useUploadDocumentDriver();
   console.log(form.formState.errors);
 
-  const onSubmit = (values: z.infer<typeof driverSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof driverSchema>) => {
+    let isFileUpload = 0;
 
     for (let index = 0; index < values.em_addons.documents.length; index++) {
       const form = new FormData();
+      isFileUpload = isFileUpload + 1;
 
       form.append(`file`, values.em_addons.documents[index].file);
+      form.append(`hashname`, values.em_addons.documents[index].hashname);
       form.append(`nom`, values.em_addons.documents[index].nom);
 
-      mutateUploadDocuments({
+      const { id: fileID } = await mutateUploadDocuments({
         form: {
           file: form.get("file") as File,
+          hashname: form.get("hashname") as string,
           nom: form.get("nom") as string,
         },
       });
+
+      values.em_addons.documents[index].file = fileID;
     }
+
+    mutate({ json: values });
   };
 
   return (

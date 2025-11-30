@@ -46,10 +46,12 @@ const FileUpload = ({
   addFiles,
 }: {
   files: File[] | undefined;
-  addFiles: (file: { file: File; nom: string }[] | undefined) => void;
+  addFiles: (
+    file: { file: File; hashname: string; nom: string }[] | undefined
+  ) => void;
 }) => {
   const handleDrop = (files: File[]) => {
-    addFiles(files.map((file) => ({ file: file, nom: "" })));
+    addFiles(files.map((file) => ({ file: file, nom: "", hashname: "" })));
   };
   return (
     <Button

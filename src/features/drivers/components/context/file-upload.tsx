@@ -1,18 +1,27 @@
 import { createContext, ReactNode, useState } from "react";
 
 interface IFileUpload {
-  files: { file: File; nom: string }[] | undefined;
-  addFiles?: (file: { file: File; nom: string }[] | undefined) => void;
+  files:
+    | { file: File; hashname: string; fileID?: string; nom: string }[]
+    | undefined;
+  addFiles?: (
+    file:
+      | { file: File; hashname: string; fileID?: string; nom: string }[]
+      | undefined
+  ) => void;
   removeFile?: (name: string) => void;
   cleanFileContext?: () => void;
-  updateFile?: (filename: string, file: { file: File; nom: string }) => void;
+  updateFile?: (
+    filename: string,
+    file: { file: File; hashname: string; fileID?: string; nom: string }
+  ) => void;
 }
 
 export const FileUploadContext = createContext<IFileUpload>({ files: [] });
 
 export const FilesUploadProvider = ({ children }: { children: ReactNode }) => {
   const [files, setFiles] = useState<
-    { file: File; nom: string }[] | undefined
+    { file: File; hashname: string; fileID?: string; nom: string }[] | undefined
   >();
   const handleDrop = (filesDrop: File[]) => {
     if (files) {
@@ -23,7 +32,11 @@ export const FilesUploadProvider = ({ children }: { children: ReactNode }) => {
     <FileUploadContext.Provider
       value={{
         files: files,
-        addFiles: (filesDrop: { file: File; nom: string }[] | undefined) => {
+        addFiles: (
+          filesDrop:
+            | { file: File; hashname: string; fileID?: string; nom: string }[]
+            | undefined
+        ) => {
           if (filesDrop) {
             if (files) {
               setFiles([...files, ...filesDrop]);
@@ -41,10 +54,14 @@ export const FilesUploadProvider = ({ children }: { children: ReactNode }) => {
           setFiles(filter);
         },
         cleanFileContext: () => setFiles(undefined),
-        updateFile: (filename: string, file: { file: File; nom: string }) => {
+        updateFile: (
+          filename: string,
+          file: { file: File; hashname: string; fileID?: string; nom: string }
+        ) => {
           const filter = files?.map((f) => {
             if (f.file.name === filename) {
               f.nom = file.nom;
+              f.hashname = file.hashname;
               return f;
             }
             return f;

@@ -15,21 +15,18 @@ const useUploadDocumentDriver = () => {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationKey: ["upload_driver_documents"],
     mutationFn: async ({ form }) => {
-      console.log(form);
       const res = await client.api.drivers.uploadFiles["$post"]({ form });
 
       if (!res.ok) {
         throw new Error("Failed to register a new driver!");
       }
 
-      return res.json();
+      return await res.json();
     },
-    onSuccess: () => {
-      router.refresh();
-    },
+    onSuccess: () => {},
   });
 
-  return mutation;
+  return mutation.mutateAsync;
 };
 
 export default useUploadDocumentDriver;

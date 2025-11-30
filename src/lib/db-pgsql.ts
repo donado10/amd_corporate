@@ -5,5 +5,5 @@ export const client = new Pool({
   host: "79.137.99.241",
   database: "AMD",
   password: "postgres",
-  port: 53104,
+  port: 52603,
 });
