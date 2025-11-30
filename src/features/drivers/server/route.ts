@@ -39,7 +39,7 @@ const app = new Hono()
 
     return c.json({ message: "chauffeur crée" });
   })
-  .post("/uploadFiles", zValidator("form", driverDocumentSchema), async (c) => {
+  .post("/uploadFile", zValidator("form", driverDocumentSchema), async (c) => {
     const fileSchema = z.instanceof(File);
     const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_ID!;
 
@@ -58,6 +58,24 @@ const app = new Hono()
 
     return c.json({ message: "files uploaded", id: file_id });
   })
+  .delete(
+    "/deleteFile",
+    zValidator("json", z.object({ files: z.array(z.string()) })),
+    async (c) => {
+      const fileSchema = z.instanceof(File);
+      const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_ID!;
+
+      const { files } = c.req.valid("json");
+
+      const storage = (await createAdminClient()).storage;
+
+      for (let index = 0; index < files.length; index++) {
+        const response = await storage.deleteFile(bucket_id, files[index]);
+      }
+
+      return c.json({ message: "files deleted" });
+    }
+  )
   .delete("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");
 

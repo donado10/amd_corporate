@@ -22,6 +22,7 @@ import { FilesUploadProvider } from "./context/file-upload";
 import TableFilesUploadContainer from "./TableFilesUploadContainer";
 import useCreateDriver from "../api/use-create-driver";
 import useUploadDocumentDriver from "../api/use-upload-documents-driver";
+import useDeleteDocumentDriver from "../api/use-delete-documents-driver";
 
 function formDataToObject(formData: FormData) {
   const obj: Record<string, any> = {};
@@ -64,31 +65,48 @@ const CreateDriverSection = () => {
 
   const { mutate } = useCreateDriver();
   const mutateUploadDocuments = useUploadDocumentDriver();
+  const mutateDeleteDocuments = useDeleteDocumentDriver();
   console.log(form.formState.errors);
 
   const onSubmit = async (values: z.infer<typeof driverSchema>) => {
-    let isFileUpload = 0;
+    let filesID: string[] = [];
 
-    for (let index = 0; index < values.em_addons.documents.length; index++) {
-      const form = new FormData();
-      isFileUpload = isFileUpload + 1;
+    try {
+      for (let index = 0; index < values.em_addons.documents.length; index++) {
+        const form = new FormData();
 
-      form.append(`file`, values.em_addons.documents[index].file);
-      form.append(`hashname`, values.em_addons.documents[index].hashname);
-      form.append(`nom`, values.em_addons.documents[index].nom);
+        form.append(`file`, values.em_addons.documents[index].file);
+        form.append(`hashname`, values.em_addons.documents[index].hashname);
+        form.append(`nom`, values.em_addons.documents[index].nom);
 
-      const { id: fileID } = await mutateUploadDocuments({
-        form: {
-          file: form.get("file") as File,
-          hashname: form.get("hashname") as string,
-          nom: form.get("nom") as string,
-        },
-      });
+        const { id: fileID } = await mutateUploadDocuments({
+          form: {
+            file: form.get("file") as File,
+            hashname: form.get("hashname") as string,
+            nom: form.get("nom") as string,
+          },
+        });
 
-      values.em_addons.documents[index].file = fileID;
+        filesID = [...filesID, fileID];
+
+        values.em_addons.documents[index].file = fileID;
+      }
+    } catch (error) {
+      if (filesID.length > 0) {
+        await mutateDeleteDocuments({ json: { files: [...filesID] } });
+        return;
+      }
+      return;
     }
 
-    mutate({ json: values });
+    mutate(
+      { json: values },
+      {
+        onError: async () => {
+          await mutateDeleteDocuments({ json: { files: [...filesID] } });
+        },
+      }
+    );
   };
 
   return (
