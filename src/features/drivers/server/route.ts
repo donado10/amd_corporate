@@ -17,6 +17,15 @@ const app = new Hono()
 
     return c.json({ result: result.rows });
   })
+  .get("/driversInfoTable", async (c) => {
+    const result =
+      await client.query(`select (em_firstname || ' ' || em_lastname) as em_fullname,
+      em_addons ->> 'matricule' as em_matricule,
+      em_addons ->> 'vehicule' as em_car
+      ,em_addons ->> 'last_mission' as em_lastmission,
+      em_addons ->> 'availability' as em_status from f_employee `);
+    return c.json({ result: result.rows });
+  })
   .post("/", zValidator("json", driverSchema), async (c) => {
     const values = await c.req.valid("json");
 

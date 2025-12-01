@@ -23,7 +23,7 @@ const DriverCardStatus = ({
   color: string;
 }) => {
   return (
-    <Card className="relative bg-secondary p-2 flex gap-0 flex-col border-none   w-1/4">
+    <Card className="relative bg-secondary p-2 flex gap-0 flex-col border-none   w-1/3">
       <span
         className={cn("rounded-full w-6 h-6 absolute  top-2 right-2  ", color)}
       ></span>
@@ -36,7 +36,6 @@ const DriverCardStatus = ({
 };
 
 const DriversSection = (props: Props) => {
-  const pathname = usePathname();
   return (
     <section className="flex flex-col">
       <span className="text-2xl font-semibold text-primary mb-8">
@@ -49,8 +48,7 @@ const DriversSection = (props: Props) => {
           value={50}
           color="bg-[#FF8D28]"
         />
-        <DriverCardStatus title="Conforme" value={10} color="bg-[#34C759]" />
-        <DriverCardStatus title="Disponible" value={40} color="bg-[#FFCC00]" />
+        <DriverCardStatus title="Disponible" value={40} color="bg-green-600" />
       </div>
       <div>
         <TableDriverContainer />

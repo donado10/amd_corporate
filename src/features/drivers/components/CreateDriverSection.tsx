@@ -25,6 +25,7 @@ import useUploadDocumentDriver from "../api/use-upload-documents-driver";
 import useDeleteDocumentDriver from "../api/use-delete-documents-driver";
 import { toast } from "sonner";
 import { ToastSuccess } from "@/components/ToastComponents";
+import { SelectAvailability } from "./tableFilter";
 
 function formDataToObject(formData: FormData) {
   const obj: Record<string, any> = {};
@@ -50,6 +51,7 @@ const CreateDriverSection = () => {
         documents: [],
         ipm: "",
         matricule: "",
+        availability: "",
       },
       em_type: "1",
       em_address: "",
@@ -73,6 +75,8 @@ const CreateDriverSection = () => {
   const fileUploadCtx = useContext(FileUploadContext);
   const onSubmit = async (values: z.infer<typeof driverSchema>) => {
     let filesID: string[] = [];
+
+    console.log(values);
 
     try {
       for (let index = 0; index < values.em_addons.documents.length; index++) {
@@ -415,6 +419,21 @@ const CreateDriverSection = () => {
                 <div className="flex flex-col gap-4">
                   <FilesUploadContainer />
                   <TableFilesUploadContainer form={form} />
+                </div>
+              )}
+            />
+          </div>
+          <div className="col-start-2 col-end-2 row-start-10 -row-end-1 ">
+            <FormField
+              name="em_addons.documents"
+              control={form.control}
+              render={({ field }) => (
+                <div className="flex flex-col gap-4">
+                  <SelectAvailability
+                    onAction={(value: string) => {
+                      form.setValue("em_addons.availability", value);
+                    }}
+                  />
                 </div>
               )}
             />

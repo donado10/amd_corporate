@@ -8,6 +8,16 @@ export const driverDocumentSchema = z.object({
   fileID: z.string().optional(),
 });
 
+export const driverTableInfo = z.object({
+  em_firstname: z.string(),
+  em_lastname: z.string(),
+  em_matricule: z.string(),
+  em_status: z.string(),
+  em_fullname: z.string(),
+  em_car: z.string(),
+  em_lastmission: z.string(),
+});
+
 export const driverSchema = z.object({
   em_no: z.string(),
   em_firstname: z.string().min(3, {
@@ -44,6 +54,7 @@ export const driverSchema = z.object({
     matricule: z.string().optional(),
     ipm: z.string().optional(),
     contract_type: z.string().optional(),
+    availability: z.string(),
     documents: z.array(driverDocumentSchema),
   }),
 });
