@@ -19,7 +19,7 @@ const app = new Hono()
   })
   .get("/driversInfoTable", async (c) => {
     const result =
-      await client.query(`select (em_firstname || ' ' || em_lastname) as em_fullname,
+      await client.query(`select em_no, (em_firstname || ' ' || em_lastname) as em_fullname,
       em_addons ->> 'matricule' as em_matricule,
       em_addons ->> 'vehicule' as em_car
       ,em_addons ->> 'last_mission' as em_lastmission,

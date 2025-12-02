@@ -9,6 +9,7 @@ export const driverDocumentSchema = z.object({
 });
 
 export const driverTableInfo = z.object({
+  em_no: z.string(),
   em_firstname: z.string(),
   em_lastname: z.string(),
   em_matricule: z.string(),

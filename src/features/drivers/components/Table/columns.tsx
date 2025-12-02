@@ -2,6 +2,10 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { IDriveTableInfo } from "./interface";
 import { cn, MStatus } from "@/lib/utils";
+import DotsIcon from "@/assets/dots.svg";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { DropdownMenuTable } from "../DropdownMenuTable";
 
 const StatusDisplay = ({ value }: { value: string }) => {
   const MStatusDisplay = new Map<string, string>([
@@ -60,6 +64,16 @@ export const columns: ColumnDef<IDriveTableInfo>[] = [
       <>
         <StatusDisplay value={row.getValue("em_status")} />
       </>
+    ),
+  },
+  {
+    header: "Action",
+    cell: ({ row }) => (
+      <DropdownMenuTable driver={row.original.em_no}>
+        <Button variant={"ghost"} type="button">
+          <Image src={DotsIcon} alt="" width={16} height={16} />{" "}
+        </Button>
+      </DropdownMenuTable>
     ),
   },
 ];
