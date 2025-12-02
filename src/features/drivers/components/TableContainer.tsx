@@ -51,8 +51,6 @@ const TableDriverContainer = () => {
 
   const { data, isPending } = useGetDriverInfoTable();
 
-  console.log(data);
-
   return (
     <div className="flex flex-col gap-8">
       <div className=" flex items-center justify-between">

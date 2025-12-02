@@ -1,15 +1,28 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { IDriveTableInfo } from "./interface";
+import { cn, MStatus } from "@/lib/utils";
+
+const StatusDisplay = ({ value }: { value: string }) => {
+  const MStatusDisplay = new Map<string, string>([
+    ["disponible", "bg-green-600"],
+    ["non_conforme", "bg-red-600"],
+    ["indisponible", "bg-[#FF8D28]"],
+  ]);
+
+  return (
+    <>
+      <div
+        className={cn(
+          "capitalize rounded-4xl w-fit text-white font-semibold   py-2 px-3",
+          MStatusDisplay.get(value)
+        )}
+      >
+        {MStatus.get(value)}
+      </div>
+    </>
+  );
+};
 
 export const columns: ColumnDef<IDriveTableInfo>[] = [
   {
@@ -44,9 +57,9 @@ export const columns: ColumnDef<IDriveTableInfo>[] = [
     accessorKey: "em_status",
     header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize rounded-4xl w-fit text-white font-semibold  bg-red-600 py-2 px-3">
-        {row.getValue("em_status")}
-      </div>
+      <>
+        <StatusDisplay value={row.getValue("em_status")} />
+      </>
     ),
   },
 ];

@@ -51,7 +51,7 @@ const CreateDriverSection = () => {
         documents: [],
         ipm: "",
         matricule: "",
-        availability: "",
+        status: "",
       },
       em_type: "1",
       em_address: "",
@@ -431,7 +431,7 @@ const CreateDriverSection = () => {
                 <div className="flex flex-col gap-4">
                   <SelectAvailability
                     onAction={(value: string) => {
-                      form.setValue("em_addons.availability", value);
+                      form.setValue("em_addons.status", value);
                     }}
                   />
                 </div>

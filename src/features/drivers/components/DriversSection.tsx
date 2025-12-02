@@ -42,7 +42,7 @@ const DriversSection = (props: Props) => {
         Chauffeurs
       </span>
       <div className="flex justify-between gap-4 mb-8">
-        <DriverCardStatus title="Non Conforme" value={99} color="bg-red-500" />
+        <DriverCardStatus title="Non Conforme" value={99} color="bg-red-600" />
         <DriverCardStatus
           title="Indisponible"
           value={50}

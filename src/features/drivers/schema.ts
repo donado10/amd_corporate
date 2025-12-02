@@ -54,7 +54,7 @@ export const driverSchema = z.object({
     matricule: z.string().optional(),
     ipm: z.string().optional(),
     contract_type: z.string().optional(),
-    availability: z.string(),
+    status: z.string(),
     documents: z.array(driverDocumentSchema),
   }),
 });

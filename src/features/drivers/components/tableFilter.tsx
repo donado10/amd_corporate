@@ -23,7 +23,7 @@ export function SelectAvailability({
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Disponibilité</SelectLabel>
-          <SelectItem value="conforme">Disponible</SelectItem>
+          <SelectItem value="disponible">Disponible</SelectItem>
           <SelectItem value="non_conforme">Non conforme</SelectItem>
           <SelectItem value="indisponible">Indisponible</SelectItem>
         </SelectGroup>

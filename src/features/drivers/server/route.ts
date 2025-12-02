@@ -23,7 +23,7 @@ const app = new Hono()
       em_addons ->> 'matricule' as em_matricule,
       em_addons ->> 'vehicule' as em_car
       ,em_addons ->> 'last_mission' as em_lastmission,
-      em_addons ->> 'availability' as em_status from f_employee `);
+      em_addons ->> 'status' as em_status from f_employee `);
     return c.json({ result: result.rows });
   })
   .post("/", zValidator("json", driverSchema), async (c) => {
