@@ -27,7 +27,10 @@ const BreadcrumbContainer = () => {
     ["gestion", "Gestion"],
   ]);
 
-  const pathnameList = pathname.split("/").filter((path) => path !== "");
+  const pathnameList = pathname
+    .split("/")
+    .filter((path) => path !== "")
+    .filter((path) => breadMap.get(path) !== undefined);
 
   return (
     <Breadcrumb>

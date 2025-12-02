@@ -17,6 +17,7 @@ const app = new Hono()
 
     return c.json({ result: result.rows });
   })
+
   .get("/driversInfoTable", async (c) => {
     const result =
       await client.query(`select em_no, (em_firstname || ' ' || em_lastname) as em_fullname,
@@ -24,6 +25,38 @@ const app = new Hono()
       em_addons ->> 'vehicule' as em_car
       ,em_addons ->> 'last_mission' as em_lastmission,
       em_addons ->> 'status' as em_status from f_employee `);
+    return c.json({ result: result.rows });
+  })
+  .get("/file/:fileID", async (c) => {
+    const fileID = c.req.param("fileID");
+    const storage = (await createAdminClient()).storage;
+
+    const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
+
+    const file_metadata = await storage.getFile(
+      bucket_id, // bucketId
+      fileID // fileId
+    );
+
+    const result = await storage.getFileDownload(
+      bucket_id, // bucketId
+      fileID // fileId
+    );
+
+    return new Response(result, {
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": `attachment; filename="${file_metadata.name}.pdf"`,
+      },
+    });
+  })
+  .get("/:driver", async (c) => {
+    const driver = c.req.param("driver");
+    const result = await client.query(
+      "SELECT * FROM public.f_employee where em_no = $1",
+      [driver]
+    );
+
     return c.json({ result: result.rows });
   })
   .post("/", zValidator("json", driverSchema), async (c) => {
@@ -50,7 +83,7 @@ const app = new Hono()
   })
   .post("/uploadFile", zValidator("form", driverDocumentSchema), async (c) => {
     const fileSchema = z.instanceof(File);
-    const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_ID!;
+    const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
 
     const file = c.req.valid("form");
 
@@ -72,7 +105,7 @@ const app = new Hono()
     zValidator("json", z.object({ files: z.array(z.string()) })),
     async (c) => {
       const fileSchema = z.instanceof(File);
-      const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_ID!;
+      const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
 
       const { files } = c.req.valid("json");
 

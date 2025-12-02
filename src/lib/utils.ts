@@ -17,3 +17,14 @@ export const MStatus = new Map<string, string>([
   ["non_conforme", "Non Conforme"],
   ["indisponible", "Indisponible"],
 ]);
+
+export function formatDate(p_date: string) {
+  const date = new Date(p_date);
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+// Example:
+//console.log(formatDate("2025-12-10T00:00:00.000Z")); // "10/12/2025"
