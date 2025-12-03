@@ -17,6 +17,17 @@ const app = new Hono()
 
     return c.json({ result: result.rows });
   })
+  .get("/carsInfoTable", async (c) => {
+    const result =
+      await client.query(`select car_no, car_addons ->> 'matricule' as car_matricule ,
+      car_addons ->> 'modele' as car_modele,
+      (emp.em_firstname || ' ' || emp.em_lastname) as car_fullname,
+      car.car_mileage as car_mileage,car_addons ->>'status' as car_status
+      from public.f_car car  join public.f_employee emp
+      on (emp.em_addons->>'car')::int =car.car_no
+ `);
+    return c.json({ result: result.rows });
+  })
   .post("/", zValidator("json", carSchema), async (c) => {
     const values = c.req.valid("json");
 

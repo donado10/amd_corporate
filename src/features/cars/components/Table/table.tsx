@@ -39,10 +39,10 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 import { columns } from "./columns";
-import { IDriveTableInfo } from "./interface";
+import { ICarTableInfo } from "./interface";
 import { Card } from "@/components/ui/card";
 
-export function DataTable({ data }: { data: IDriveTableInfo[] }) {
+export function DataTable({ data }: { data: ICarTableInfo[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -167,7 +167,7 @@ export function DataTable({ data }: { data: IDriveTableInfo[] }) {
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm">
           <span className="text-xs font-semibold text-black">
-            Total des chauffeurs: {table.getFilteredRowModel().rows.length}
+            Total des véhicules: {table.getFilteredRowModel().rows.length}
           </span>
         </div>
         <div className="space-x-2">

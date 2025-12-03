@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { IDriveTableInfo } from "./interface";
+import { ICarTableInfo } from "./interface";
 import { cn, MStatus } from "@/lib/utils";
 import DotsIcon from "@/assets/dots.svg";
 import Image from "next/image";
@@ -28,48 +28,48 @@ const StatusDisplay = ({ value }: { value: string }) => {
   );
 };
 
-export const columns: ColumnDef<IDriveTableInfo>[] = [
+export const columns: ColumnDef<ICarTableInfo>[] = [
   {
-    accessorKey: "em_fullname",
-    header: "Nom Complet",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("em_fullname")}</div>
-    ),
-  },
-  {
-    accessorKey: "em_matricule",
+    accessorKey: "car_matricule",
     header: "Matricule",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("em_matricule")}</div>
+      <div className="capitalize">{row.getValue("car_matricule")}</div>
     ),
   },
   {
-    accessorKey: "em_car",
-    header: "Véhicule assigné",
+    accessorKey: "car_modele",
+    header: "Modele",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("em_car")}</div>
+      <div className="capitalize">{row.getValue("car_modele")}</div>
     ),
   },
   {
-    accessorKey: "em_lastmission",
-    header: "Dernière Mission",
+    accessorKey: "car_fullname",
+    header: "Chauffeur assigné",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("em_lastmission")}</div>
+      <div className="capitalize">{row.getValue("car_fullname")}</div>
     ),
   },
   {
-    accessorKey: "em_status",
+    accessorKey: "car_mileage",
+    header: "Kilométrage",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("car_mileage")} KM</div>
+    ),
+  },
+  {
+    accessorKey: "car_status",
     header: "Status",
     cell: ({ row }) => (
       <>
-        <StatusDisplay value={row.getValue("em_status")} />
+        <StatusDisplay value={row.getValue("car_status")} />
       </>
     ),
   },
   {
     header: "Action",
     cell: ({ row }) => (
-      <DropdownMenuTable driver={row.original.em_no}>
+      <DropdownMenuTable driver={row.original.car_no}>
         <Button variant={"ghost"} type="button">
           <Image src={DotsIcon} alt="" width={16} height={16} />{" "}
         </Button>

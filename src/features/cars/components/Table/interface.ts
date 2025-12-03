@@ -1,4 +1,4 @@
 import z from "zod";
-import { driverTableInfo } from "../../schema";
+import { carTableInfo } from "../../schema";
 
-export type IDriveTableInfo = z.infer<typeof driverTableInfo>;
+export type ICarTableInfo = z.infer<typeof carTableInfo>;

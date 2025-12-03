@@ -8,6 +8,15 @@ export const carDocumentSchema = z.object({
   fileID: z.string().optional(),
 });
 
+export const carTableInfo = z.object({
+  car_no: z.string(),
+  car_matricule: z.string(),
+  car_modele: z.string(),
+  car_fullname: z.string(),
+  car_mileage: z.string(),
+  car_status: z.string(),
+});
+
 export const carSchema = z.object({
   car_no: z.string(),
   car_fueltype: z.string(),
@@ -30,6 +39,7 @@ export const carSchema = z.object({
     year: z.string(),
     assurance: z.string(),
     status: z.string(),
+    matricule: z.string(),
     documents: z.array(carDocumentSchema),
   }),
 });
