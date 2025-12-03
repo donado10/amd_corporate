@@ -7,16 +7,18 @@ import { setCookie } from "hono/cookie";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { AUTH_COOKIE } from "@/lib/constants";
 import { client } from "@/lib/db-pgsql";
-import { carSchema } from "../schema";
+import { carDocumentSchema, carSchema } from "../schema";
+import { InputFile } from "node-appwrite/file";
+import z from "zod";
 
 const app = new Hono()
   .get("/", async (c) => {
-    const result = await client.query("SELECT * FROM f_cars");
+    const result = await client.query("SELECT * FROM f_car");
 
     return c.json({ result: result.rows });
   })
   .post("/", zValidator("json", carSchema), async (c) => {
-    const values = await c.req.valid("json");
+    const values = c.req.valid("json");
 
     await client.query(
       "CALL public.insert_car ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
@@ -40,11 +42,48 @@ const app = new Hono()
 
     return c.json({ message: "Véhicule crée" });
   })
+  .post("/uploadFile", zValidator("form", carDocumentSchema), async (c) => {
+    const fileSchema = z.instanceof(File);
+    const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
+
+    const file = c.req.valid("form");
+
+    const storage = (await createAdminClient()).storage;
+    const file_id = ID.unique();
+
+    if (fileSchema.safeParse(file.file)) {
+      const response = await storage.createFile(
+        bucket_id,
+        file_id,
+        InputFile.fromBuffer(file.file, file.nom + "." + "pdf")
+      );
+    }
+
+    return c.json({ message: "files uploaded", id: file_id });
+  })
+  .delete(
+    "/deleteFile",
+    zValidator("json", z.object({ files: z.array(z.string()) })),
+    async (c) => {
+      const fileSchema = z.instanceof(File);
+      const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
+
+      const { files } = c.req.valid("json");
+
+      const storage = (await createAdminClient()).storage;
+
+      for (let index = 0; index < files.length; index++) {
+        const response = await storage.deleteFile(bucket_id, files[index]);
+      }
+
+      return c.json({ message: "files deleted" });
+    }
+  )
   .delete("/", zValidator("json", carSchema), async (c) => {
-    const values = await c.req.valid("json");
+    const values = c.req.valid("json");
 
     const result = await client.query(
-      "DELETE FROM public.f_cars WHERE car_no=$1",
+      "DELETE FROM public.f_car WHERE car_no=$1",
       [values.car_no]
     );
 

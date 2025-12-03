@@ -60,7 +60,7 @@ const app = new Hono()
     return c.json({ result: result.rows });
   })
   .post("/", zValidator("json", driverSchema), async (c) => {
-    const values = await c.req.valid("json");
+    const values = c.req.valid("json");
 
     const result = await client.query(
       "CALL public.insert_employee ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
@@ -119,10 +119,10 @@ const app = new Hono()
     }
   )
   .delete("/", zValidator("json", driverSchema), async (c) => {
-    const values = await c.req.valid("json");
+    const values = c.req.valid("json");
 
     const result = await client.query(
-      "DELETE FROM AMD.public.f_employee WHERE em_no=$1",
+      "DELETE FROM public.f_employee WHERE em_no=$1",
       [values.em_no]
     );
 
