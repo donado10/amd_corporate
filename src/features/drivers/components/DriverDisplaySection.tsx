@@ -21,7 +21,7 @@ const CardFileDriver = ({
 }) => {
   return (
     <Button
-      className="bg-[#D9D9D9] w-48 flex items-center justify-between"
+      className="bg-[#D9D9D9] w-full h-12 flex items-center justify-between "
       onClick={async () => {
         await fetch(
           `http://localhost:3000/api/drivers/file/${document.file as string}`
@@ -190,8 +190,10 @@ const DriverDisplaySection = ({
       <div className="w-full">
         <Card className="bg-secondary p-4">
           <CardTitle className="font-semibold">DOCUMENTS</CardTitle>
-          <CardContent className="grid">
-            <CardFileDriver document={driver.em_addons.documents[0]} />
+          <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 px-0">
+            {driver.em_addons.documents.map((doc) => {
+              return <CardFileDriver key={doc.hashname} document={doc} />;
+            })}
           </CardContent>
         </Card>
       </div>

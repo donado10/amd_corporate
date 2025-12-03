@@ -94,7 +94,7 @@ const app = new Hono()
       const response = await storage.createFile(
         bucket_id,
         file_id,
-        InputFile.fromBuffer(file.file, file.nom)
+        InputFile.fromBuffer(file.file, file.nom + "." + "pdf")
       );
     }
 

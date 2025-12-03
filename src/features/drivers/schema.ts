@@ -57,6 +57,6 @@ export const driverSchema = z.object({
     contract_type: z.string().optional(),
     status: z.string(),
     documents: z.array(driverDocumentSchema),
-    car: z.string(),
+    car: z.string().optional(),
   }),
 });
