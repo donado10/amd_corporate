@@ -28,6 +28,38 @@ const app = new Hono()
  `);
     return c.json({ result: result.rows });
   })
+  .get("/file/:fileID", async (c) => {
+    const fileID = c.req.param("fileID");
+    const storage = (await createAdminClient()).storage;
+
+    const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
+
+    const file_metadata = await storage.getFile(
+      bucket_id, // bucketId
+      fileID // fileId
+    );
+
+    const result = await storage.getFileDownload(
+      bucket_id, // bucketId
+      fileID // fileId
+    );
+
+    return new Response(result, {
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": `attachment; filename="${file_metadata.name}.pdf"`,
+      },
+    });
+  })
+  .get("/:car", async (c) => {
+    const car = c.req.param("car");
+    const result = await client.query(
+      "SELECT * FROM public.f_car where car_no = $1",
+      [car]
+    );
+
+    return c.json({ result: result.rows });
+  })
   .post("/", zValidator("json", carSchema), async (c) => {
     const values = c.req.valid("json");
 
