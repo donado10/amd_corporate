@@ -24,7 +24,7 @@ const CardFileCar = ({
       className="bg-[#D9D9D9] w-full h-12 flex items-center justify-between "
       onClick={async () => {
         await fetch(
-          `http://localhost:3000/api/Cars/file/${document.file as string}`
+          `http://localhost:3000/api/cars/file/${document.file as string}`
         );
       }}
     >
@@ -238,7 +238,7 @@ const CarDisplaySection = ({ Car }: { Car: z.infer<typeof carSchema> }) => {
       <div className="w-full">
         <Card className="bg-secondary p-4">
           <CardTitle className="font-semibold">DOCUMENTS</CardTitle>
-          <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 px-0">
+          <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,24rem))] gap-4 px-0">
             {Car.car_addons.documents.map((doc) => {
               return <CardFileCar key={doc.hashname} document={doc} />;
             })}
