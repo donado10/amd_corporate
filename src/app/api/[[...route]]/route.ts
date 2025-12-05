@@ -12,7 +12,7 @@ const routes = app
   .route("/auth", auth)
   .route("/drivers", drivers)
   .route("/cars", cars)
-  .route("/missions", cars);
+  .route("/missions", missions);
 
 export const GET = handle(app);
 export const POST = handle(app);
