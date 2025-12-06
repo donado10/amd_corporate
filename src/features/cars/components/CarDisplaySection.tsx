@@ -247,6 +247,7 @@ const CarDisplaySection = ({ Car }: { Car: z.infer<typeof carSchema> }) => {
           </CardContent>
         </Card>
       </div>
+      
     </section>
   );
 };

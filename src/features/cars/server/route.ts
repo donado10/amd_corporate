@@ -17,6 +17,17 @@ const app = new Hono()
 
     return c.json({ result: result.rows });
   })
+  .get("/marques", async (c) => {
+    const result = await client.query("SELECT car_addons ->> 'marque' as car_marque FROM f_car ");
+
+    return c.json({ result: result.rows });
+  })
+  .get("/marque/:marqueID", async (c) => {
+    const marqueID = c.req.param("marqueID")
+    const result = await client.query("SELECT * FROM f_car where car_addons ->> 'marque' = $1",[marqueID]);
+
+    return c.json({ result: result.rows });
+  })
   .get("/carsInfoTable", async (c) => {
     const result =
       await client.query(`select car_no, car_addons ->> 'matricule' as car_matricule ,
