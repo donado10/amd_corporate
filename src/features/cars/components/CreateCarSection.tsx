@@ -57,6 +57,7 @@ const CreateCarSection = () => {
       car_registrationnumber: "",
       car_owner: "",
       car_addons: {
+        matricule: "adkk",
         modele: "",
         year: "",
         marque: "",

@@ -8,13 +8,13 @@ export const missionDocumentSchema = z.object({
   fileID: z.string().optional(),
 });
 
-export const carTableInfo = z.object({
-  car_no: z.string(),
-  car_matricule: z.string(),
-  car_modele: z.string(),
-  car_fullname: z.string(),
-  car_mileage: z.string(),
-  car_status: z.string(),
+export const missionTableInfo = z.object({
+  miss_no: z.string(),
+  miss_client: z.string(),
+  miss_horaire: z.string(),
+  miss_trajetzone: z.string(),
+  miss_budget: z.string(),
+  miss_status: z.string(),
 });
 
 export const missionSchema = z.object({

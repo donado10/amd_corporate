@@ -43,25 +43,24 @@ const CreateMissionSection = () => {
     resolver: zodResolver(missionSchema),
     defaultValues: {
       miss_no: "",
-      miss_fueltype: "",
-      miss_mileage: "",
-      miss_enginenumber: "",
-      miss_payload: "",
-      miss_acquisitiontype: "",
-      miss_circulationdate: "",
-      miss_acquisitionvalue: "",
-      miss_tankcapacity: "",
-      miss_chassisnumber: "",
-      miss_fiscalpower: "",
-      miss_acquisitiondate: "",
-      miss_registrationnumber: "",
-      miss_owner: "",
+      miss_intitule: "",
+      miss_description: "",
+      miss_client: "",
+      miss_trajetzone: "",
+      miss_expecteddatedeparture: "",
+      miss_expecteddatearrival: "",
+      miss_expectedhourdeparture: "",
+      miss_expectedhourarrival: "",
+      miss_expectedduration: "",
+      miss_expecteddistance: "",
+      miss_expectedfuelbudget: "",
+      miss_othersexpectedbudget: "",
+      miss_expectedtotalbudget: "",
       miss_addons: {
-        modele: "",
-        year: "",
-        marque: "",
+        car: "",
+        driver: "",
+        status: "",
         documents: [],
-        assurance: "",
       },
     },
   });
@@ -116,27 +115,20 @@ const CreateMissionSection = () => {
           await mutateDeleteDocuments({ json: { files: [...filesID] } });
         },
         onSuccess: () => {
-          form.setValue("miss_addons.assurance", "");
-          form.setValue("miss_addons.marque", "");
-          form.setValue("miss_addons.modele", "");
+          form.setValue("miss_expecteddatedeparture", "");
+          form.setValue("miss_expecteddatearrival", "");
+          form.setValue("miss_expectedhourdeparture", "");
+          form.setValue("miss_expectedhourarrival", "");
+          form.setValue("miss_expectedduration", "");
+          form.setValue("miss_expecteddistance", "");
+          form.setValue("miss_expectedfuelbudget", "");
+          form.setValue("miss_othersexpectedbudget", "");
+          form.setValue("miss_expectedtotalbudget", "");
+          form.setValue("miss_expectedduration", "");
           form.setValue("miss_addons.documents", []);
-          form.setValue("miss_addons.year", "");
-          form.setValue("miss_acquisitiontype", "");
-          form.setValue("miss_acquisitiondate", "");
-          form.setValue("miss_acquisitionvalue", "");
-          form.setValue("miss_chassisnumber", "");
-          form.setValue("miss_circulationdate", "");
-          form.setValue("miss_enginenumber", "");
-          form.setValue("miss_tankcapacity", "");
-          form.setValue("miss_payload", "");
-          form.setValue("miss_owner", "");
-          form.setValue("miss_fiscalpower", "");
-          form.setValue("miss_mileage", "");
-          form.setValue("miss_fueltype", "");
-          form.setValue("miss_addons.registrationmissiond", "");
 
           fileUploadCtx.cleanFileContext!();
-          toast(<ToastSuccess toastTitle="Véhicule crée !" />, {
+          toast(<ToastSuccess toastTitle="Mission crée !" />, {
             style: {
               backgroundColor: "green",
             },
@@ -150,7 +142,7 @@ const CreateMissionSection = () => {
     <section className="flex flex-col gap-4 p-4 min-h-full ">
       <div className="w-full flex items-center justify-center mb-4">
         <span className="font-bold text-primary text-2xl">
-          Ajouter un chauffeur
+          Ajouter une mission
         </span>
       </div>
       <Form {...form}>
@@ -158,20 +150,17 @@ const CreateMissionSection = () => {
           className="grid grid-cols-2 grid-rows-16 h-full gap-x-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className="rounded-md w-fit p-4 mb-4 bg-[#D9D9D9]  row-span-2 flex items-center justify-center">
-            <Image src={TemplateUserIcon} alt="aa" />
-          </div>
-          <div className="col-start-1 col-end-1 row-start-3 row-end-4">
+          <div className="col-start-1 col-end-1 row-start-1 row-end-2">
             <FormField
-              name={"miss_addons.modele"}
+              name={"miss_expecteddatedeparture"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Modele</FormLabel>
+                  <FormLabel>Date prévue départ</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      type="text"
+                      type="date"
                       className=" rounded-md bg-[#D9D9D9]/80"
                     />
                   </FormControl>
@@ -180,28 +169,51 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className=" row-start-4 row-end-5">
+          <div className=" row-start-2 row-end-3">
             <FormField
-              name={"miss_fueltype"}
+              name={"miss_expecteddatearrival"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type de missionburant</FormLabel>
+                  <FormLabel>Date prévue arrivée</FormLabel>
                   <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                    <Input
+                      type="date"
+                      {...field}
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className="col-start-1 col-end-1 row-start-5 row-end-6">
+          <div className=" row-start-3 row-end-4">
             <FormField
-              name={"miss_mileage"}
+              name={"miss_expectedhourarrival"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Kilométrage actuel</FormLabel>
+                  <FormLabel>Heure prévue arrivée</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      {...field}
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-1 col-end-1 row-start-4 row-end-5">
+            <FormField
+              name={"miss_expecteddistance"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Distance estimée</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -214,77 +226,13 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-1 col-end-1 row-start-6 row-end-7">
-            <FormField
-              name={"miss_enginenumber"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Numéro du moteur</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-1 col-end-1 row-start-7 row-end-8">
-            <FormField
-              name={"miss_payload"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Charge utile</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-1 col-end-1 row-start-8 row-end-9">
-            <FormField
-              name={"miss_acquisitiontype"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type d'acquisition</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-1 col-end-1 row-start-9 row-end-10">
-            <FormField
-              name={"miss_circulationdate"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date de mise en circulation</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      {...field}
-                      className=" rounded-md bg-[#D9D9D9]/80"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <div className="col-start-2 col-end-2 row-start-1 row-end-2">
             <FormField
-              name={"miss_addons.marque"}
+              name={"miss_expectedhourarrival"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Marque</FormLabel>
+                  <FormLabel>Heure prévue arrivée</FormLabel>
                   <FormControl>
                     <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
@@ -295,11 +243,11 @@ const CreateMissionSection = () => {
           </div>
           <div className="col-start-2 col-end-2 row-start-2 row-end-3">
             <FormField
-              name={"miss_addons.year"}
+              name={"miss_expectedduration"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Année de fabrication</FormLabel>
+                  <FormLabel>Durée estimée</FormLabel>
                   <FormControl>
                     <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
@@ -310,11 +258,11 @@ const CreateMissionSection = () => {
           </div>
           <div className="col-start-2 col-end-2 row-start-3 row-end-4">
             <FormField
-              name={"miss_tankcapacity"}
+              name={"miss_expectedfuelbudget"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Capacité de réservoir</FormLabel>
+                  <FormLabel>Budget carburant estimée</FormLabel>
                   <FormControl>
                     <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
@@ -323,113 +271,19 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-2 col-end-2 row-start-4 row-end-5">
+          <div className="col-start-1 col-end-1 row-start-9 row-end-10">
             <FormField
-              name={"miss_chassisnumber"}
+              name={"miss_expectedtotalbudget"}
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Numéro de chassis</FormLabel>
+                  <FormLabel>Date de mise en circulation</FormLabel>
                   <FormControl>
                     <Input
-                      type="text"
-                      {...field}
-                      className=" rounded-md bg-[#D9D9D9]/80"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-5 row-end-6">
-            <FormField
-              name={"miss_fiscalpower"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Puissance fiscale</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-6 row-end-7">
-            <FormField
-              name={"miss_acquisitiondate"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date d'acquisition</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
                       type="date"
+                      {...field}
                       className=" rounded-md bg-[#D9D9D9]/80"
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-7 row-end-8">
-            <FormField
-              name={"miss_addons.registrationmissiond"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Numéro de la missionte à grise</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-8 row-end-9">
-            <FormField
-              name={"miss_acquisitionvalue"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Valeur d'acquisition</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-9 row-end-10">
-            <FormField
-              name={"miss_owner"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Propriétaire</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-10 row-end-11">
-            <FormField
-              name={"miss_addons.assurance"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assurance</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -29,7 +29,7 @@ const TableFilesUploadContainer = ({
 
   useEffect(() => {
     if (fileUploadCtx.files) {
-      form.setValue("car_addons.documents", [...fileUploadCtx.files]);
+      form.setValue("miss_addons.documents", [...fileUploadCtx.files]);
     }
   }, [JSON.stringify(fileUploadCtx.files)]);
 
