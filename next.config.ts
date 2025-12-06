@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   output: "standalone",
+  allowedDevOrigins: [
+    "srv-baeaubab.dyndns.org", // or http://... depending on your setup
+  ],
 };
 
 export default nextConfig;

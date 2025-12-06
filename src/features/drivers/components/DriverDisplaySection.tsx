@@ -19,12 +19,13 @@ const CardFileDriver = ({
 }: {
   document: z.infer<typeof driverDocumentSchema>;
 }) => {
+  const url = process.env.NEXT_PUBLIC_APP_URL!
   return (
     <Button
       className="bg-[#D9D9D9] w-full h-12 flex items-center justify-between "
       onClick={async () => {
         await fetch(
-          `http://localhost:3000/api/drivers/file/${document.file as string}`
+          `${url}/api/drivers/file/${document.file as string}`
         );
       }}
     >
