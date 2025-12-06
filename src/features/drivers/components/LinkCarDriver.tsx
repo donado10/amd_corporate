@@ -50,7 +50,6 @@ const SelectMarqueContainer = ()=>{
     if (data?.result && data?.result.length <=0) {
         return <SelectMarque items={[]}/>
     }
-    console.log(data?.result)
     return <><SelectMarque items={data?.result.map((d)=> {return ({value: d.car_marque,label:d.car_marque})}) ?? []} /> </>
   }
 
