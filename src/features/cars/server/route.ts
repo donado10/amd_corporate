@@ -23,7 +23,7 @@ const app = new Hono()
       car_addons ->> 'modele' as car_modele,
       (emp.em_firstname || ' ' || emp.em_lastname) as car_fullname,
       car.car_mileage as car_mileage,car_addons ->>'status' as car_status
-      from public.f_car car  join public.f_employee emp
+      from public.f_car car left join public.f_employee emp
       on (emp.em_addons->>'car')::int =car.car_no
  `);
     return c.json({ result: result.rows });
