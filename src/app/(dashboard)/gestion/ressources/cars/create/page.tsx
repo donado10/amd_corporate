@@ -7,6 +7,7 @@ type Props = {};
 const page = (props: Props) => {
   return (
     <FilesUploadProvider>
+      
       <CreateCarSection />
     </FilesUploadProvider>
   );
