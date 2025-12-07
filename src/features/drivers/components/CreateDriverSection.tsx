@@ -28,6 +28,7 @@ import { ToastSuccess } from "@/components/ToastComponents";
 import { SelectAvailability } from "./tableFilter";
 import LinkCarDriver from "./LinkCarDriver";
 import { Card } from "@/components/ui/card";
+import { MultipleSelector } from "./comboBox";
 
 function formDataToObject(formData: FormData) {
   const obj: Record<string, any> = {};
@@ -445,8 +446,11 @@ const CreateDriverSection = () => {
               name="em_addons.documents"
               control={form.control}
               render={({ field }) => (
-                
-                  <LinkCarDriver/>
+                <>
+
+                  <LinkCarDriver />
+                  <MultipleSelector value={[]} onChange={() => { }} options={[{ label: "ado", value: "ado" }]} />
+                </>
               )}
             />
           </div>
