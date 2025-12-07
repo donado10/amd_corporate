@@ -1,10 +1,17 @@
+import { LinkCarDriverContext } from "@/features/drivers/components/context/link-car-driver";
 import { client } from "@/lib/rpc";
 import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 
 export const useGetCarByMarqueID = (marqueID: string) => {
+  const linkCarDriverCtx = useContext(LinkCarDriverContext);
   const query = useQuery({
-    queryKey: ["car_marque"],
+    queryKey: ["cars_marqueID", linkCarDriverCtx.processItem?.marque],
     queryFn: async () => {
+      if (!marqueID) {
+        return { result: [] };
+      }
+
       const response = await client.api.cars.marque[":marqueID"].$get({
         param: { marqueID },
       });
@@ -35,4 +42,3 @@ export const useGetMarqueCar = () => {
 
   return query;
 };
-

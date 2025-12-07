@@ -4,7 +4,7 @@ import React from "react";
 import { DataTable } from "./Table/table";
 
 import { Card } from "@/components/ui/card";
-import { IDriveTableInfo, IPayment } from "./Table/interface";
+import { IDriveTableInfo } from "./Table/interface";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,38 +13,6 @@ import { usePathname } from "next/navigation";
 import { SelectAvailability, SelectContractType } from "./tableFilter";
 import useGetDriverInfoTable from "../api/use-get-driver-info-table";
 
-const data: IPayment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-];
 
 const TableDriverContainer = () => {
   const pathname = usePathname();
@@ -75,13 +43,13 @@ const TableDriverContainer = () => {
           </Button>
         </div>
         <div className="flex items-center gap-2">
-          <SelectAvailability onAction={() => {}} />
+          <SelectAvailability onAction={() => { }} />
           <SelectContractType />
         </div>
       </div>
       <DataTable
         data={
-          !isPending && data.result && data.result.length > 0
+          !isPending && data?.result && data.result.length > 0
             ? (data.result as IDriveTableInfo[])
             : []
         }
