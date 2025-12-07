@@ -41,9 +41,10 @@ export const LinkCarDriverProvider = ({ children }: { children: ReactNode }) => 
         setList([...list, linkcardriver])
     }
     const removeToList = (id: string) => {
-        setList((prev) => {
-            return prev.filter((value) => value.id === id)
-        })
+        console.log(id)
+        const newList = list.filter((value) => value.id !== id)
+
+        setList(newList)
     }
 
     const clearList = () => {

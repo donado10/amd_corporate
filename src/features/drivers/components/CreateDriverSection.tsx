@@ -26,9 +26,9 @@ import useDeleteDocumentDriver from "../api/use-delete-documents-driver";
 import { toast } from "sonner";
 import { ToastSuccess } from "@/components/ToastComponents";
 import { SelectAvailability } from "./tableFilter";
-import LinkCarDriver from "./LinkCarDriver";
-import { Card } from "@/components/ui/card";
-import { MultipleSelector } from "./comboBox";
+import AddIcon from "@/assets/add.svg"
+import { DialogAddDriverCar } from "./DialogAddDriverCar";
+import { LinkCarDriverContext } from "./context/link-car-driver";
 
 function formDataToObject(formData: FormData) {
   const obj: Record<string, any> = {};
@@ -46,6 +46,7 @@ const CreateDriverSection = () => {
     resolver: zodResolver(driverSchema),
     defaultValues: {
       em_addons: {
+        cars: [],
         permis: "",
         base_salary: "",
         cnss: "",
@@ -73,13 +74,16 @@ const CreateDriverSection = () => {
   const { mutate } = useCreateDriver();
   const mutateUploadDocuments = useUploadDocumentDriver();
   const mutateDeleteDocuments = useDeleteDocumentDriver();
-  console.log(form.formState.errors);
 
   const fileUploadCtx = useContext(FileUploadContext);
+  const linkCarDriverCtx = useContext(LinkCarDriverContext);
   const onSubmit = async (values: z.infer<typeof driverSchema>) => {
     let filesID: string[] = [];
 
-    console.log(values);
+    const cars = linkCarDriverCtx.list.map((car) => car.id)
+
+    values.em_addons.cars = cars
+
 
     try {
       for (let index = 0; index < values.em_addons.documents.length; index++) {
@@ -136,6 +140,10 @@ const CreateDriverSection = () => {
           form.setValue("em_phonenumber", "");
           form.setValue("em_type", "");
 
+          linkCarDriverCtx.clearList!()
+          linkCarDriverCtx.setProcessItem!(null)
+          linkCarDriverCtx.initCars!([])
+
           fileUploadCtx.cleanFileContext!();
           toast(<ToastSuccess toastTitle="Chauffeur crée !" />, {
             style: {
@@ -149,6 +157,7 @@ const CreateDriverSection = () => {
 
   return (
     <section className="flex flex-col gap-4 p-4 min-h-full ">
+
       <div className="w-full flex items-center justify-center mb-4">
         <span className="font-bold text-primary text-2xl">
           Ajouter un chauffeur
@@ -445,13 +454,22 @@ const CreateDriverSection = () => {
             <FormField
               name="em_addons.documents"
               control={form.control}
-              render={({ field }) => (
-                <>
+              render={({ field }) => {
+                const listCar = (linkCarDriverCtx.list)
+                return (
+                  <div className="flex flex-row items-center justify-between my-4">
+                    <div className="bg-secondary w-3/4 p-2 h-16  rounded-md flex flex-nowrap overflow-x-scroll gap-4">
 
-                  <LinkCarDriver />
-                  <MultipleSelector value={[]} onChange={() => { }} options={[{ label: "ado", value: "ado" }]} />
-                </>
-              )}
+                      {listCar && listCar.map((car, i) => (<div className="flex-none px-4 bg-primary w-fit text-white rounded-2xl text-sm p-1 flex flex-row gap-2 items-center" key={car.modele + i}><span>{car.marque}-{car.modele}-{car.immatriculation}</span><Button type="button" onClick={() => { (linkCarDriverCtx.removeToList!(car.id)) }} className="p-0 m-0 h-2 w-2 ">x</Button></div>))}
+                    </div>
+                    <DialogAddDriverCar>
+                      <Button variant={"default"} className="rounded-full w-8 h-8 border-2 border-primary bg-transparent  p-0">
+                        <Image src={AddIcon} alt="" width={16} height={16} />
+                      </Button>
+                    </DialogAddDriverCar>
+                  </div>
+                )
+              }}
             />
           </div>
           <div className="col-start-2 col-end-2 row-start-12 -row-end-1">
