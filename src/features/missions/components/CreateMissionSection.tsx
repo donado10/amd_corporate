@@ -26,6 +26,7 @@ import useDeleteDocumentMission from "../api/use-delete-documents-mission";
 import { toast } from "sonner";
 import { ToastSuccess } from "@/components/ToastComponents";
 import { SelectAvailability } from "./tableFilter";
+import { Textarea } from "@/components/ui/textarea";
 
 function formDataToObject(formData: FormData) {
   const obj: Record<string, any> = {};
@@ -59,7 +60,7 @@ const CreateMissionSection = () => {
       miss_addons: {
         car: "",
         driver: "",
-        status: "",
+        status: "créer",
         documents: [],
       },
     },
@@ -147,10 +148,118 @@ const CreateMissionSection = () => {
       </div>
       <Form {...form}>
         <form
-          className="grid grid-cols-2 grid-rows-16 h-full gap-x-8"
+          className="grid grid-cols-2 grid-rows-16 h-full gap-x-8 gap-y-4"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="col-start-1 col-end-1 row-start-1 row-end-2">
+            <FormField
+              name={"miss_intitule"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Intitulé mission</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-1 col-end-1 row-start-2 row-end-3">
+            <FormField
+              name={"miss_client"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Client</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-1 col-end-1 row-start-3 row-end-4">
+            <FormField
+              name={"miss_trajetzone"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Trajet</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="col-start-1 col-end-1 row-start-4 row-end-5">
+            <FormField
+              name={"miss_expectedfuelbudget"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Budget carburant estimée</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-1 col-end-1 row-start-5 row-end-6">
+            <FormField
+              name={"miss_expectedtotalbudget"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Budget total estimé</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-1 col-end-1 row-start-6 row-end-7">
+            <FormField
+              name={"miss_othersexpectedbudget"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Budget autres estimée</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      className=" rounded-md bg-[#D9D9D9]/80"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-2 col-end-2 row-start-2 row-end-3">
             <FormField
               name={"miss_expecteddatedeparture"}
               control={form.control}
@@ -169,7 +278,7 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className=" row-start-2 row-end-3">
+          <div className="col-start-2 col-end-2 row-start-3 row-end-4">
             <FormField
               name={"miss_expecteddatearrival"}
               control={form.control}
@@ -188,7 +297,7 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className=" row-start-3 row-end-4">
+          <div className="col-start-2 col-end-2 row-start-4 row-end-5">
             <FormField
               name={"miss_expectedhourarrival"}
               control={form.control}
@@ -207,7 +316,24 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-1 col-end-1 row-start-4 row-end-5">
+
+
+          <div className="col-start-2 col-end-2 row-start-1 row-end-2">
+            <FormField
+              name={"miss_expectedhourdeparture"}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Heure prévue de départ</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="col-start-2 col-end-2 row-start-5 row-end-6">
             <FormField
               name={"miss_expecteddistance"}
               control={form.control}
@@ -226,22 +352,7 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-2 col-end-2 row-start-1 row-end-2">
-            <FormField
-              name={"miss_expectedhourarrival"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Heure prévue arrivée</FormLabel>
-                  <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-2 row-end-3">
+          <div className="col-start-2 col-end-2 row-start-6 row-end-7">
             <FormField
               name={"miss_expectedduration"}
               control={form.control}
@@ -249,40 +360,28 @@ const CreateMissionSection = () => {
                 <FormItem>
                   <FormLabel>Durée estimée</FormLabel>
                   <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                    <Input type="number" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className="col-start-2 col-end-2 row-start-3 row-end-4">
+
+
+
+          <div className="col-start-1 col-end-3 row-start-7 row-end-10 h-full">
             <FormField
-              name={"miss_expectedfuelbudget"}
+              name={"miss_description"}
               control={form.control}
+
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Budget carburant estimée</FormLabel>
+                <FormItem className="h-full  block ">
+                  <FormLabel className="gap-0 mb-4">Description</FormLabel>
                   <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="col-start-1 col-end-1 row-start-9 row-end-10">
-            <FormField
-              name={"miss_expectedtotalbudget"}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date de mise en circulation</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
+                    <Textarea
                       {...field}
-                      className=" rounded-md bg-[#D9D9D9]/80"
+                      className=" rounded-md bg-[#D9D9D9]/80 h-full"
                     />
                   </FormControl>
                   <FormMessage />
@@ -290,7 +389,7 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-1 col-end-1 row-start-10 -row-end-1 ">
+          <div className="col-start-1 col-end-1 row-start-11 -row-end-1 ">
             <FormField
               name="miss_addons.documents"
               control={form.control}
@@ -302,22 +401,7 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-2 col-end-2 row-start-11 -row-end-1 ">
-            <FormField
-              name="miss_addons.documents"
-              control={form.control}
-              render={({ field }) => (
-                <div className="flex flex-col gap-4">
-                  <SelectAvailability
-                    onAction={(value: string) => {
-                      form.setValue("miss_addons.status", value);
-                    }}
-                  />
-                </div>
-              )}
-            />
-          </div>
-          <div className="col-start-2 col-end-2 row-start-12 -row-end-1">
+          <div className="col-start-2 col-end-2 row-start-11">
             <div className="ml-auto gap-4 flex items-center w-fit">
               <Button
                 variant="destructive"
