@@ -75,38 +75,44 @@ const CreateMissionSection = () => {
   const onSubmit = async (values: z.infer<typeof missionSchema>) => {
     let filesID: string[] = [];
 
-    console.log(values);
+    if (!values.miss_addons?.documents) {
+      values.miss_addons!.documents = []
+    }
 
-    try {
-      for (
-        let index = 0;
-        index < values.miss_addons.documents.length;
-        index++
-      ) {
-        const form = new FormData();
 
-        form.append(`file`, values.miss_addons.documents[index].file);
-        form.append(`hashname`, values.miss_addons.documents[index].hashname);
-        form.append(`nom`, values.miss_addons.documents[index].nom);
+    if (values.miss_addons) {
 
-        const { id: fileID } = await mutateUploadDocuments({
-          form: {
-            file: form.get("file") as File,
-            hashname: form.get("hashname") as string,
-            nom: form.get("nom") as string,
-          },
-        });
+      try {
+        for (
+          let index = 0;
+          index < values.miss_addons.documents.length;
+          index++
+        ) {
+          const form = new FormData();
 
-        filesID = [...filesID, fileID];
+          form.append(`file`, values.miss_addons.documents[index].file);
+          form.append(`hashname`, values.miss_addons.documents[index].hashname);
+          form.append(`nom`, values.miss_addons.documents[index].nom);
 
-        values.miss_addons.documents[index].file = fileID;
-      }
-    } catch (error) {
-      if (filesID.length > 0) {
-        await mutateDeleteDocuments({ json: { files: [...filesID] } });
+          const { id: fileID } = await mutateUploadDocuments({
+            form: {
+              file: form.get("file") as File,
+              hashname: form.get("hashname") as string,
+              nom: form.get("nom") as string,
+            },
+          });
+
+          filesID = [...filesID, fileID];
+
+          values.miss_addons.documents[index].file = fileID;
+        }
+      } catch (error) {
+        if (filesID.length > 0) {
+          await mutateDeleteDocuments({ json: { files: [...filesID] } });
+          return;
+        }
         return;
       }
-      return;
     }
 
     mutate(
@@ -126,6 +132,10 @@ const CreateMissionSection = () => {
           form.setValue("miss_othersexpectedbudget", "");
           form.setValue("miss_expectedtotalbudget", "");
           form.setValue("miss_expectedduration", "");
+          form.setValue("miss_intitule", "");
+          form.setValue("miss_client", "");
+          form.setValue("miss_trajetzone", "");
+          form.setValue("miss_description", "");
           form.setValue("miss_addons.documents", []);
 
           fileUploadCtx.cleanFileContext!();
@@ -259,7 +269,7 @@ const CreateMissionSection = () => {
               )}
             />
           </div>
-          <div className="col-start-2 col-end-2 row-start-2 row-end-3">
+          <div className="col-start-2 col-end-2 row-start-1 row-end-2">
             <FormField
               name={"miss_expecteddatedeparture"}
               control={form.control}
@@ -306,7 +316,7 @@ const CreateMissionSection = () => {
                   <FormLabel>Heure prévue arrivée</FormLabel>
                   <FormControl>
                     <Input
-                      type="date"
+                      type="time"
                       {...field}
                       className=" rounded-md bg-[#D9D9D9]/80"
                     />
@@ -318,7 +328,7 @@ const CreateMissionSection = () => {
           </div>
 
 
-          <div className="col-start-2 col-end-2 row-start-1 row-end-2">
+          <div className="col-start-2 col-end-2 row-start-2 row-end-3">
             <FormField
               name={"miss_expectedhourdeparture"}
               control={form.control}
@@ -326,7 +336,7 @@ const CreateMissionSection = () => {
                 <FormItem>
                   <FormLabel>Heure prévue de départ</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                    <Input type="time" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
