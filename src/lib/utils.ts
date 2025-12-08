@@ -3,27 +3,33 @@ import { twMerge } from "tailwind-merge";
 import { sha256 } from "js-sha256";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+	return twMerge(clsx(inputs));
 }
 
 export function hashString(str: string) {
-  const input = str + Date.now();
-  const hash = sha256(input);
-  return hash;
+	const input = str + Date.now();
+	const hash = sha256(input);
+	return hash;
 }
 
 export const MStatus = new Map<string, string>([
-  ["disponible", "Disponible"],
-  ["non_conforme", "Non Conforme"],
-  ["indisponible", "Indisponible"],
+	["disponible", "Disponible"],
+	["non_conforme", "Non Conforme"],
+	["indisponible", "Indisponible"],
+]);
+export const MStatusMission = new Map<string, string>([
+	["terminees", "Terminée"],
+	["echouees", "Echouée"],
+	["en_cours", "En cours"],
+	["créer", "Créer"],
 ]);
 
 export function formatDate(p_date: string) {
-  const date = new Date(p_date);
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const year = date.getUTCFullYear();
-  return `${day}/${month}/${year}`;
+	const date = new Date(p_date);
+	const day = String(date.getUTCDate()).padStart(2, "0");
+	const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+	const year = date.getUTCFullYear();
+	return `${day}/${month}/${year}`;
 }
 
 // Example:

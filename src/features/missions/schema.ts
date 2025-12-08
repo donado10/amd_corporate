@@ -12,9 +12,12 @@ export const missionTableInfo = z.object({
 	miss_no: z.string(),
 	miss_client: z.string(),
 	miss_horaire: z.string(),
+	miss_expectedhourdeparture: z.string(),
+	miss_expectedhourarrival: z.string(),
 	miss_trajetzone: z.string(),
 	miss_budget: z.string(),
 	miss_status: z.string(),
+	miss_intitule: z.string(),
 });
 
 export const missionSchema = z.object({
