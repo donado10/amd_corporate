@@ -13,6 +13,7 @@ import DownloadIcon from "@/assets/download.svg";
 import { Button } from "@/components/ui/button";
 import { StatusDisplay } from "./Table/columns";
 import { cn, formatDate } from "@/lib/utils";
+import TagIcon from "@/assets/tag.svg"
 
 const CardFileMission = ({
   document,
@@ -139,7 +140,7 @@ const MissionDisplaySection = ({
         <MissionCardStatus color="bg-gray-300" title="Coût total réel" value={0} />
         <MissionCardStatus color="bg-gray-300" title="Variance budget" value={0} />
       </div>
-      <div className="flex">
+      <div className="flex justify-between ">
         <div className="w-3/5 ">
           <div className="flex flex-col gap-4 mb-8">
             <span className="text-xs font-bold">Description</span>
@@ -175,7 +176,21 @@ const MissionDisplaySection = ({
             ]} />
           </div>
         </div>
-        <div></div>
+        <div className="w-1/3 flex flex-col gap-4 h-auto ">
+          <Button className="ml-auto border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between w-[15rem]"
+            variant={"outline"}>
+            <span><Image src={TagIcon} alt="" width={16} height={16} /></span>
+            <span>Affecter</span>
+          </Button>
+          <Card className="bg-secondary p-4 flex-1 ">
+            <CardTitle className="font-semibold">DOCUMENTS</CardTitle>
+            <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 px-0">
+              {mission.miss_addons?.documents.map((doc) => {
+                return <CardFileMission key={doc.hashname} document={doc} />;
+              })}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </section>
   );

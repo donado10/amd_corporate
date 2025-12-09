@@ -12,7 +12,6 @@ import { formatDate } from "@/lib/utils";
 import FileIcon from "@/assets/file.svg";
 import DownloadIcon from "@/assets/download.svg";
 import { Button } from "@/components/ui/button";
-import useGetDriverDocument from "../api/use-get-driver-file";
 
 const CardFileDriver = ({
   document,
