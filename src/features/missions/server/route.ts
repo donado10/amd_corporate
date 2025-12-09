@@ -33,8 +33,6 @@ const app = new Hono()
 			};
 		});
 
-		console.log(format_result);
-
 		return c.json({ result: format_result });
 	})
 	.get("/file/:fileID", async (c) => {
@@ -63,7 +61,7 @@ const app = new Hono()
 	.get("/:mission", async (c) => {
 		const mission = c.req.param("mission");
 		const result = await client.query(
-			"SELECT * FROM public.f_mission where mission_no = $1",
+			"SELECT * FROM public.f_mission where miss_no = $1",
 			[mission]
 		);
 
