@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { DropdownMenuTable } from "../DropdownMenuTable";
 
-const StatusDisplay = ({ value }: { value: string }) => {
+export const StatusDisplay = ({ value }: { value: string }) => {
   const MStatusDisplay = new Map<string, string>([
     ["terminees", "bg-green-600"],
     ["echouees", "bg-red-600"],
