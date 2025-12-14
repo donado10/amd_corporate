@@ -18,6 +18,8 @@ import { SheetAffectationMission } from "./SheetAffectationMission";
 import test from "node:test";
 import useGetMissionRessource from "../api/use-get-mission-ressource";
 import { MissionRessourceSchema } from "../interface";
+import UserIcon from "@/assets/user-icon.svg"
+import TruckIcon from "@/assets/truck-icon.svg"
 
 const CardFileMission = ({
   document,
@@ -121,13 +123,18 @@ const MissionCardStatus = ({
 const CardInfoRessourceMission = ({
   title,
   info,
+  icon
 }: {
   title: string;
   info?: { label: string; value: string }[];
+  icon: ReactNode;
 }) => {
   return (
     <Card className="bg-[#E2ECF6] p-4 h-full w-1/2">
-      <CardTitle className="font-semibold text-primary">{title}</CardTitle>
+      <CardTitle className="font-semibold text-primary flex items-center justify-between">
+        <span className=" p-2 rounded-full bg-white">{icon}</span>
+        <span>{title}</span>
+      </CardTitle>
       <CardContent className="flex gap-6 p-0 w-full ">
         <div className="flex flex-col gap-4  w-full">
           {info?.map((l) => {
@@ -162,8 +169,8 @@ const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSch
     </div>
     <div className="flex gap-4">
 
-      <CardInfoRessourceMission title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "Permis", value: ressources.driver.em_permis, }, { label: "Téléphone", value: ressources.driver.em_phonenumber }]} />
-      <CardInfoRessourceMission title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "Matricule", value: ressources.car.car_matricule, }, { label: "Numéro carte grise", value: ressources.car.car_registrationcard }]} />
+      <CardInfoRessourceMission icon={<><Image src={UserIcon} alt="" width={16} height={16} /></>} title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "Permis", value: ressources.driver.em_permis, }, { label: "Téléphone", value: ressources.driver.em_phonenumber }]} />
+      <CardInfoRessourceMission icon={<><Image src={TruckIcon} alt="" width={16} height={16} /></>} title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "Matricule", value: ressources.car.car_matricule, }, { label: "Numéro carte grise", value: ressources.car.car_registrationcard }]} />
     </div>
   </Card>
 }
