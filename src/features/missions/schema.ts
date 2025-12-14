@@ -8,6 +8,12 @@ export const missionDocumentSchema = z.object({
 	fileID: z.string().optional(),
 });
 
+export const missionAffectationShema = z.object({
+	miss_no: z.string(),
+	miss_driver: z.string(),
+	miss_car: z.string(),
+});
+
 export const missionTableInfo = z.object({
 	miss_no: z.string(),
 	miss_client: z.string(),

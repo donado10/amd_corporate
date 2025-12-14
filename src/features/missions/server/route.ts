@@ -7,7 +7,11 @@ import { setCookie } from "hono/cookie";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { AUTH_COOKIE } from "@/lib/constants";
 import { client } from "@/lib/db-pgsql";
-import { missionDocumentSchema, missionSchema } from "../schema";
+import {
+	missionAffectationShema,
+	missionDocumentSchema,
+	missionSchema,
+} from "../schema";
 import { InputFile } from "node-appwrite/file";
 import z from "zod";
 
@@ -111,6 +115,21 @@ const app = new Hono()
 
 		return c.json({ message: "files uploaded", id: file_id });
 	})
+	.post(
+		"/affectationMission",
+		zValidator("json", missionAffectationShema),
+		async (c) => {
+			const { miss_no, miss_car, miss_driver } = c.req.valid("json");
+
+			const result = await client.query(
+				`update public.f_mission 
+				set miss_addons = miss_addons || '{"car": ${miss_car} ,"driver": ${miss_driver} }'::jsonb where miss_no=$1 `,
+				[miss_no]
+			);
+
+			return c.json({ message: "mission affectée" });
+		}
+	)
 	.delete(
 		"/deleteFile",
 		zValidator("json", z.object({ files: z.array(z.string()) })),

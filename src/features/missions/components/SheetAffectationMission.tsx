@@ -111,6 +111,7 @@ export function SheetAffectationMission({ children }: { children: ReactNode }) {
                 <SheetHeader>
                     <SheetTitle>Affectation Mission</SheetTitle>
                 </SheetHeader>
+
                 <div className="grid flex-1 auto-rows-min gap-6 px-4">
                     <SelectAvailableDriverContainer />
                     <SelectAvailableCarContainer />
