@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 
 const useGetAvailableDriver = () => {
 	const query = useQuery({
-		queryKey: ["drivers_info_table"],
+		queryKey: ["available_drivers"],
 		queryFn: async () => {
-			const response = await client.api.drivers.driversInfoTable.$get();
+			const response = await client.api.drivers.availableDriver.$get();
 
 			if (!response.ok) {
 				throw new Error("error when fetching drivers");
