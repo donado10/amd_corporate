@@ -21,6 +21,8 @@ import { MissionRessourceSchema } from "../interface";
 import UserIcon from "@/assets/user-icon.svg"
 import TruckIcon from "@/assets/truck-icon.svg"
 import ArrowIcon from "@/assets/left_arrow.svg"
+import StartIcon from "@/assets/start.svg"
+import CancelIcon from "@/assets/cancel.svg"
 
 const CardFileMission = ({
   document,
@@ -262,6 +264,33 @@ const MissionDisplaySection = ({
               </Button>
             </SheetAffectationMission>
           }
+          {(mission.miss_addons?.car && mission.miss_addons?.driver) &&
+
+            <div className="flex items-center gap-4">
+
+              <Button className="ml-auto border-2  border-green-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
+                variant={"outline"}>
+                <span><Image src={StartIcon} alt="" width={20} height={20} /></span>
+                <span className="text-green-600">Démarrer la mission</span>
+              </Button>
+              <Button className="ml-auto border-2  border-red-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
+                variant={"outline"}>
+                <span><Image src={CancelIcon} alt="" width={20} height={20} /></span>
+                <span className="text-red-600">Annuler la mission</span>
+              </Button>
+            </div>
+          }
+          {/* {(mission.miss_addons?.car && mission.miss_addons?.driver) &&
+
+            < >
+
+              <Button className="ml-auto border-2  border-red-600 hover:bg-gray-400/20   flex items-center justify-between w-[15rem]"
+                variant={"outline"}>
+                <span><Image src={CancelIcon} alt="" width={20} height={20} /></span>
+                <span className="text-red-600">Arrêter la mission</span>
+              </Button>
+            </>
+          } */}
           <Card className="bg-secondary p-4 flex-1 ">
             <CardTitle className="font-semibold">DOCUMENTS</CardTitle>
             <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 px-0">
