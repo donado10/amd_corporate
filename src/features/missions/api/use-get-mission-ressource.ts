@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useGetMissionRessource = (car_no: string, em_no: string) => {
 	const query = useQuery({
-		queryKey: ["Missions_ressource"],
+		queryKey: ["Missions_ressource", car_no, em_no],
 		queryFn: async () => {
 			const response = await client.api.missions.ressources[":em_no"][
 				":car_no"

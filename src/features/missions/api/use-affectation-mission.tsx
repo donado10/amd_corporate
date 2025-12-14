@@ -29,13 +29,13 @@ const useAffectationMission = () => {
 
 			return res.json();
 		},
-		onSuccess: () => {
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ["Missions_ressource", "Missions_info_table"] });
 			toast(<ToastSuccess toastTitle="Affectation affectée !" />, {
 				style: {
 					backgroundColor: "green",
 				},
 			});
-			queryClient.invalidateQueries({ queryKey: ["Missions_info_table"] });
 			router.refresh();
 		},
 	});

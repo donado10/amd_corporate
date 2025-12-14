@@ -20,6 +20,7 @@ import useGetMissionRessource from "../api/use-get-mission-ressource";
 import { MissionRessourceSchema } from "../interface";
 import UserIcon from "@/assets/user-icon.svg"
 import TruckIcon from "@/assets/truck-icon.svg"
+import ArrowIcon from "@/assets/left_arrow.svg"
 
 const CardFileMission = ({
   document,
@@ -163,9 +164,14 @@ const CardRessourcesMissionContainer = ({ car_no, em_no }: { car_no: string, em_
 }
 const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSchema }) => {
   return <Card className="w-full flex justify-between bg-secondary gap-4  p-4">
-    <div>
+    <div className="flex items-center justify-between">
 
       <CardTitle>Ressources</CardTitle>
+      <SheetAffectationMission>
+        <Button variant={"default"} className="scale-x-[-1] bg-transparent hover:bg-gray-400/20">
+          <Image src={ArrowIcon} alt="" width={8} height={8} />
+        </Button>
+      </SheetAffectationMission>
     </div>
     <div className="flex gap-4">
 
