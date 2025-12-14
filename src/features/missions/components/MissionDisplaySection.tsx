@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { StatusDisplay } from "./Table/columns";
 import { cn, formatDate } from "@/lib/utils";
 import TagIcon from "@/assets/tag.svg"
+import { SheetAffectationMission } from "./SheetAffectationMission";
 
 const CardFileMission = ({
   document,
@@ -177,11 +178,14 @@ const MissionDisplaySection = ({
           </div>
         </div>
         <div className="w-1/3 flex flex-col gap-4 h-auto ">
-          <Button className="ml-auto border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between w-[15rem]"
-            variant={"outline"}>
-            <span><Image src={TagIcon} alt="" width={16} height={16} /></span>
-            <span>Affecter</span>
-          </Button>
+          <SheetAffectationMission>
+
+            <Button className="ml-auto border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between w-[15rem]"
+              variant={"outline"}>
+              <span><Image src={TagIcon} alt="" width={16} height={16} /></span>
+              <span>Affecter</span>
+            </Button>
+          </SheetAffectationMission>
           <Card className="bg-secondary p-4 flex-1 ">
             <CardTitle className="font-semibold">DOCUMENTS</CardTitle>
             <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 px-0">
