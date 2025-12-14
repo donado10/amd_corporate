@@ -15,6 +15,9 @@ import { StatusDisplay } from "./Table/columns";
 import { cn, formatDate } from "@/lib/utils";
 import TagIcon from "@/assets/tag.svg"
 import { SheetAffectationMission } from "./SheetAffectationMission";
+import test from "node:test";
+import useGetMissionRessource from "../api/use-get-mission-ressource";
+import { MissionRessourceSchema } from "../interface";
 
 const CardFileMission = ({
   document,
@@ -115,6 +118,56 @@ const MissionCardStatus = ({
   );
 };
 
+const CardInfoRessourceMission = ({
+  title,
+  info,
+}: {
+  title: string;
+  info?: { label: string; value: string }[];
+}) => {
+  return (
+    <Card className="bg-[#E2ECF6] p-4 h-full w-1/2">
+      <CardTitle className="font-semibold">{title}</CardTitle>
+      <CardContent className="flex gap-6 p-0 w-full ">
+        <div className="flex flex-col gap-4  w-full">
+          {info?.map((l) => {
+            return (
+              <CardFieldMission key={l.label} label={l.label} value={l.value} />
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>)
+}
+
+const CardRessourcesMissionContainer = ({ car_no, em_no }: { car_no: string, em_no: string }) => {
+
+  const { data, isPending } = useGetMissionRessource(car_no, em_no);
+
+  if (isPending) {
+    return <></>
+  }
+
+  if (!data?.result) {
+    return <></>
+  }
+
+  return <CardRessourcesMission ressources={data?.result as MissionRessourceSchema} />
+}
+const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSchema }) => {
+  return <Card className="w-full flex justify-between bg-secondary gap-4  p-4">
+    <div>
+
+      <CardTitle>Ressources</CardTitle>
+    </div>
+    <div className="flex gap-4">
+
+      <CardInfoRessourceMission title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "test", value: "test", }]} />
+      <CardInfoRessourceMission title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "test", value: "test", }]} />
+    </div>
+  </Card>
+}
+
 const MissionDisplaySection = ({
   mission,
 }: {
@@ -145,42 +198,47 @@ const MissionDisplaySection = ({
       </div>
       <div className="flex justify-between ">
         <div className="w-3/5 ">
-          <div className="flex flex-col gap-4 mb-8">
-            <span className="text-xs font-bold">Description</span>
-            <span className="">{mission.miss_description}</span>
+
+          <div className="w-full mb-4">
+            <div className="flex flex-col gap-4 mb-8">
+              <span className="text-xs font-bold">Description</span>
+              <span className="">{mission.miss_description}</span>
+            </div>
+            <div>
+              <CardInfoMission title="" left={[
+                {
+                  label: "Départ prévu",
+                  value: (mission.miss_expectedhourdeparture),
+                },
+                {
+                  label: "Durée estimée",
+                  value: (mission.miss_expectedduration),
+                },
+                {
+                  label: "Budget carburant estimée",
+                  value: (mission.miss_expectedfuelbudget),
+                },
+              ]} right={[
+                {
+                  label: "Arrivée prévu",
+                  value: (mission.miss_expectedhourarrival),
+                },
+                {
+                  label: "Distance estimée",
+                  value: (mission.miss_expecteddistance),
+                },
+                {
+                  label: "Budget total estimé",
+                  value: (mission.miss_expectedtotalbudget),
+                },
+              ]} />
+            </div>
           </div>
-          <div>
-            <CardInfoMission title="" left={[
-              {
-                label: "Départ prévu",
-                value: (mission.miss_expectedhourdeparture),
-              },
-              {
-                label: "Durée estimée",
-                value: (mission.miss_expectedduration),
-              },
-              {
-                label: "Budget carburant estimée",
-                value: (mission.miss_expectedfuelbudget),
-              },
-            ]} right={[
-              {
-                label: "Arrivée prévu",
-                value: (mission.miss_expectedhourarrival),
-              },
-              {
-                label: "Distance estimée",
-                value: (mission.miss_expecteddistance),
-              },
-              {
-                label: "Budget total estimé",
-                value: (mission.miss_expectedtotalbudget),
-              },
-            ]} />
-          </div>
+          {(mission.miss_addons?.car || mission.miss_addons?.driver) &&
+            <CardRessourcesMissionContainer car_no={mission.miss_addons.car} em_no={mission.miss_addons.driver} />}
         </div>
         <div className="w-1/3 flex flex-col gap-4 h-auto ">
-          {!mission.miss_addons?.car || !mission.miss_addons?.driver &&
+          {(!mission.miss_addons?.car || !mission.miss_addons?.driver) &&
 
             <SheetAffectationMission>
 

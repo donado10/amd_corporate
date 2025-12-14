@@ -21,6 +21,19 @@ const app = new Hono()
 
 		return c.json({ result: result.rows });
 	})
+	.get("/ressources/:em_no/:car_no", async (c) => {
+		const { car_no, em_no } = c.req.param();
+		const driver = await client.query(
+			"SELECT em_no,em_firstname,em_lastname,em_addons ->> 'permis' as em_permis,em_phonenumber FROM f_employee where em_no = $1",
+			[em_no]
+		);
+		const car = await client.query(
+			"SELECT car_no,car_addons ->> 'marque' as car_marque,car_addons ->> 'modele' as car_modele, car_addons->>'matricule' as car_matricule,car_addons ->> 'registrationcard' as car_registrationcard FROM f_car where car_no = $1",
+			[car_no]
+		);
+
+		return c.json({ result: { car: car.rows[0], driver: driver.rows[0] } });
+	})
 	.get("/missionsInfoTable", async (c) => {
 		const result =
 			await client.query(`select miss_no,miss_intitule, miss_client ,miss_expectedhourdeparture,
