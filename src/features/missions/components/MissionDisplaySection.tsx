@@ -167,7 +167,7 @@ const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSch
     <div className="flex items-center justify-between">
 
       <CardTitle>Ressources</CardTitle>
-      <SheetAffectationMission>
+      <SheetAffectationMission defaultValue={{ car: ressources.car.car_no, driver: ressources.driver.em_no }}>
         <Button variant={"default"} className="scale-x-[-1] bg-transparent hover:bg-gray-400/20">
           <Image src={ArrowIcon} alt="" width={8} height={8} />
         </Button>
@@ -253,7 +253,7 @@ const MissionDisplaySection = ({
         <div className="w-1/3 flex flex-col gap-4 h-auto ">
           {(!mission.miss_addons?.car || !mission.miss_addons?.driver) &&
 
-            <SheetAffectationMission>
+            <SheetAffectationMission >
 
               <Button className="ml-auto border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between w-[15rem]"
                 variant={"outline"}>
