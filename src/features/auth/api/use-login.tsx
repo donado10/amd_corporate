@@ -29,9 +29,9 @@ const useLogin = () => {
           backgroundColor: "green",
         },
       });
+      queryClient.invalidateQueries({ queryKey: ["current"] });
       router.push("/home");
       router.refresh();
-      queryClient.invalidateQueries({ queryKey: ["current"] });
     },
     onError: () => {
       toast(<ToastError toastTitle="Connexion échouée !" />, {

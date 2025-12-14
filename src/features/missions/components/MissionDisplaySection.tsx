@@ -121,6 +121,8 @@ const MissionDisplaySection = ({
   mission: z.infer<typeof missionSchema>;
 }) => {
   const pathname = usePathname();
+
+  console.log(mission.miss_addons)
   return (
     <section className="flex flex-col p-8 gap-8">
       <div className="flex items-center justify-between">
@@ -178,14 +180,17 @@ const MissionDisplaySection = ({
           </div>
         </div>
         <div className="w-1/3 flex flex-col gap-4 h-auto ">
-          <SheetAffectationMission>
+          {!mission.miss_addons?.car || !mission.miss_addons?.driver &&
 
-            <Button className="ml-auto border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between w-[15rem]"
-              variant={"outline"}>
-              <span><Image src={TagIcon} alt="" width={16} height={16} /></span>
-              <span>Affecter</span>
-            </Button>
-          </SheetAffectationMission>
+            <SheetAffectationMission>
+
+              <Button className="ml-auto border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between w-[15rem]"
+                variant={"outline"}>
+                <span><Image src={TagIcon} alt="" width={16} height={16} /></span>
+                <span>Affecter</span>
+              </Button>
+            </SheetAffectationMission>
+          }
           <Card className="bg-secondary p-4 flex-1 ">
             <CardTitle className="font-semibold">DOCUMENTS</CardTitle>
             <CardContent className="grid  items-start grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 px-0">
