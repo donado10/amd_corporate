@@ -127,7 +127,7 @@ const CardInfoRessourceMission = ({
 }) => {
   return (
     <Card className="bg-[#E2ECF6] p-4 h-full w-1/2">
-      <CardTitle className="font-semibold">{title}</CardTitle>
+      <CardTitle className="font-semibold text-primary">{title}</CardTitle>
       <CardContent className="flex gap-6 p-0 w-full ">
         <div className="flex flex-col gap-4  w-full">
           {info?.map((l) => {
@@ -162,8 +162,8 @@ const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSch
     </div>
     <div className="flex gap-4">
 
-      <CardInfoRessourceMission title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "test", value: "test", }]} />
-      <CardInfoRessourceMission title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "test", value: "test", }]} />
+      <CardInfoRessourceMission title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "Permis", value: ressources.driver.em_permis, }, { label: "Téléphone", value: ressources.driver.em_phonenumber }]} />
+      <CardInfoRessourceMission title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "Matricule", value: ressources.car.car_matricule, }, { label: "Numéro carte grise", value: ressources.car.car_registrationcard }]} />
     </div>
   </Card>
 }
