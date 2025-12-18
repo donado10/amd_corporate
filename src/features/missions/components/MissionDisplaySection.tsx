@@ -23,7 +23,9 @@ import TruckIcon from "@/assets/truck-icon.svg"
 import ArrowIcon from "@/assets/left_arrow.svg"
 import StartIcon from "@/assets/start.svg"
 import CancelIcon from "@/assets/cancel.svg"
-import { AlertDialogStartMission } from "./DialogStartMission";
+import ReturnIcon from "@/assets/return.svg"
+import DoneIcon from "@/assets/done.svg"
+import { AlertDialogChangeStatusMission } from "./DialogStartMission";
 
 const CardFileMission = ({
   document,
@@ -151,7 +153,7 @@ const CardInfoRessourceMission = ({
     </Card>)
 }
 
-const CardRessourcesMissionContainer = ({ car_no, em_no }: { car_no: string, em_no: string }) => {
+const CardRessourcesMissionContainer = ({ miss_status, car_no, em_no }: { miss_status: string, car_no: string, em_no: string }) => {
 
   const { data, isPending } = useGetMissionRessource(car_no, em_no);
 
@@ -163,18 +165,18 @@ const CardRessourcesMissionContainer = ({ car_no, em_no }: { car_no: string, em_
     return <></>
   }
 
-  return <CardRessourcesMission ressources={data?.result as MissionRessourceSchema} />
+  return <CardRessourcesMission miss_status={miss_status} ressources={data?.result as MissionRessourceSchema} />
 }
-const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSchema }) => {
+const CardRessourcesMission = ({ miss_status, ressources }: { miss_status: string, ressources: MissionRessourceSchema }) => {
   return <Card className="w-full flex justify-between bg-secondary gap-4  p-4">
     <div className="flex items-center justify-between">
 
       <CardTitle>Ressources</CardTitle>
-      <SheetAffectationMission defaultValue={{ car: ressources.car?.car_no ?? "", driver: ressources.driver?.em_no ?? "" }}>
+      {(miss_status === "créer") && <SheetAffectationMission defaultValue={{ car: ressources.car?.car_no ?? "", driver: ressources.driver?.em_no ?? "" }}>
         <Button variant={"default"} className="scale-x-[-1] bg-transparent hover:bg-gray-400/20">
           <Image src={ArrowIcon} alt="" width={8} height={8} />
         </Button>
-      </SheetAffectationMission>
+      </SheetAffectationMission>}
     </div>
     <div className="flex gap-4">
 
@@ -258,7 +260,7 @@ const MissionDisplaySection = ({
             </div>
           </div>
           {(mission.miss_addons?.car || mission.miss_addons?.driver) &&
-            <CardRessourcesMissionContainer car_no={mission.miss_addons.car} em_no={mission.miss_addons.driver} />}
+            <CardRessourcesMissionContainer miss_status={mission.miss_addons.status} car_no={mission.miss_addons.car} em_no={mission.miss_addons.driver} />}
         </div>
         <div className="w-1/3 flex flex-col gap-4 h-auto ">
           {(!mission.miss_addons?.car || !mission.miss_addons?.driver) &&
@@ -275,19 +277,48 @@ const MissionDisplaySection = ({
           {(mission.miss_addons?.car && mission.miss_addons?.driver) &&
 
             <div className="flex items-center gap-4">
-              {mission.miss_addons.status === 'créer' && <AlertDialogStartMission miss_no={mission.miss_no}>
+              {mission.miss_addons.status === 'créer' && <AlertDialogChangeStatusMission label="Voulez vous démarrer la mission ?" miss_status="en_cours" miss_no={mission.miss_no}>
                 <Button disabled={!ressourceMissionAvailable} className="ml-auto border-2  border-green-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
                   variant={"outline"}>
                   <span><Image src={StartIcon} alt="" width={20} height={20} /></span>
                   <span className="text-green-600">Démarrer la mission</span>
                 </Button>
-              </AlertDialogStartMission>}
+              </AlertDialogChangeStatusMission>}
+              {(mission.miss_addons.status === 'en_cours') &&
+                <AlertDialogChangeStatusMission label="Voulez vous terminée la mission ?" miss_status="terminees" miss_no={mission.miss_no}>
 
-              <Button className="ml-auto border-2  border-red-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
-                variant={"outline"}>
-                <span><Image src={CancelIcon} alt="" width={20} height={20} /></span>
-                <span className="text-red-600">Annuler la mission</span>
-              </Button>
+
+                  <Button className="ml-auto border-2  border-green-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
+                    variant={"outline"}>
+                    <span><Image src={DoneIcon} alt="" width={20} height={20} /></span>
+                    <span className="text-green-600">Terminée la mission</span>
+                  </Button>
+                </AlertDialogChangeStatusMission>
+              }
+
+              {(mission.miss_addons.status === 'créer' || mission.miss_addons.status === 'en_cours') &&
+                <AlertDialogChangeStatusMission label="Voulez vous annuler la mission ?" miss_status="echouees" miss_no={mission.miss_no}>
+
+
+                  <Button className="ml-auto border-2  border-red-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
+                    variant={"outline"}>
+                    <span><Image src={CancelIcon} alt="" width={20} height={20} /></span>
+                    <span className="text-red-600">Annuler la mission</span>
+                  </Button>
+                </AlertDialogChangeStatusMission>
+              }
+              {(mission.miss_addons.status === 'echouees') &&
+                <AlertDialogChangeStatusMission label="Voulez vous retourner la mission ?" miss_status="créer" miss_no={mission.miss_no}>
+
+
+                  <Button className="ml-auto border-2  border-gray-950 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
+                    variant={"outline"}>
+                    <span><Image src={ReturnIcon} alt="" width={20} height={20} /></span>
+                    <span className="text-gray-950">Retourner la mission</span>
+                  </Button>
+                </AlertDialogChangeStatusMission>
+              }
+
 
             </div>
           }

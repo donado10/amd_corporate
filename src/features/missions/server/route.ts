@@ -32,9 +32,6 @@ const app = new Hono()
 			[car_no]
 		);
 
-		console.log(driver);
-		console.log(car);
-
 		return c.json({ result: { car: car.rows[0], driver: driver.rows[0] } });
 	})
 	.get("/missionsInfoTable", async (c) => {
@@ -157,7 +154,7 @@ const app = new Hono()
 
 			const result = await client.query(
 				`update public.f_mission 
-				set miss_addons = miss_addons || '{"status": ${miss_status}}'::jsonb where miss_no=$1 `,
+				set miss_addons = miss_addons || '{"status": "${miss_status}"}'::jsonb where miss_no=$1 `,
 				[miss_no]
 			);
 

@@ -1,3 +1,5 @@
+"use client"
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,12 +14,12 @@ import {
 import { ReactNode } from "react"
 import useChangeStatusMission from "../api/use-change-status-mission"
 
-export function AlertDialogStartMission({ children, miss_no }: { children: ReactNode, miss_no: string }) {
+export function AlertDialogChangeStatusMission({ children, miss_no, miss_status, label }: { children: ReactNode, miss_no: string, miss_status: string, label: string }) {
 
     const { mutate } = useChangeStatusMission()
 
     const changeStatusMissionHandler = () => {
-        mutate({ json: { miss_no: miss_no, miss_status: "en_cours" } })
+        mutate({ json: { miss_no: miss_no, miss_status: miss_status } })
     }
 
     return (
@@ -27,11 +29,11 @@ export function AlertDialogStartMission({ children, miss_no }: { children: React
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Voulez vous démarrer la mission ?</AlertDialogTitle>
+                    <AlertDialogTitle>{label}</AlertDialogTitle>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Annuler</AlertDialogCancel>
-                    <AlertDialogAction onSubmit={changeStatusMissionHandler}>Confirmer</AlertDialogAction>
+                    <AlertDialogAction onClick={changeStatusMissionHandler}>Confirmer</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

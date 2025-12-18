@@ -19,6 +19,7 @@ const useChangeStatusMission = () => {
     const mutation = useMutation<ResponseType, Error, RequestType>({
         mutationKey: ["status_mission"],
         mutationFn: async ({ json }) => {
+            console.log(json)
             const res = await client.api.missions.statusMission["$post"]({
                 json,
             });
@@ -34,6 +35,15 @@ const useChangeStatusMission = () => {
             toast(<ToastSuccess toastTitle={(() => {
                 if (status === 'en_cours') {
                     return "Mission démarrée"
+                }
+                if (status === 'echouees') {
+                    return "Mission suspendue"
+                }
+                if (status === 'créer') {
+                    return "Mission retourné"
+                }
+                if (status === 'terminees') {
+                    return "Mission terminée"
                 }
                 return ""
             })()} />, {
