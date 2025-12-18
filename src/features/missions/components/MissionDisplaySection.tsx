@@ -23,6 +23,7 @@ import TruckIcon from "@/assets/truck-icon.svg"
 import ArrowIcon from "@/assets/left_arrow.svg"
 import StartIcon from "@/assets/start.svg"
 import CancelIcon from "@/assets/cancel.svg"
+import { AlertDialogStartMission } from "./DialogStartMission";
 
 const CardFileMission = ({
   document,
@@ -169,7 +170,7 @@ const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSch
     <div className="flex items-center justify-between">
 
       <CardTitle>Ressources</CardTitle>
-      <SheetAffectationMission defaultValue={{ car: ressources.car.car_no, driver: ressources.driver.em_no }}>
+      <SheetAffectationMission defaultValue={{ car: ressources.car?.car_no ?? "", driver: ressources.driver?.em_no ?? "" }}>
         <Button variant={"default"} className="scale-x-[-1] bg-transparent hover:bg-gray-400/20">
           <Image src={ArrowIcon} alt="" width={8} height={8} />
         </Button>
@@ -177,20 +178,27 @@ const CardRessourcesMission = ({ ressources }: { ressources: MissionRessourceSch
     </div>
     <div className="flex gap-4">
 
-      <CardInfoRessourceMission icon={<><Image src={UserIcon} alt="" width={16} height={16} /></>} title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "Permis", value: ressources.driver.em_permis, }, { label: "Téléphone", value: ressources.driver.em_phonenumber }]} />
-      <CardInfoRessourceMission icon={<><Image src={TruckIcon} alt="" width={16} height={16} /></>} title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "Matricule", value: ressources.car.car_matricule, }, { label: "Numéro carte grise", value: ressources.car.car_registrationcard }]} />
-    </div>
+      {ressources.driver?.em_no && <CardInfoRessourceMission icon={<><Image src={UserIcon} alt="" width={16} height={16} /></>} title={ressources.driver.em_firstname + ' ' + ressources.driver.em_lastname} info={[{ label: "Permis", value: ressources.driver.em_permis, }, { label: "Téléphone", value: ressources.driver.em_phonenumber }]} />}
+      {ressources.car?.car_no && <CardInfoRessourceMission icon={<><Image src={TruckIcon} alt="" width={16} height={16} /></>} title={ressources.car.car_marque + '-' + ressources.car.car_modele} info={[{ label: "Matricule", value: ressources.car.car_matricule, }, { label: "Numéro carte grise", value: ressources.car.car_registrationcard }]} />}    </div>
   </Card>
 }
 
 const MissionDisplaySection = ({
   mission,
+  ressources
 }: {
   mission: z.infer<typeof missionSchema>;
+  ressources: MissionRessourceSchema
 }) => {
   const pathname = usePathname();
 
-  console.log(mission.miss_addons)
+  let ressourceMissionAvailable = false
+
+  if (ressources?.car?.car_status && ressources?.driver?.em_status) {
+    ressourceMissionAvailable = ressources.car?.car_status === 'disponible' && ressources.driver?.em_status === 'disponible'
+  }
+
+
   return (
     <section className="flex flex-col p-8 gap-8">
       <div className="flex items-center justify-between">
@@ -267,21 +275,24 @@ const MissionDisplaySection = ({
           {(mission.miss_addons?.car && mission.miss_addons?.driver) &&
 
             <div className="flex items-center gap-4">
+              {mission.miss_addons.status === 'créer' && <AlertDialogStartMission miss_no={mission.miss_no}>
+                <Button disabled={!ressourceMissionAvailable} className="ml-auto border-2  border-green-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
+                  variant={"outline"}>
+                  <span><Image src={StartIcon} alt="" width={20} height={20} /></span>
+                  <span className="text-green-600">Démarrer la mission</span>
+                </Button>
+              </AlertDialogStartMission>}
 
-              <Button className="ml-auto border-2  border-green-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
-                variant={"outline"}>
-                <span><Image src={StartIcon} alt="" width={20} height={20} /></span>
-                <span className="text-green-600">Démarrer la mission</span>
-              </Button>
               <Button className="ml-auto border-2  border-red-600 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
                 variant={"outline"}>
                 <span><Image src={CancelIcon} alt="" width={20} height={20} /></span>
                 <span className="text-red-600">Annuler la mission</span>
               </Button>
+
             </div>
           }
           {/* {(mission.miss_addons?.car && mission.miss_addons?.driver) &&
-
+²
             < >
 
               <Button className="ml-auto border-2  border-red-600 hover:bg-gray-400/20   flex items-center justify-between w-[15rem]"

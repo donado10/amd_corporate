@@ -21,7 +21,7 @@ const app = new Hono()
 	})
 	.get("/availableDriver", async (c) => {
 		const result = await client.query(
-			"SELECT * FROM public.f_employee where em_type=1 and em_addons ->> 'status' = 'disponible'"
+			"SELECT * FROM public.f_employee where em_type=1"
 		);
 
 		return c.json({ result: result.rows });

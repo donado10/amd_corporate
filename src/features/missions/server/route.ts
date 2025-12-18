@@ -13,7 +13,7 @@ import {
 	missionSchema,
 } from "../schema";
 import { InputFile } from "node-appwrite/file";
-import z from "zod";
+import z, { string } from "zod";
 
 const app = new Hono()
 	.get("/", async (c) => {
@@ -24,13 +24,16 @@ const app = new Hono()
 	.get("/ressources/:em_no/:car_no", async (c) => {
 		const { car_no, em_no } = c.req.param();
 		const driver = await client.query(
-			"SELECT em_no,em_firstname,em_lastname,em_addons ->> 'permis' as em_permis,em_phonenumber FROM f_employee where em_no = $1",
+			"SELECT em_no,em_firstname,em_lastname,em_addons ->> 'permis' as em_permis,em_phonenumber,em_addons ->> 'status' as em_status FROM f_employee where em_no = $1",
 			[em_no]
 		);
 		const car = await client.query(
-			"SELECT car_no,car_addons ->> 'marque' as car_marque,car_addons ->> 'modele' as car_modele, car_addons->>'matricule' as car_matricule,car_addons ->> 'registrationcard' as car_registrationcard FROM f_car where car_no = $1",
+			"SELECT car_no,car_addons ->> 'marque' as car_marque,car_addons ->> 'modele' as car_modele, car_addons->>'matricule' as car_matricule,car_addons ->> 'registrationcard' as car_registrationcard,car_addons ->> 'status' as car_status  FROM f_car where car_no = $1",
 			[car_no]
 		);
+
+		console.log(driver);
+		console.log(car);
 
 		return c.json({ result: { car: car.rows[0], driver: driver.rows[0] } });
 	})
@@ -141,6 +144,24 @@ const app = new Hono()
 			);
 
 			return c.json({ message: "mission affectée" });
+		}
+	)
+	.post(
+		"/statusMission",
+		zValidator(
+			"json",
+			z.object({ miss_no: z.string(), miss_status: z.string() })
+		),
+		async (c) => {
+			const { miss_no, miss_status } = c.req.valid("json");
+
+			const result = await client.query(
+				`update public.f_mission 
+				set miss_addons = miss_addons || '{"status": ${miss_status}}'::jsonb where miss_no=$1 `,
+				[miss_no]
+			);
+
+			return c.json({ message: "status changé", status: miss_status });
 		}
 	)
 	.delete(

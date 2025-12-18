@@ -18,9 +18,7 @@ const app = new Hono()
 		return c.json({ result: result.rows });
 	})
 	.get("/availableCar", async (c) => {
-		const result = await client.query(
-			"SELECT * FROM f_car where car_addons ->> 'status' = 'disponible'"
-		);
+		const result = await client.query("SELECT * FROM f_car ");
 
 		return c.json({ result: result.rows });
 	})

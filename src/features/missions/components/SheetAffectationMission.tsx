@@ -51,7 +51,7 @@ function SelectAvailableCar({
 
     return (
         <div className='flex-col flex gap-2 w-full'>
-            <span>Véhicules disponibles</span>
+            <span>Véhicules</span>
             <Select defaultValue={defaultCar} onValueChange={(value) => { onAction && onAction(value) }} >
                 <SelectTrigger className="w-full bg-white">
                     <SelectValue className=" border-none" placeholder="Véhicules" />
@@ -103,7 +103,7 @@ function SelectAvailableDriver({
 
     return (
         <div className='flex-col flex gap-2 w-full'>
-            <span>Chauffeurs disponibles</span>
+            <span>Chauffeurs</span>
             <Select defaultValue={defaultDriver} onValueChange={(value) => { onAction && onAction(value) }} >
                 <SelectTrigger className="w-full bg-white">
                     <SelectValue defaultValue={defaultDriver} className=" border-none" placeholder="Chauffeurs" />

@@ -12,6 +12,7 @@ export const missionRessourceCarSchema = z.object({
 	car_no: z.string(),
 	car_marque: z.string(),
 	car_modele: z.string(),
+	car_status: z.string(),
 	car_matricule: z.string(),
 	car_registrationcard: z.string(),
 });
@@ -19,6 +20,7 @@ export const missionRessourceDriverSchema = z.object({
 	em_no: z.string(),
 	em_firstname: z.string(),
 	em_lastname: z.string(),
+	em_status: z.string(),
 	em_permis: z.string(),
 	em_phonenumber: z.string(),
 });
@@ -63,6 +65,8 @@ export const missionSchema = z.object({
 	miss_addons: z
 		.object({
 			driver: z.string(),
+			datedepart: z.string().optional(),
+			heuredepart: z.string().optional(),
 			car: z.string(),
 			status: z.string(),
 			documents: z.array(missionDocumentSchema),
