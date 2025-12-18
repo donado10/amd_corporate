@@ -1,6 +1,12 @@
 import { EPermission } from "@/lib/enum";
 import { z } from "zod";
 
+export const missionStartingSchema = z.object({
+	miss_no: z.string(),
+	miss_startingdate: z.string(),
+	miss_startinghour: z.string(),
+});
+
 export const missionDocumentSchema = z.object({
 	file: z.file().or(z.string()),
 	hashname: z.string(),
