@@ -8,6 +8,7 @@ export const missionActionSchema = z.object({
 	startinghour: z.string().or(z.null()).optional(),
 	stopdate: z.string().or(z.null()).optional(),
 	stophour: z.string().or(z.null()).optional(),
+	failedcause: z.string().or(z.null()).optional(),
 });
 
 export const missionDocumentSchema = z.object({

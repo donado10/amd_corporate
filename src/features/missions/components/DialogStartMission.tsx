@@ -20,8 +20,57 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { getCurrentDate, getCurrentTime } from "@/lib/utils"
+import { Textarea } from "@/components/ui/textarea"
 
 
+const AlertCancelMissionHandler = ({ miss_no, label }: { miss_no: string, label: string }) => {
+    const form = useForm<z.infer<typeof missionActionSchema>>({
+        resolver: zodResolver(missionActionSchema),
+        defaultValues: {
+            miss_no: miss_no,
+            status: 'echouees',
+            failedcause: ""
+        }
+    })
+    const { mutate } = useChangeStatusMission()
+
+
+    const changeStatusMissionHandler = async (values: z.infer<typeof missionActionSchema>) => {
+        mutate({ json: { miss_no: miss_no, status: values.status, stopdate: values.stopdate, stophour: values.stophour } })
+    }
+
+
+    return (
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>{label}</AlertDialogTitle>
+            </AlertDialogHeader>
+            <Form {...form}>
+                <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(changeStatusMissionHandler)}>
+                    <div >
+                        <FormField
+                            name={"failedcause"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Motif annulation</FormLabel>
+                                    <FormControl>
+                                        <Textarea {...field} value={field.value as string} ></Textarea>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="flex items-center gap-2 ml-auto">
+                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                        <AlertDialogAction onClick={form.handleSubmit(changeStatusMissionHandler)}>Confirmer</AlertDialogAction>
+                    </div>
+                </form>
+            </Form>
+        </AlertDialogContent>
+    )
+}
 const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: string }) => {
     const form = useForm<z.infer<typeof missionActionSchema>>({
         resolver: zodResolver(missionActionSchema),
@@ -29,14 +78,14 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
             miss_no: miss_no,
             status: 'terminees',
             stopdate: getCurrentDate() as string,
-            stophour: getCurrentTime()
+            stophour: getCurrentTime(),
         }
     })
     const { mutate } = useChangeStatusMission()
 
 
     const changeStatusMissionHandler = async (values: z.infer<typeof missionActionSchema>) => {
-        mutate({ json: { miss_no: miss_no, status: values.status, startingdate: values.startingdate, startinghour: values.startinghour } })
+        mutate({ json: { miss_no: miss_no, status: values.status, stopdate: values.stopdate, stophour: values.stophour } })
     }
 
 
@@ -55,7 +104,7 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
                                 <FormItem>
                                     <FormLabel>Date d'arrêt</FormLabel>
                                     <FormControl>
-                                        <Input type="date" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input type="date" {...field} value={field.value as string} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -119,7 +168,7 @@ const AlertStartMissionHandler = ({ miss_no, label }: { miss_no: string, label: 
                                 <FormItem>
                                     <FormLabel>Date de départ</FormLabel>
                                     <FormControl>
-                                        <Input type="date" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input type="date" {...field} value={field.value as string} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -159,7 +208,8 @@ export function AlertDialogChangeStatusMission({ children, miss_no, miss_status,
                 {children}
             </AlertDialogTrigger>
             {miss_status == 'en_cours' && <AlertStartMissionHandler miss_no={miss_no} label={label} />}
-            {miss_status == 'terminees' && <AlertStartMissionHandler miss_no={miss_no} label={label} />}
+            {miss_status == 'terminees' && <AlertStopMissionHandler miss_no={miss_no} label={label} />}
+            {miss_status == 'echouees' && <AlertCancelMissionHandler miss_no={miss_no} label={label} />}
 
         </AlertDialog>
     )
