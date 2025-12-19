@@ -8,6 +8,7 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 import { AUTH_COOKIE } from "@/lib/constants";
 import { client } from "@/lib/db-pgsql";
 import {
+	missionActionSchema,
 	missionAffectationShema,
 	missionDocumentSchema,
 	missionSchema,
@@ -145,20 +146,28 @@ const app = new Hono()
 	)
 	.post(
 		"/statusMission",
-		zValidator(
-			"json",
-			z.object({ miss_no: z.string(), miss_status: z.string() })
-		),
+		zValidator("json", missionActionSchema),
 		async (c) => {
-			const { miss_no, miss_status } = c.req.valid("json");
+			const values = c.req.valid("json");
 
-			const result = await client.query(
-				`update public.f_mission 
-				set miss_addons = miss_addons || '{"status": "${miss_status}"}'::jsonb where miss_no=$1 `,
-				[miss_no]
-			);
+			const values_arr = Object.entries(values);
 
-			return c.json({ message: "status changé", status: miss_status });
+			let values_obj = "";
+
+			values_arr.forEach((val, i, arr) => {
+				values_obj =
+					values_obj +
+					`"${val[0]}":"${val[1]}"${arr.length == i + 1 ? "" : ","}`;
+			});
+
+			const query = `update public.f_mission 
+			set miss_addons = miss_addons || '{${values_obj}}'::jsonb where miss_no=$1`;
+
+			console.log(query);
+
+			const result = await client.query(` ${query}`, [values.miss_no]);
+
+			return c.json({ message: "status changé", status: "" });
 		}
 	)
 	.delete(
