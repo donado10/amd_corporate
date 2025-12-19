@@ -196,6 +196,8 @@ const MissionDisplaySection = ({
 
   let ressourceMissionAvailable = false
 
+  console.log(mission)
+
   if (ressources?.car?.car_status && ressources?.driver?.em_status) {
     ressourceMissionAvailable = ressources.car?.car_status === 'disponible' && ressources.driver?.em_status === 'disponible'
   }
@@ -260,7 +262,7 @@ const MissionDisplaySection = ({
             </div>
           </div>
           {(mission.miss_addons?.car || mission.miss_addons?.driver) &&
-            <CardRessourcesMissionContainer miss_status={mission.miss_addons.status} car_no={mission.miss_addons.car} em_no={mission.miss_addons.driver} />}
+            <CardRessourcesMissionContainer miss_status={mission.miss_addons.status} car_no={mission.miss_addons.car as string} em_no={mission.miss_addons.driver as string} />}
         </div>
         <div className="w-1/3 flex flex-col gap-4 h-auto ">
           {(!mission.miss_addons?.car || !mission.miss_addons?.driver) &&

@@ -88,6 +88,8 @@ const app = new Hono()
 	.post("/", zValidator("json", missionSchema), async (c) => {
 		const values = c.req.valid("json");
 
+		console.log(values);
+
 		await client.query(
 			"CALL public.insert_mission ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
 			[

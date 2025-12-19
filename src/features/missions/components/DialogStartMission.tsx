@@ -204,6 +204,8 @@ export const AlertReturnMissionHandler = ({ mission, label, children }: { childr
 
     const { mutate } = useCreateMission()
 
+    console.log(mission)
+
     const ReturnMissionHandleSubmit = () => {
         mutate({ json: mission })
     }

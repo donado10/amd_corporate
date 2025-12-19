@@ -74,12 +74,17 @@ export const missionSchema = z.object({
 	miss_expectedtotalbudget: z.string(),
 	miss_addons: z
 		.object({
-			driver: z.string(),
 			datedepart: z.string().optional(),
 			heuredepart: z.string().optional(),
-			car: z.string(),
+			car: z.string().or(z.number()),
+			driver: z.string().or(z.number()),
 			status: z.string(),
 			documents: z.array(missionDocumentSchema),
+			startingdate: z.string().or(z.null()).optional(),
+			startinghour: z.string().or(z.null()).optional(),
+			stopdate: z.string().or(z.null()).optional(),
+			stophour: z.string().or(z.null()).optional(),
+			failedcause: z.string().or(z.null()).optional(),
 		})
 		.optional(),
 });
