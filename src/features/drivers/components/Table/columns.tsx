@@ -47,14 +47,14 @@ export const columns: ColumnDef<IDriveTableInfo>[] = [
     accessorKey: "em_car",
     header: "Véhicule assigné",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("em_car")}</div>
+      <div className="capitalize">{row.getValue("em_car") ?? 'N/A'}</div>
     ),
   },
   {
     accessorKey: "em_lastmission",
     header: "Dernière Mission",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("em_lastmission")}</div>
+      <div className="capitalize">{row.getValue("em_lastmission") ?? 'N/A'}</div>
     ),
   },
   {

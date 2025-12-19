@@ -39,8 +39,6 @@ const app = new Hono()
 			)
 		).rows[0];
 
-		console.log(car_no);
-		console.log(em_no);
 		return c.json({ result: { car: car, driver: driver } });
 	})
 	.get("/missionsInfoTable", async (c) => {

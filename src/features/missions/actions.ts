@@ -16,7 +16,7 @@ export const getRessourceMission = async (
 	car: string | number
 ) => {
 	const response = await fetch(
-		`http://127.0.0.1:3000/api/missions/ressources/${driver}/${car}`
+		`http://127.0.0.1:3000/api/missions/ressources/${driver ? driver : -1}/${car ? car : -1}`
 	);
 	const ressources = await response.json();
 

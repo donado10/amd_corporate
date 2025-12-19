@@ -13,12 +13,11 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { driverSchema } from "../schema";
 import { Input } from "@/components/ui/input";
-import CustomFormField from "@/components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TemplateUserIcon from "@/assets/images/template_user.svg";
 import { FilesUploadContainer } from "@/features/drivers/components/fileZone";
-import { FilesUploadProvider, FileUploadContext } from "./context/file-upload";
+import { FileUploadContext } from "./context/file-upload";
 import TableFilesUploadContainer from "./TableFilesUploadContainer";
 import useCreateDriver from "../api/use-create-driver";
 import useUploadDocumentDriver from "../api/use-upload-documents-driver";
@@ -247,7 +246,7 @@ const CreateDriverSection = () => {
                 <FormItem>
                   <FormLabel>Date d'embauche</FormLabel>
                   <FormControl>
-                    <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                    <Input type="date" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

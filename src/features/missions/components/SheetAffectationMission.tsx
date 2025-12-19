@@ -139,7 +139,7 @@ export function SheetAffectationMission({ defaultValue, children }: { children: 
             <SheetTrigger asChild>
                 {children}
             </SheetTrigger>
-            <SheetContent side={"right"} className="max-w-2xl">
+            <SheetContent side={"right"} className="max-w-2xl bg-white">
                 <SheetHeader>
                     <SheetTitle>Affectation Mission</SheetTitle>
                 </SheetHeader>
