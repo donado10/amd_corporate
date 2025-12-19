@@ -15,12 +15,13 @@ import { ReactNode } from "react"
 import useChangeStatusMission from "../api/use-change-status-mission"
 import { useForm } from "react-hook-form"
 import z from "zod"
-import { missionActionSchema } from "../schema"
+import { missionActionSchema, missionSchema } from "../schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { getCurrentDate, getCurrentTime } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
+import useCreateMission from "../api/use-create-mission"
 
 
 const AlertCancelMissionHandler = ({ miss_no, label }: { miss_no: string, label: string }) => {
@@ -197,6 +198,34 @@ const AlertStartMissionHandler = ({ miss_no, label }: { miss_no: string, label: 
                 </form>
             </Form>
         </AlertDialogContent>
+    )
+}
+export const AlertReturnMissionHandler = ({ mission, label, children }: { children: ReactNode, mission: z.infer<typeof missionSchema>, label: string }) => {
+
+    const { mutate } = useCreateMission()
+
+    const ReturnMissionHandleSubmit = () => {
+        mutate({ json: mission })
+    }
+
+
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                {children}
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+
+
+                <AlertDialogHeader>
+                    <AlertDialogTitle>{label}</AlertDialogTitle>
+                </AlertDialogHeader>
+                <div className="flex items-center gap-2 ml-auto">
+                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                    <AlertDialogAction onClick={ReturnMissionHandleSubmit}>Confirmer</AlertDialogAction>
+                </div>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }
 

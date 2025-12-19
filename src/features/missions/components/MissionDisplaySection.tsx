@@ -25,7 +25,7 @@ import StartIcon from "@/assets/start.svg"
 import CancelIcon from "@/assets/cancel.svg"
 import ReturnIcon from "@/assets/return.svg"
 import DoneIcon from "@/assets/done.svg"
-import { AlertDialogChangeStatusMission } from "./DialogStartMission";
+import { AlertDialogChangeStatusMission, AlertReturnMissionHandler } from "./DialogStartMission";
 
 const CardFileMission = ({
   document,
@@ -308,7 +308,7 @@ const MissionDisplaySection = ({
                 </AlertDialogChangeStatusMission>
               }
               {(mission.miss_addons.status === 'echouees') &&
-                <AlertDialogChangeStatusMission label="Voulez vous retourner la mission ?" miss_status="créer" miss_no={mission.miss_no}>
+                <AlertReturnMissionHandler mission={mission} label="Voulez vous retourner la mission ?" >
 
 
                   <Button className="ml-auto border-2  border-gray-950 hover:bg-gray-400/20   flex items-center justify-between w-1/2"
@@ -316,7 +316,7 @@ const MissionDisplaySection = ({
                     <span><Image src={ReturnIcon} alt="" width={20} height={20} /></span>
                     <span className="text-gray-950">Retourner la mission</span>
                   </Button>
-                </AlertDialogChangeStatusMission>
+                </AlertReturnMissionHandler>
               }
 
 
