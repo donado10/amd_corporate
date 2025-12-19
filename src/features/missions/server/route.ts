@@ -30,15 +30,17 @@ const app = new Hono()
 				"SELECT em_no,em_firstname,em_lastname,em_addons ->> 'permis' as em_permis,em_phonenumber,em_addons ->> 'status' as em_status FROM f_employee where em_no = $1",
 				[em_no]
 			)
-		)[0];
+		).rows[0];
 
 		const car = (
 			await client.query(
 				"SELECT car_no,car_addons ->> 'marque' as car_marque,car_addons ->> 'modele' as car_modele, car_addons->>'matricule' as car_matricule,car_addons ->> 'registrationcard' as car_registrationcard,car_addons ->> 'status' as car_status  FROM f_car where car_no = $1",
 				[car_no]
 			)
-		)[0];
+		).rows[0];
 
+		console.log(car_no);
+		console.log(em_no);
 		return c.json({ result: { car: car, driver: driver } });
 	})
 	.get("/missionsInfoTable", async (c) => {
