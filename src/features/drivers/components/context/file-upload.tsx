@@ -2,8 +2,8 @@ import { createContext, ReactNode, useState } from "react";
 
 interface IFileUpload {
   files:
-    | { file: File; hashname: string; fileID?: string; nom: string }[]
-    | undefined;
+  | { file: File; hashname: string; fileID?: string; nom: string }[]
+  | undefined;
   addFiles?: (
     file:
       | { file: File; hashname: string; fileID?: string; nom: string }[]
@@ -69,7 +69,6 @@ export const FilesUploadProvider = ({ children }: { children: ReactNode }) => {
           if (filter) {
             setFiles([...filter]);
 
-            console.log(filter);
           }
         },
       }}

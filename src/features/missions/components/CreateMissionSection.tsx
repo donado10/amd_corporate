@@ -69,7 +69,6 @@ const CreateMissionSection = () => {
   const { mutate } = useCreateMission();
   const mutateUploadDocuments = useUploadDocumentMission();
   const mutateDeleteDocuments = useDeleteDocumentMission();
-  console.log(form.formState.errors);
 
   const fileUploadCtx = useContext(FileUploadContext);
   const onSubmit = async (values: z.infer<typeof missionSchema>) => {

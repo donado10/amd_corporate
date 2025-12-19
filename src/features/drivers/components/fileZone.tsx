@@ -13,7 +13,6 @@ import { FileUploadContext } from "@/features/drivers/components/context/file-up
 const FilesUploadExemple = () => {
   const [files, setFiles] = useState<File[] | undefined>();
   const handleDrop = (files: File[]) => {
-    console.log(files);
     setFiles(files);
   };
   return (

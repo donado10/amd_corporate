@@ -28,8 +28,6 @@ const TableFilesUploadContainer = ({
   const fileUploadCtx = useContext(FileUploadContext);
 
   useEffect(() => {
-    console.log("checking files");
-    console.log(fileUploadCtx.files);
     if (fileUploadCtx.files) {
       form.setValue("em_addons.documents", [...fileUploadCtx.files]);
     }

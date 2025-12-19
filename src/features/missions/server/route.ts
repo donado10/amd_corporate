@@ -24,16 +24,22 @@ const app = new Hono()
 	})
 	.get("/ressources/:em_no/:car_no", async (c) => {
 		const { car_no, em_no } = c.req.param();
-		const driver = await client.query(
-			"SELECT em_no,em_firstname,em_lastname,em_addons ->> 'permis' as em_permis,em_phonenumber,em_addons ->> 'status' as em_status FROM f_employee where em_no = $1",
-			[em_no]
-		);
-		const car = await client.query(
-			"SELECT car_no,car_addons ->> 'marque' as car_marque,car_addons ->> 'modele' as car_modele, car_addons->>'matricule' as car_matricule,car_addons ->> 'registrationcard' as car_registrationcard,car_addons ->> 'status' as car_status  FROM f_car where car_no = $1",
-			[car_no]
-		);
 
-		return c.json({ result: { car: car.rows[0], driver: driver.rows[0] } });
+		const driver = (
+			await client.query(
+				"SELECT em_no,em_firstname,em_lastname,em_addons ->> 'permis' as em_permis,em_phonenumber,em_addons ->> 'status' as em_status FROM f_employee where em_no = $1",
+				[em_no]
+			)
+		)[0];
+
+		const car = (
+			await client.query(
+				"SELECT car_no,car_addons ->> 'marque' as car_marque,car_addons ->> 'modele' as car_modele, car_addons->>'matricule' as car_matricule,car_addons ->> 'registrationcard' as car_registrationcard,car_addons ->> 'status' as car_status  FROM f_car where car_no = $1",
+				[car_no]
+			)
+		)[0];
+
+		return c.json({ result: { car: car, driver: driver } });
 	})
 	.get("/missionsInfoTable", async (c) => {
 		const result =
@@ -87,8 +93,6 @@ const app = new Hono()
 	})
 	.post("/", zValidator("json", missionSchema), async (c) => {
 		const values = c.req.valid("json");
-
-		console.log(values);
 
 		await client.query(
 			"CALL public.insert_mission ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
@@ -164,8 +168,6 @@ const app = new Hono()
 
 			const query = `update public.f_mission 
 			set miss_addons = miss_addons || '{${values_obj}}'::jsonb where miss_no=$1`;
-
-			console.log(query);
 
 			const result = await client.query(` ${query}`, [values.miss_no]);
 

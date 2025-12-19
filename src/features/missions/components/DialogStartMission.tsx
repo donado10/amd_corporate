@@ -204,10 +204,11 @@ export const AlertReturnMissionHandler = ({ mission, label, children }: { childr
 
     const { mutate } = useCreateMission()
 
-    console.log(mission)
+
+
 
     const ReturnMissionHandleSubmit = () => {
-        mutate({ json: mission })
+        mutate({ json: { ...mission, miss_addons: { status: 'créer', documents: mission.miss_addons?.documents ?? [], car: "", driver: "", datedepart: mission.miss_addons?.datedepart, heuredepart: mission.miss_addons?.heuredepart, failedcause: "", startingdate: "", startinghour: "", stopdate: "", stophour: "" } } })
     }
 
 

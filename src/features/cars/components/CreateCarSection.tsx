@@ -70,13 +70,11 @@ const CreateCarSection = () => {
   const { mutate } = useCreateCar();
   const mutateUploadDocuments = useUploadDocumentCar();
   const mutateDeleteDocuments = useDeleteDocumentCar();
-  console.log(form.formState.errors);
 
   const fileUploadCtx = useContext(FileUploadContext);
   const onSubmit = async (values: z.infer<typeof carSchema>) => {
     let filesID: string[] = [];
 
-    console.log(values);
 
     try {
       for (let index = 0; index < values.car_addons.documents.length; index++) {

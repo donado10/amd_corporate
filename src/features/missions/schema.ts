@@ -76,8 +76,8 @@ export const missionSchema = z.object({
 		.object({
 			datedepart: z.string().optional(),
 			heuredepart: z.string().optional(),
-			car: z.string().or(z.number()),
-			driver: z.string().or(z.number()),
+			car: z.string().or(z.number()).optional(),
+			driver: z.string().or(z.number()).optional(),
 			status: z.string(),
 			documents: z.array(missionDocumentSchema),
 			startingdate: z.string().or(z.null()).optional(),

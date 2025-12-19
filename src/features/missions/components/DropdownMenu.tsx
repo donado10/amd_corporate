@@ -31,7 +31,6 @@ export function DropdownMenuAction({
         <DropdownMenuItem
           className="text-red-600"
           onClick={() => {
-            console.log("first");
             fileUploadCtx?.removeFile!(filename);
           }}
         >

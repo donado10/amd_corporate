@@ -19,7 +19,6 @@ const useChangeStatusMission = () => {
     const mutation = useMutation<ResponseType, Error, RequestType>({
         mutationKey: ["status_mission"],
         mutationFn: async ({ json }) => {
-            console.log(json)
             const res = await client.api.missions.statusMission["$post"]({
                 json,
             });

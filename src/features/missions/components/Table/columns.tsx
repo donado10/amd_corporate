@@ -63,7 +63,6 @@ export const columns: ColumnDef<IMissionTableInfo>[] = [
     accessorKey: "miss_budget",
     header: "Budget",
     cell: ({ row }) => {
-      console.log(row.getValue("miss_budget"))
       return (
         <div>
           {row.getValue("miss_budget")}

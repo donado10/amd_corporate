@@ -11,7 +11,10 @@ export const getSelectedMission = async (missionID: string) => {
 
 	return (await response.json()).result[0] as z.infer<typeof missionSchema>;
 };
-export const getRessourceMission = async (driver: string, car: string) => {
+export const getRessourceMission = async (
+	driver: string | number,
+	car: string | number
+) => {
 	const response = await fetch(
 		`http://127.0.0.1:3000/api/missions/ressources/${driver}/${car}`
 	);

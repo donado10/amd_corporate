@@ -196,7 +196,6 @@ const MissionDisplaySection = ({
 
   let ressourceMissionAvailable = false
 
-  console.log(mission)
 
   if (ressources?.car?.car_status && ressources?.driver?.em_status) {
     ressourceMissionAvailable = ressources.car?.car_status === 'disponible' && ressources.driver?.em_status === 'disponible'
