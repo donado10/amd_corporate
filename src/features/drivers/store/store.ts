@@ -1,54 +1,38 @@
 import { create } from "zustand";
+import { TDriverSchema, TDriverTableInfoSchema } from "../interface";
+import { driverTableInfo } from "../schema";
 
-interface ICartContent {
-	items: IDocument[];
-}
-interface ICartAction {
-	initItems: (items: IDocument[]) => void;
-	setItem: (item: IDocument) => void;
-	removeItem: (ref: string) => void;
-	cleanCart: () => void;
+interface IFilter {
+	availability: string | null;
+	contract_type: string | null;
+	driver_name: string | null;
 }
 
-interface IFeatState extends ICartContent, ICartAction {
-	status: number;
+interface IDriverState {
+	drivers: TDriverSchema[];
+	setDrivers: (items: TDriverSchema[]) => void;
+	driverTableInfo: TDriverTableInfoSchema[];
+	setDriverTableInfo: (items: TDriverTableInfoSchema[]) => void;
+	filter: IFilter;
+	setFilter: (filter: IFilter) => void;
+	clear: () => void;
 }
 
-export const useCartStore = create<IFeatState>()((set) => ({
-	items: [],
-	status: 0,
-	initItems: (itemsDoc: IDocument[]) =>
-		set((state) => {
-			state.cleanCart();
-			state.status = 1;
-			return { items: [...itemsDoc] };
-		}),
-	setItem: (item: IDocument) =>
-		set((state) => {
-			if (
-				state.items.length > 0 &&
-				state.items.find((it) => it.entete.piece === item.entete.piece)
-			) {
-				return { items: [...state.items] };
-			}
+export const useDriverStore = create<IDriverState>()((set) => ({
+	drivers: [],
+	driverTableInfo: [],
+	filter: { availability: null, contract_type: null, driver_name: null },
+	setDrivers: (drivers: TDriverSchema[]) => set({ drivers: [...drivers] }),
 
-			state.status = 1;
-
-			return { items: [item, ...state.items] };
+	setDriverTableInfo: (drivers: TDriverTableInfoSchema[]) =>
+		set({
+			driverTableInfo: [...drivers],
 		}),
-	removeItem: (ref: string) =>
-		set((state) => {
-			if (state.items.length === 1) {
-				state.status = 0;
-			}
-			return {
-				items: state.items.filter((it) => it.entete.piece != ref),
-			};
+	setFilter: (filter: IFilter) => set({ filter: { ...filter } }),
+	clear: () =>
+		set({
+			drivers: [],
+			driverTableInfo: [],
+			filter: { availability: null, contract_type: null, driver_name: null },
 		}),
-	cleanCart: () => {
-		return set((state) => {
-			state.status = 0;
-			return { items: [] };
-		});
-	},
 }));

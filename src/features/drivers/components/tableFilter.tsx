@@ -31,9 +31,13 @@ export function SelectAvailability({
     </Select>
   );
 }
-export function SelectContractType() {
+export function SelectContractType({
+  onAction,
+}: {
+  onAction: (value: string) => void;
+}) {
   return (
-    <Select>
+    <Select onValueChange={(value) => onAction(value)}>
       <SelectTrigger className="w-fit">
         <SelectValue className=" border-none" placeholder="Type de contrat" />
       </SelectTrigger>
