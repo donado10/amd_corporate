@@ -39,7 +39,9 @@ const MissionSection = () => {
 
   return (
     <section className="flex flex-col">
+
       <span className="text-2xl font-semibold text-primary mb-8">Missions</span>
+
 
       <div className="flex justify-between gap-4 mb-8">
         <MissionCardStatus title="ECHOUEES" value={99} color="bg-red-600" />

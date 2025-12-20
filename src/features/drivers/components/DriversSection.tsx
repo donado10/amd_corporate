@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import TableDriverContainer from "./TableContainer";
+import AddIcon from "@/assets/add.svg";
+
 
 type Props = {};
 
@@ -36,11 +38,38 @@ const DriverCardStatus = ({
 };
 
 const DriversSection = (props: Props) => {
+  const pathname = usePathname();
+
   return (
     <section className="flex flex-col">
-      <span className="text-2xl font-semibold text-primary mb-8">
-        Chauffeurs
-      </span>
+      <div className="flex items-center justify-between mb-8">
+
+        <span className="  text-2xl font-semibold text-primary ">
+          Chauffeurs
+        </span>
+
+        <div>
+
+          <Button
+            className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
+            variant={"outline"}
+            asChild
+          >
+            <Link href={pathname + "/create"} className="w-fit">
+              <span>
+                <Image
+                  src={AddIcon}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className=""
+                />
+              </span>
+              <span>Ajouter un chauffeur</span>
+            </Link>
+          </Button>
+        </div>
+      </div>
       <div className="flex justify-between gap-4 mb-8">
         <DriverCardStatus title="Non Conforme" value={99} color="bg-red-600" />
         <DriverCardStatus
