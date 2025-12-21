@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import TableDriverContainer from "./TableContainer";
 import GearIcon from "@/assets/gear.svg";
 import { DropdownMenuSection } from "./DropdownMenuSection";
+import useGetStatDriver from "../api/use-get-stats";
 
 
 type Props = {};
@@ -37,6 +38,29 @@ const DriverCardStatus = ({
     </Card>
   );
 };
+
+const DriverCardStatusContainer = () => {
+  const { data, isPending } = useGetStatDriver()
+
+  if (isPending) {
+    return <></>
+  }
+
+  if (!data) {
+    return <></>
+  }
+
+
+  return <div className="flex justify-between gap-4 mb-8">
+    <DriverCardStatus title="Non Conforme" value={data.result.non_conforme} color="bg-red-600" />
+    <DriverCardStatus
+      title="Indisponible"
+      value={data.result.indisponible}
+      color="bg-[#FF8D28]"
+    />
+    <DriverCardStatus title="Disponible" value={data.result.disponible} color="bg-green-600" />
+  </div>
+}
 
 const DriversSection = (props: Props) => {
   const pathname = usePathname();
@@ -71,15 +95,7 @@ const DriversSection = (props: Props) => {
           </DropdownMenuSection>
         </div>
       </div>
-      <div className="flex justify-between gap-4 mb-8">
-        <DriverCardStatus title="Non Conforme" value={99} color="bg-red-600" />
-        <DriverCardStatus
-          title="Indisponible"
-          value={50}
-          color="bg-[#FF8D28]"
-        />
-        <DriverCardStatus title="Disponible" value={40} color="bg-green-600" />
-      </div>
+      <DriverCardStatusContainer />
       <div>
         <TableDriverContainer />
       </div>

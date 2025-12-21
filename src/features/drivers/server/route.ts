@@ -26,6 +26,18 @@ const app = new Hono()
 
 		return c.json({ result: result.rows });
 	})
+	.get("/statsAvailability", async (c) => {
+		const result = await client.query(
+			`SELECT
+			SUM(CASE WHEN em_addons ->> 'status' = 'disponible' THEN 1 ELSE 0 END) AS disponible,
+			SUM(CASE WHEN em_addons ->> 'status' = 'non_conforme' THEN 1 ELSE 0 END) AS non_conforme,
+			SUM(CASE WHEN em_addons ->> 'status' = 'indisponible' THEN 1 ELSE 0 END) AS indisponible
+			FROM public.f_employee `
+		);
+
+		console.log(result.rows[0]);
+		return c.json({ result: result.rows[0] });
+	})
 	.get("/driversInfoTable", async (c) => {
 		const result =
 			await client.query(`select em_no, (em_firstname || ' ' || em_lastname) as em_fullname,
