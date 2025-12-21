@@ -10,9 +10,9 @@ import { toast } from "sonner";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import TableDriverContainer from "./TableContainer";
-import GearIcon from "@/assets/gear.svg";
 import { DropdownMenuSection } from "./DropdownMenuSection";
 import useGetStatDriver from "../api/use-get-stats";
+
 
 
 type Props = {};
@@ -74,25 +74,7 @@ const DriversSection = (props: Props) => {
         </span>
 
         <div>
-          <DropdownMenuSection>
-
-            <Button
-              className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
-              variant={"outline"}
-
-            >
-              <span>
-                <Image
-                  src={GearIcon}
-                  alt=""
-                  width={24}
-                  height={24}
-                  className=""
-                />
-              </span>
-              <span>Actions</span>
-            </Button>
-          </DropdownMenuSection>
+          <DropdownMenuSection items={[{ label: "Ajouter un chauffeur", link: pathname + '/create' }]} />
         </div>
       </div>
       <DriverCardStatusContainer />
