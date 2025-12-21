@@ -35,7 +35,6 @@ const app = new Hono()
 			FROM public.f_employee `
 		);
 
-		console.log(result.rows[0]);
 		return c.json({ result: result.rows[0] });
 	})
 	.get("/driversInfoTable", async (c) => {

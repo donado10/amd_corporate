@@ -6,9 +6,10 @@ import DotsIcon from "@/assets/dots.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { DropdownMenuTable } from "../DropdownMenuTable";
+import TrierIcon from "@/assets/trier.svg";
+
 
 const StatusDisplay = ({ value }: { value: string }) => {
-  console.log(value)
   const MStatusDisplay = new Map<string, string>([
     ["disponible", "bg-green-600"],
     ["en_mission", "bg-[#FF8D28]"],
@@ -32,35 +33,105 @@ const StatusDisplay = ({ value }: { value: string }) => {
 export const columns: ColumnDef<ICarTableInfo>[] = [
   {
     accessorKey: "car_matricule",
-    header: "Matricule",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0 flex items-center justify-between w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>
+
+            Matricule
+          </span>
+          <span><Image src={TrierIcon} alt="" width={16} height={16} /></span>
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("car_matricule")}</div>
     ),
   },
   {
     accessorKey: "car_modele",
-    header: "Modele",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0 flex items-center justify-between w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>
+
+            Modele
+          </span>
+          <span><Image src={TrierIcon} alt="" width={16} height={16} /></span>
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("car_modele")}</div>
     ),
   },
   {
     accessorKey: "car_fullname",
-    header: "Chauffeur assigné",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0 flex items-center justify-between w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>
+
+            Chauffeur assigné
+          </span>
+          <span><Image src={TrierIcon} alt="" width={16} height={16} /></span>
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("car_fullname") ?? 'N/A'}</div>
     ),
   },
   {
     accessorKey: "car_mileage",
-    header: "Kilométrage",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0 flex items-center justify-between w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>
+
+            Kilométrage
+          </span>
+          <span><Image src={TrierIcon} alt="" width={16} height={16} /></span>
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("car_mileage")} KM</div>
     ),
   },
   {
     accessorKey: "car_status",
-    header: "Status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0 flex items-center justify-between w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>
+
+            Status
+          </span>
+          <span><Image src={TrierIcon} alt="" width={16} height={16} /></span>
+        </Button>
+      )
+    },
     cell: ({ row }) => (
       <>
         <StatusDisplay value={row.getValue("car_status")} />

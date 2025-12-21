@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "./table";
 
 import { Card } from "@/components/ui/card";
@@ -10,48 +10,61 @@ import Link from "next/link";
 import Image from "next/image";
 import AddIcon from "@/assets/add.svg";
 import { usePathname } from "next/navigation";
-import { SelectAvailability, SelectContractType } from "../tableFilter";
+import { SelectStatus } from "../tableFilter";
 import useGetCarInfoTable from "../../api/use-get-mission-info-table";
+import Search from "../Search";
+import { useMissionStore } from "../../store/store";
+import { TMissionTableInfoSchema } from "../../interface";
 
 const TableMissionContainer = () => {
   const pathname = usePathname();
 
   const { data, isPending } = useGetCarInfoTable();
+  const missionStore = useMissionStore()
+  const [filterMission, setFilterMission] = useState<TMissionTableInfoSchema[]>(missionStore.missionTableInfo)
+
+  useEffect(() => {
+
+    if (!isPending && data?.result && data.result.length > 0) {
+      missionStore.setMissionTableInfo(data.result)
+      setFilterMission(data.result)
+    } else {
+      missionStore.setMissionTableInfo([])
+
+    }
+
+  }, [isPending, JSON.stringify(data)])
+
+  useEffect(() => {
+
+    const missionsByName = missionStore.filter.mission_name ?
+      missionStore.missionTableInfo.filter((mission) => { return mission.miss_intitule.toLowerCase().includes(missionStore.filter.mission_name!.toLowerCase()) })
+      : missionStore.missionTableInfo
+
+
+    const missionsByStatus = missionStore.filter.status ?
+      missionsByName.filter((mission) => { return mission.miss_status.toLowerCase() === (missionStore.filter.status!.toLowerCase()) })
+      : missionsByName
+
+    setFilterMission(missionsByStatus)
+  }, [JSON.stringify(missionStore.filter)])
+
 
 
   return (
     <div className="flex flex-col gap-8">
       <div className=" flex items-center justify-between">
         <div>
-          <Button
-            className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
-            variant={"outline"}
-            asChild
-          >
-            <Link href={pathname + "/create"} className="w-fit">
-              <span>
-                <Image
-                  src={AddIcon}
-                  alt=""
-                  width={24}
-                  height={24}
-                  className=""
-                />
-              </span>
-              <span>Ajouter une mission</span>
-            </Link>
-          </Button>
+          <Search placeholder="Rechercher une mission" onAction={(e: React.ChangeEvent<HTMLInputElement>) => missionStore.setFilter({ ...missionStore.filter, mission_name: e.currentTarget.value.trim() })} />
+
         </div>
         <div className="flex items-center gap-2">
-          <SelectAvailability onAction={() => { }} />
-          <SelectContractType />
+          <SelectStatus onAction={(value) => { missionStore.setFilter({ ...missionStore.filter, status: value }) }} />
         </div>
       </div>
       <DataTable
         data={
-          !isPending && data.result && data.result.length > 0
-            ? (data.result as IMissionTableInfo[])
-            : []
+          filterMission
         }
       />
     </div>

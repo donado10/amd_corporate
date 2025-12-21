@@ -9,29 +9,34 @@ import AddIcon from "@/assets/add.svg";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import TableMissionContainer from "./Table/TableContainer";
+import { DropdownHeaderMenuSection } from "@/components/DropdownHeaderMenuSection";
+import { CardStatus } from "@/components/CardStatus";
+import useGetStatMission from "../api/use-get-stats";
 
 
-const MissionCardStatus = ({
-  title,
-  value,
-  color,
-}: {
-  title: string;
-  value: number;
-  color: string;
-}) => {
-  return (
-    <Card className="relative bg-secondary p-2 flex gap-0 flex-col border-none   w-1/3">
-      <span
-        className={cn("rounded-full w-6 h-6 absolute  top-2 right-2  ", color)}
-      ></span>
-      <CardTitle className="mb-4">{title}</CardTitle>
-      <CardContent className=" p-0">
-        <span className="font-bold text-primary text-xl">{value}</span>
-      </CardContent>
-    </Card>
-  );
-};
+const DriverCardStatusContainer = () => {
+  const { data, isPending } = useGetStatMission()
+
+  if (isPending) {
+    return <></>
+  }
+
+  if (!data) {
+    return <></>
+  }
+
+
+  return <div className="flex justify-between gap-4 mb-8">
+    <CardStatus title="Echouées" value={data.result.echouees} color="bg-red-600" />
+    <CardStatus
+      title="En Cours"
+      value={data.result.en_cours}
+      color="bg-[#FF8D28]"
+    />
+    <CardStatus title="Terminées" value={data.result.terminee} color="bg-green-600" />
+    <CardStatus title="Créer" value={data.result.créer} color="bg-[#FFCC00]" />
+  </div>
+}
 
 
 const MissionSection = () => {
@@ -40,19 +45,19 @@ const MissionSection = () => {
   return (
     <section className="flex flex-col">
 
-      <span className="text-2xl font-semibold text-primary mb-8">Missions</span>
+      <div className="flex items-center justify-between mb-8">
 
+        <span className="  text-2xl font-semibold text-primary ">
+          Missions
+        </span>
 
-      <div className="flex justify-between gap-4 mb-8">
-        <MissionCardStatus title="ECHOUEES" value={99} color="bg-red-600" />
-        <MissionCardStatus
-          title="EN COURS"
-          value={50}
-          color="bg-[#FF8D28]"
-        />
-        <MissionCardStatus title="TERMINEES" value={40} color="bg-green-600" />
-        <MissionCardStatus title="CREER" value={40} color="bg-[#FFCC00]" />
+        <div>
+          <DropdownHeaderMenuSection items={[{ label: "Ajouter une mission", link: pathname + '/create' }]} />
+        </div>
       </div>
+
+
+      <DriverCardStatusContainer />
       <div>
         <TableMissionContainer />
       </div>

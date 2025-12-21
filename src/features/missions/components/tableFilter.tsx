@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectAvailability({
+export function SelectStatus({
   onAction,
 }: {
   onAction: (value: string) => void;
@@ -18,14 +18,15 @@ export function SelectAvailability({
   return (
     <Select onValueChange={(value) => onAction(value)}>
       <SelectTrigger className="w-fit">
-        <SelectValue className=" border-none" placeholder="Disponibilité" />
+        <SelectValue className=" border-none" placeholder="Status" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Disponibilité</SelectLabel>
-          <SelectItem value="disponible">Disponible</SelectItem>
-          <SelectItem value="non_conforme">Non conforme</SelectItem>
-          <SelectItem value="indisponible">Indisponible</SelectItem>
+          <SelectItem value="echouees">Echouée</SelectItem>
+          <SelectItem value="terminees">Terminée</SelectItem>
+          <SelectItem value="en_cours">En cours</SelectItem>
+          <SelectItem value="créer">Créer</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

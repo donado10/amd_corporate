@@ -41,6 +41,18 @@ const app = new Hono()
 
 		return c.json({ result: { car: car, driver: driver } });
 	})
+	.get("/statsStatus", async (c) => {
+		const result = await client.query(
+			`SELECT
+				SUM(CASE WHEN miss_addons ->> 'status' = 'echouees' THEN 1 ELSE 0 END) AS echouees,
+				SUM(CASE WHEN miss_addons ->> 'status' = 'en_cours' THEN 1 ELSE 0 END) AS en_cours,
+				SUM(CASE WHEN miss_addons ->> 'status' = 'terminee' THEN 1 ELSE 0 END) AS terminee,
+				SUM(CASE WHEN miss_addons ->> 'status' = 'créer' THEN 1 ELSE 0 END) AS créer
+			FROM public.f_mission`
+		);
+
+		return c.json({ result: result.rows[0] });
+	})
 	.get("/missionsInfoTable", async (c) => {
 		const result =
 			await client.query(`select miss_no,miss_intitule, miss_client ,miss_expectedhourdeparture,
