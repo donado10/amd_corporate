@@ -9,7 +9,7 @@ import Link from "next/link";
 import GearIcon from "@/assets/gear.svg";
 import Image from "next/image";
 
-export function DropdownMenuSection({ items }: { items: { link: string, label: string }[] }) {
+export function DropdownHeaderMenuSection({ items }: { items: { link: string, label: string }[] }) {
 
     return (
         <DropdownMenu>

@@ -22,6 +22,18 @@ const app = new Hono()
 
 		return c.json({ result: result.rows });
 	})
+	.get("/statsAvailability", async (c) => {
+		const result = await client.query(
+			`SELECT
+			SUM(CASE WHEN car_addons ->> 'status' = 'disponible' THEN 1 ELSE 0 END) AS disponible,
+			SUM(CASE WHEN car_addons ->> 'status' = 'en_mission' THEN 1 ELSE 0 END) AS en_mission,
+			SUM(CASE WHEN car_addons ->> 'status' = 'indisponible' THEN 1 ELSE 0 END) AS indisponible
+			FROM public.f_car `
+		);
+
+		console.log(result.rows[0]);
+		return c.json({ result: result.rows[0] });
+	})
 	.get("/marques", async (c) => {
 		const result = await client.query(
 			"SELECT car_addons ->> 'marque' as car_marque FROM f_car "

@@ -24,27 +24,11 @@ export function SelectAvailability({
         <SelectGroup>
           <SelectLabel>Disponibilité</SelectLabel>
           <SelectItem value="disponible">Disponible</SelectItem>
-          <SelectItem value="non_conforme">Non conforme</SelectItem>
+          <SelectItem value="en_mission">En Mission</SelectItem>
           <SelectItem value="indisponible">Indisponible</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
   );
 }
-export function SelectContractType() {
-  return (
-    <Select>
-      <SelectTrigger className="w-fit">
-        <SelectValue className=" border-none" placeholder="Type de contrat" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Contrat</SelectLabel>
-          <SelectItem value="conforme">Stage</SelectItem>
-          <SelectItem value="non_conforme">CDD</SelectItem>
-          <SelectItem value="indisponible">CDI</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-}
+

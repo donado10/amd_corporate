@@ -1,40 +1,14 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ToastSuccess } from "@/components/ToastComponents";
-import { toast } from "sonner";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import TableDriverContainer from "./TableContainer";
-import { DropdownMenuSection } from "./DropdownMenuSection";
+import { DropdownHeaderMenuSection } from "../../../components/DropdownHeaderMenuSection";
 import useGetStatDriver from "../api/use-get-stats";
+import { CardStatus } from "@/components/CardStatus";
 
 
-const CardStatus = ({
-  title,
-  value,
-  color,
-}: {
-  title: string;
-  value: number;
-  color: string;
-}) => {
-  return (
-    <Card className="relative bg-secondary p-2 flex gap-0 flex-col border-none   w-1/3">
-      <span
-        className={cn("rounded-full w-6 h-6 absolute  top-2 right-2  ", color)}
-      ></span>
-      <CardTitle className="mb-4">{title}</CardTitle>
-      <CardContent className=" p-0">
-        <span className="font-bold text-primary text-xl">{value}</span>
-      </CardContent>
-    </Card>
-  );
-};
+
 
 const DriverCardStatusContainer = () => {
   const { data, isPending } = useGetStatDriver()
@@ -71,7 +45,7 @@ const DriversSection = () => {
         </span>
 
         <div>
-          <DropdownMenuSection items={[{ label: "Ajouter un chauffeur", link: pathname + '/create' }]} />
+          <DropdownHeaderMenuSection items={[{ label: "Ajouter un chauffeur", link: pathname + '/create' }]} />
         </div>
       </div>
       <DriverCardStatusContainer />

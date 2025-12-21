@@ -17,6 +17,11 @@ export const MStatus = new Map<string, string>([
 	["non_conforme", "Non Conforme"],
 	["indisponible", "Indisponible"],
 ]);
+export const MStatusCar = new Map<string, string>([
+	["disponible", "Disponible"],
+	["en_mission", "En Mission"],
+	["indisponible", "Indisponible"],
+]);
 export const MStatusMission = new Map<string, string>([
 	["terminees", "Terminée"],
 	["echouees", "Echouée"],

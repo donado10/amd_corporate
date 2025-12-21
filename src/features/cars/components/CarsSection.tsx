@@ -9,6 +9,8 @@ import AddIcon from "@/assets/add.svg";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import TableCarContainer from "@/features/cars/components/Table/TableContainer";
+import { DropdownHeaderMenuSection } from "@/components/DropdownHeaderMenuSection";
+import useGetStatCar from "../api/use-get-stats";
 
 const CarCardStatus = ({
   title,
@@ -32,19 +34,41 @@ const CarCardStatus = ({
   );
 };
 
+const CarCardStatusContainer = () => {
+  const { data, isPending } = useGetStatCar()
+
+  if (isPending) {
+    return <></>
+  }
+
+  if (!data) {
+    return <></>
+  }
+
+
+  return <div className="flex justify-between gap-4 mb-8">
+    <CarCardStatus title="Indisponible" value={data.result.indisponible} color="bg-red-600" />
+    <CarCardStatus title="Disponible" value={data.result.disponible} color="bg-green-600" />
+    <CarCardStatus title="En Mission" value={data.result.en_mission} color="bg-[#FF8D28]" />
+  </div>
+}
+
+
 const CarsSection = () => {
   const pathname = usePathname();
 
   return (
     <section className="flex flex-col">
-      <span className="text-2xl font-semibold text-primary mb-8">
-        Véhicules
-      </span>
-      <div className="flex justify-between gap-4 mb-8">
-        <CarCardStatus title="Non Conforme" value={99} color="bg-red-600" />
-        <CarCardStatus title="Indisponible" value={50} color="bg-[#FF8D28]" />
-        <CarCardStatus title="Disponible" value={40} color="bg-green-600" />
+      <div className="flex items-center justify-between mb-8">
+        <span className="  text-2xl font-semibold text-primary ">
+          Véhicules
+        </span>
+
+        <div>
+          <DropdownHeaderMenuSection items={[{ label: "Ajouter un véhicule", link: pathname + '/create' }]} />
+        </div>
       </div>
+      <CarCardStatusContainer />
       <div>
         <TableCarContainer />
       </div>

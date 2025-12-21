@@ -1,17 +1,18 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { ICarTableInfo } from "./interface";
-import { cn, MStatus } from "@/lib/utils";
+import { cn, MStatus, MStatusCar } from "@/lib/utils";
 import DotsIcon from "@/assets/dots.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { DropdownMenuTable } from "../DropdownMenuTable";
 
 const StatusDisplay = ({ value }: { value: string }) => {
+  console.log(value)
   const MStatusDisplay = new Map<string, string>([
     ["disponible", "bg-green-600"],
-    ["non_conforme", "bg-red-600"],
-    ["indisponible", "bg-[#FF8D28]"],
+    ["en_mission", "bg-[#FF8D28]"],
+    ["indisponible", "bg-red-600"],
   ]);
 
   return (
@@ -22,7 +23,7 @@ const StatusDisplay = ({ value }: { value: string }) => {
           MStatusDisplay.get(value)
         )}
       >
-        {MStatus.get(value)}
+        {MStatusCar.get(value)}
       </div>
     </>
   );
@@ -47,7 +48,7 @@ export const columns: ColumnDef<ICarTableInfo>[] = [
     accessorKey: "car_fullname",
     header: "Chauffeur assigné",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("car_fullname")}</div>
+      <div className="capitalize">{row.getValue("car_fullname") ?? 'N/A'}</div>
     ),
   },
   {

@@ -10,8 +10,9 @@ import Link from "next/link";
 import Image from "next/image";
 import AddIcon from "@/assets/add.svg";
 import { usePathname } from "next/navigation";
-import { SelectAvailability, SelectContractType } from "../tableFilter";
+import { SelectAvailability } from "../tableFilter";
 import useGetCarInfoTable from "../../api/use-get-car-info-table";
+import Search from "@/features/missions/components/Search";
 
 const TableCarContainer = () => {
   const pathname = usePathname();
@@ -22,28 +23,12 @@ const TableCarContainer = () => {
     <div className="flex flex-col gap-8">
       <div className=" flex items-center justify-between">
         <div>
-          <Button
-            className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
-            variant={"outline"}
-            asChild
-          >
-            <Link href={pathname + "/create"} className="w-fit">
-              <span>
-                <Image
-                  src={AddIcon}
-                  alt=""
-                  width={24}
-                  height={24}
-                  className=""
-                />
-              </span>
-              <span>Ajouter un véhicule</span>
-            </Link>
-          </Button>
+          <Search onAction={function (e: React.ChangeEvent<HTMLInputElement>): void {
+            throw new Error("Function not implemented.");
+          }} placeholder={"Recherche un matricule"} />
         </div>
         <div className="flex items-center gap-2">
-          <SelectAvailability onAction={() => {}} />
-          <SelectContractType />
+          <SelectAvailability onAction={() => { }} />
         </div>
       </div>
       <DataTable
