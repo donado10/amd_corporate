@@ -14,10 +14,7 @@ import { DropdownMenuSection } from "./DropdownMenuSection";
 import useGetStatDriver from "../api/use-get-stats";
 
 
-
-type Props = {};
-
-const DriverCardStatus = ({
+const CardStatus = ({
   title,
   value,
   color,
@@ -52,17 +49,17 @@ const DriverCardStatusContainer = () => {
 
 
   return <div className="flex justify-between gap-4 mb-8">
-    <DriverCardStatus title="Non Conforme" value={data.result.non_conforme} color="bg-red-600" />
-    <DriverCardStatus
+    <CardStatus title="Non Conforme" value={data.result.non_conforme} color="bg-red-600" />
+    <CardStatus
       title="Indisponible"
       value={data.result.indisponible}
       color="bg-[#FF8D28]"
     />
-    <DriverCardStatus title="Disponible" value={data.result.disponible} color="bg-green-600" />
+    <CardStatus title="Disponible" value={data.result.disponible} color="bg-green-600" />
   </div>
 }
 
-const DriversSection = (props: Props) => {
+const DriversSection = () => {
   const pathname = usePathname();
 
   return (
