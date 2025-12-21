@@ -114,10 +114,8 @@ const app = new Hono()
 		"/deleteFile",
 		zValidator("json", z.object({ files: z.array(z.string()) })),
 		async (c) => {
-			const fileSchema = z.instanceof(File);
-			const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
-
 			const { files } = c.req.valid("json");
+			const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
 
 			const storage = (await createAdminClient()).storage;
 
@@ -128,12 +126,31 @@ const app = new Hono()
 			return c.json({ message: "files deleted" });
 		}
 	)
-	.delete("/", zValidator("json", driverSchema), async (c) => {
-		const values = c.req.valid("json");
+	.delete("/:driverId", async (c) => {
+		const driverId = c.req.param("driverId");
 
-		const result = await client.query(
+		const resultSelect = await client.query(
+			"SELECT em_addons ->> 'documents' as em_documents FROM public.f_employee where em_type=1 and em_no=$1",
+			[driverId]
+		);
+
+		const documents = JSON.parse(resultSelect.rows[0].em_documents).map(
+			(doc) => doc.file
+		);
+
+		console.log(documents);
+
+		const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
+
+		const storage = (await createAdminClient()).storage;
+
+		for (let index = 0; index < documents.length; index++) {
+			const response = await storage.deleteFile(bucket_id, documents[index]);
+		}
+
+		const resultDelete = await client.query(
 			"DELETE FROM public.f_employee WHERE em_no=$1",
-			[values.em_no]
+			[driverId]
 		);
 
 		return c.json({ message: "chauffeur supprimé" });

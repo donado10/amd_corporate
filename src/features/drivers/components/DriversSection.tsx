@@ -10,7 +10,8 @@ import { toast } from "sonner";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import TableDriverContainer from "./TableContainer";
-import AddIcon from "@/assets/add.svg";
+import GearIcon from "@/assets/gear.svg";
+import { DropdownMenuSection } from "./DropdownMenuSection";
 
 
 type Props = {};
@@ -49,25 +50,25 @@ const DriversSection = (props: Props) => {
         </span>
 
         <div>
+          <DropdownMenuSection>
 
-          <Button
-            className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
-            variant={"outline"}
-            asChild
-          >
-            <Link href={pathname + "/create"} className="w-fit">
+            <Button
+              className=" border-2 border-primary hover:bg-primary hover:text-white flex items-center justify-between"
+              variant={"outline"}
+
+            >
               <span>
                 <Image
-                  src={AddIcon}
+                  src={GearIcon}
                   alt=""
                   width={24}
                   height={24}
                   className=""
                 />
               </span>
-              <span>Ajouter un chauffeur</span>
-            </Link>
-          </Button>
+              <span>Actions</span>
+            </Button>
+          </DropdownMenuSection>
         </div>
       </div>
       <div className="flex justify-between gap-4 mb-8">
