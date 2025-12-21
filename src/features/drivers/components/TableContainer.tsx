@@ -34,8 +34,17 @@ const TableDriverContainer = () => {
       driverStore.driverTableInfo.filter((driver) => { return driver.em_fullname.toLowerCase().includes(driverStore.filter.driver_name!.toLowerCase()) })
       : driverStore.driverTableInfo
 
-    setFilterDriver(driversByName)
 
+    const driversByAvailability = driverStore.filter.availability ?
+      driversByName.filter((driver) => { return driver.em_status.toLowerCase() === (driverStore.filter.availability!.toLowerCase()) })
+      : driversByName
+
+    console.log(driversByAvailability)
+    const driversByContract = driverStore.filter.contract_type ?
+      driversByAvailability.filter((driver) => { console.log("aaa", driver.em_contract); return driver.em_contract.toLowerCase() === (driverStore.filter.contract_type!.toLowerCase()) })
+      : driversByAvailability
+
+    setFilterDriver(driversByContract)
   }, [JSON.stringify(driverStore.filter)])
 
 

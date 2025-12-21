@@ -32,7 +32,8 @@ const app = new Hono()
       em_addons ->> 'matricule' as em_matricule,
       em_addons ->> 'vehicule' as em_car
       ,em_addons ->> 'last_mission' as em_lastmission,
-      em_addons ->> 'status' as em_status from f_employee `);
+      em_addons ->> 'status' as em_status,
+	  em_addons ->> 'contract_type' as em_contract from f_employee `);
 
 		return c.json({ result: result.rows });
 	})

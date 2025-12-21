@@ -17,6 +17,7 @@ export const driverTableInfo = z.object({
 	em_fullname: z.string(),
 	em_car: z.array(z.string()),
 	em_lastmission: z.string(),
+	em_contract: z.string(),
 });
 
 export const driverSchema = z.object({

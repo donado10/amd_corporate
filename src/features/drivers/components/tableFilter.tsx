@@ -44,9 +44,9 @@ export function SelectContractType({
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Contrat</SelectLabel>
-          <SelectItem value="conforme">Stage</SelectItem>
-          <SelectItem value="non_conforme">CDD</SelectItem>
-          <SelectItem value="indisponible">CDI</SelectItem>
+          <SelectItem value="Stage">Stage</SelectItem>
+          <SelectItem value="CDD">CDD</SelectItem>
+          <SelectItem value="CDI">CDI</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
