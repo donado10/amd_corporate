@@ -181,6 +181,24 @@ const app = new Hono()
 			const query = `update public.f_mission 
 			set miss_addons = miss_addons || '{${values_obj}}'::jsonb where miss_no=$1`;
 
+			if (values.status === "en_cours") {
+				await client.query(
+					`update public.f_employee em
+				set em_addons = em.em_addons || '{"status":"indisponible"}'::JSONB
+				FROM public.f_mission miss
+				where (miss.miss_addons->>'driver')::INT = em.em_no::INT and miss.miss_no=$1`,
+					[values.miss_no]
+				);
+
+				await client.query(
+					`update public.f_car car
+				set car_addons = car.car_addons || '{"status":"en_mission"}'::JSONB
+				FROM public.f_mission miss
+				where (miss.miss_addons->>'car')::INT = car.car_no::INT and miss.miss_no=$1`,
+					[values.miss_no]
+				);
+			}
+
 			const result = await client.query(` ${query}`, [values.miss_no]);
 
 			return c.json({ message: "status changé", status: "" });

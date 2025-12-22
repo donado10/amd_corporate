@@ -102,6 +102,29 @@ const app = new Hono()
 
 		return c.json({ message: "chauffeur crée" });
 	})
+	.put("/", zValidator("json", driverSchema), async (c) => {
+		const values = c.req.valid("json");
+
+		const result = await client.query(
+			"CALL public.update_employee ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
+			[
+				values.em_no,
+				values.em_firstname,
+				values.em_lastname,
+				values.em_birthday,
+				values.em_nationality,
+				values.em_birthplace,
+				values.em_address,
+				values.em_phonenumber,
+				values.em_emergencynumber,
+				values.em_email,
+				Number(values.em_type),
+				values.em_addons,
+			]
+		);
+
+		return c.json({ message: "chauffeur mise à jour" });
+	})
 	.post("/uploadFile", zValidator("form", driverDocumentSchema), async (c) => {
 		const fileSchema = z.instanceof(File);
 		const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
@@ -121,6 +144,7 @@ const app = new Hono()
 
 		return c.json({ message: "files uploaded", id: file_id });
 	})
+
 	.delete(
 		"/deleteFile",
 		zValidator("json", z.object({ files: z.array(z.string()) })),

@@ -2,14 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { DataTable } from "./table";
-
-import { Card } from "@/components/ui/card";
-import { IMissionTableInfo } from "./interface";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
-import AddIcon from "@/assets/add.svg";
-import { usePathname } from "next/navigation";
 import { SelectStatus } from "../tableFilter";
 import useGetCarInfoTable from "../../api/use-get-mission-info-table";
 import Search from "../Search";
@@ -17,8 +9,6 @@ import { useMissionStore } from "../../store/store";
 import { TMissionTableInfoSchema } from "../../interface";
 
 const TableMissionContainer = () => {
-  const pathname = usePathname();
-
   const { data, isPending } = useGetCarInfoTable();
   const missionStore = useMissionStore()
   const [filterMission, setFilterMission] = useState<TMissionTableInfoSchema[]>(missionStore.missionTableInfo)
@@ -56,7 +46,6 @@ const TableMissionContainer = () => {
       <div className=" flex items-center justify-between">
         <div>
           <Search placeholder="Rechercher une mission" onAction={(e: React.ChangeEvent<HTMLInputElement>) => missionStore.setFilter({ ...missionStore.filter, mission_name: e.currentTarget.value.trim() })} />
-
         </div>
         <div className="flex items-center gap-2">
           <SelectStatus onAction={(value) => { missionStore.setFilter({ ...missionStore.filter, status: value }) }} />

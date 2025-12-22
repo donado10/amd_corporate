@@ -19,6 +19,7 @@ import { FileUploadContext } from "./context/file-upload";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { AlertDialogDeleteDriver } from "./DialogDeleteDriver";
+import { AlertDialogUpdateDriver } from "./DialogUpdateDriver";
 
 
 
@@ -32,6 +33,7 @@ export function DropdownMenuTable({
 }) {
   const pathname = usePathname();
   const [openDialogDelete, setOpenDialogDelete] = useState(false)
+  const [openDialogUpdate, setOpenDialogUpdate] = useState(false)
 
   return (
     <>
@@ -49,12 +51,16 @@ export function DropdownMenuTable({
           </DropdownMenuItem>
 
 
+          <DropdownMenuItem className="text-blue-600" onClick={() => setOpenDialogUpdate(true)}>
+            Modifier
+          </DropdownMenuItem>
           <DropdownMenuItem className="text-red-600" onClick={() => setOpenDialogDelete(true)}>
             Supprimer
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialogDeleteDriver driver={driver} open={openDialogDelete} onOpen={(value: boolean) => { setOpenDialogDelete(value) }} />
+      <AlertDialogUpdateDriver driver={driver} open={openDialogUpdate} onOpen={(value: boolean) => { setOpenDialogUpdate(value) }} />
 
     </>
   );
