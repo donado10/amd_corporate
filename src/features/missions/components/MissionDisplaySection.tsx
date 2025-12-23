@@ -117,7 +117,6 @@ const MissionCardStatusContainer = ({ miss_no }: { miss_no: string }) => {
     return <></>
   }
 
-  console.log(data)
 
   return <div className="flex justify-between gap-4 mb-8 w-full">
     <CardStatus color="bg-gray-300" title="Coût carburant réel" value={data.result.miss_actualfuelcost ? data.result.miss_actualfuelcost + ' ' + 'FCFA' : '0'} />
