@@ -26,6 +26,8 @@ import CancelIcon from "@/assets/cancel.svg"
 import ReturnIcon from "@/assets/return.svg"
 import DoneIcon from "@/assets/done.svg"
 import { AlertDialogChangeStatusMission, AlertReturnMissionHandler } from "./DialogStartMission";
+import { CardStatus } from "@/components/CardStatus";
+import useGetStatSingleMission from "../api/use-get-stat-single-mission";
 
 const CardFileMission = ({
   document,
@@ -104,27 +106,26 @@ const CardInfoMission = ({
   );
 };
 
-const MissionCardStatus = ({
-  title,
-  value,
-  color,
-}: {
-  title: string;
-  value: number;
-  color: string;
-}) => {
-  return (
-    <Card className="relative bg-secondary p-2 flex gap-0 flex-col border-none   w-1/3">
-      <span
-        className={cn("rounded-full w-6 h-6 absolute  top-2 right-2  ", color)}
-      ></span>
-      <CardTitle className="mb-4">{title}</CardTitle>
-      <CardContent className=" p-0">
-        <span className="font-bold text-primary text-xl">{value}</span>
-      </CardContent>
-    </Card>
-  );
-};
+const MissionCardStatusContainer = ({ miss_no }: { miss_no: string }) => {
+  const { data, isPending } = useGetStatSingleMission(miss_no)
+
+  if (isPending) {
+    return <></>
+  }
+
+  if (!data) {
+    return <></>
+  }
+
+  console.log(data)
+
+  return <div className="flex justify-between gap-4 mb-8 w-full">
+    <CardStatus color="bg-gray-300" title="Coût carburant réel" value={data.result.miss_actualfuelcost ? data.result.miss_actualfuelcost + ' ' + 'FCFA' : '0'} />
+    <CardStatus color="bg-gray-300" title="Consommation réelle" value={data.result.miss_actualconsumption ? data.result.miss_actualconsumption + ' ' + 'L' : '0'} />
+    <CardStatus color="bg-gray-300" title="Coût total réel" value={data.result.miss_actualtotalcost ? data.result.miss_actualtotalcost + ' ' + 'FCFA' : '0'} />
+    <CardStatus color="bg-gray-300" title="Variance budget" value={data.result.miss_budgetvariance ? data.result.miss_budgetvariance + ' ' + 'FCFA' : '0'} />
+  </div>
+}
 
 const CardInfoRessourceMission = ({
   title,
@@ -217,10 +218,7 @@ const MissionDisplaySection = ({
         <div><StatusDisplay value={mission.miss_addons?.status ?? ""} /></div>
       </div>
       <div className="flex justify-between gap-4 mb-8">
-        <MissionCardStatus color="bg-gray-300" title="Coût carburant réel" value={0} />
-        <MissionCardStatus color="bg-gray-300" title="Consommation réelle" value={0} />
-        <MissionCardStatus color="bg-gray-300" title="Coût total réel" value={0} />
-        <MissionCardStatus color="bg-gray-300" title="Variance budget" value={0} />
+        <MissionCardStatusContainer miss_no={mission.miss_no} />
       </div>
       <div className="flex justify-between ">
         <div className="w-3/5 ">

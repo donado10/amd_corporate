@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,8 @@ type ResponseType = InferResponseType<(typeof client.api.missions)["$put"]>;
 
 const useUpdateMission = () => {
     const router = useRouter();
+    const queryClient = useQueryClient();
+
     const mutation = useMutation<ResponseType, Error, RequestType>({
         mutationKey: ["update_car"],
         mutationFn: async ({ json }) => {
@@ -19,7 +21,9 @@ const useUpdateMission = () => {
 
             return res.json();
         },
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["Missions_info_table"] });
+
             router.refresh();
         },
     });

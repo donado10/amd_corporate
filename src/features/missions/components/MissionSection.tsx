@@ -14,7 +14,7 @@ import { CardStatus } from "@/components/CardStatus";
 import useGetStatMission from "../api/use-get-stats";
 
 
-const DriverCardStatusContainer = () => {
+const MissionCardStatusContainer = () => {
   const { data, isPending } = useGetStatMission()
 
   if (isPending) {
@@ -33,7 +33,7 @@ const DriverCardStatusContainer = () => {
       value={data.result.en_cours}
       color="bg-[#FF8D28]"
     />
-    <CardStatus title="Terminées" value={data.result.terminee} color="bg-green-600" />
+    <CardStatus title="Terminées" value={data.result.terminees} color="bg-green-600" />
     <CardStatus title="Créer" value={data.result.créer} color="bg-[#FFCC00]" />
   </div>
 }
@@ -57,7 +57,7 @@ const MissionSection = () => {
       </div>
 
 
-      <DriverCardStatusContainer />
+      <MissionCardStatusContainer />
       <div>
         <TableMissionContainer />
       </div>

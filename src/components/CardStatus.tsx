@@ -7,7 +7,7 @@ export const CardStatus = ({
     color,
 }: {
     title: string;
-    value: number;
+    value: string;
     color: string;
 }) => {
     return (

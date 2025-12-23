@@ -46,9 +46,23 @@ const app = new Hono()
 			`SELECT
 				SUM(CASE WHEN miss_addons ->> 'status' = 'echouees' THEN 1 ELSE 0 END) AS echouees,
 				SUM(CASE WHEN miss_addons ->> 'status' = 'en_cours' THEN 1 ELSE 0 END) AS en_cours,
-				SUM(CASE WHEN miss_addons ->> 'status' = 'terminee' THEN 1 ELSE 0 END) AS terminee,
+				SUM(CASE WHEN miss_addons ->> 'status' = 'terminees' THEN 1 ELSE 0 END) AS terminees,
 				SUM(CASE WHEN miss_addons ->> 'status' = 'créer' THEN 1 ELSE 0 END) AS créer
 			FROM public.f_mission`
+		);
+
+		return c.json({ result: result.rows[0] });
+	})
+	.get("/statMission/:miss_no", async (c) => {
+		const miss_no = c.req.param("miss_no");
+		const result = await client.query(
+			`SELECT
+				miss_addons ->> 'actualfuelcost' AS miss_actualfuelcost,
+				miss_addons ->> 'actualconsumption'  AS miss_actualconsumption,
+				miss_addons ->> 'actualtotalcost'  AS miss_actualtotalcost,
+				miss_addons ->> 'budgetvariance'  AS miss_budgetvariance
+			FROM public.f_mission where miss_no=$1`,
+			[miss_no]
 		);
 
 		return c.json({ result: result.rows[0] });

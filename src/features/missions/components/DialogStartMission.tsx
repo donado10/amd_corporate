@@ -93,14 +93,21 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
     const { data, isPending } = useGetMission(miss_no)
 
     if (isPending) {
-        return
+        return <></>
     }
 
     const mission = data.result[0] as TMissionSchema
 
 
+    console.log(form.formState.errors)
     const changeStatusMissionHandler = async (values: z.infer<typeof missionActionSchema>) => {
-        mutate({ json: { miss_no: miss_no, status: values.status, stopdate: values.stopdate, stophour: values.stophour } })
+        mutate({
+            json: {
+                miss_no: miss_no, status: values.status, stopdate: values.stopdate,
+                stophour: values.stophour, actualconsumption: values.actualconsumption,
+                actualfuelcost: values.actualfuelcost, actualtotalcost: values.actualtotalcost, budgetvariance: values.budgetvariance
+            }
+        })
     }
 
 
@@ -149,7 +156,7 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
                                 <FormItem>
                                     <FormLabel>Coût carburant réel</FormLabel>
                                     <FormControl>
-                                        <Input  {...field} value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input type="number"  {...field} value={Number(field.value)} onChange={(e) => form.setValue('actualfuelcost', Number(e.currentTarget.value))} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -164,7 +171,7 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
                                 <FormItem>
                                     <FormLabel>Consommation réelle</FormLabel>
                                     <FormControl>
-                                        <Input  {...field} value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input type="number"  {...field} value={Number(field.value)} onChange={(e) => form.setValue('actualconsumption', Number(e.currentTarget.value))} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -179,7 +186,7 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
                                 <FormItem>
                                     <FormLabel>Coût total réel</FormLabel>
                                     <FormControl>
-                                        <Input  {...field} value={field.value as number} onChange={(e) => { form.setValue('budgetvariance', (Number(e.currentTarget.value) - Number(mission.miss_expectedtotalbudget))); form.setValue('actualtotalcost', e.currentTarget.value) }} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input type="number"  {...field} value={Number(field.value)} onChange={(e) => { form.setValue('budgetvariance', Number(e.currentTarget.value) - Number(mission.miss_expectedtotalbudget)); form.setValue('actualtotalcost', e.currentTarget.valueAsNumber) }} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -194,7 +201,7 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
                                 <FormItem>
                                     <FormLabel>Variance Budget</FormLabel>
                                     <FormControl>
-                                        <Input  {...field} value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" disabled />
+                                        <Input {...field} type="number" value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" disabled />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
