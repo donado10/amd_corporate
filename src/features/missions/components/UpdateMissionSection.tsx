@@ -11,65 +11,75 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Children, ReactNode, useContext } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { driverSchema } from "../schema";
+import { missionSchema } from "../schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ToastSuccess } from "@/components/ToastComponents";
-import useGetDriver from "../api/use-get-driver";
-import useUpdateDriver from "../api/use-update-driver";
+import useGetMission from "../api/use-get-mission";
+//import useUpdateMission from "../api/use-update-mission";
+import { TMissionSchema } from "../interface";
+import { Textarea } from "@/components/ui/textarea";
+import useUpdateMission from "../api/use-update-mission";
 
 
 
-export const UpdateDriverContainer = ({ driver_no, onClose }: { driver_no: string, onClose: () => void }) => {
-    const { data, isPending } = useGetDriver(driver_no)
+export const UpdateMissionContainer = ({ miss_no, onClose }: { miss_no: string, onClose: () => void }) => {
+    const { data, isPending } = useGetMission(miss_no)
 
     if (isPending) {
         return <></>
     }
 
-    return <UpdateDriverSection onClose={onClose} driver={data.result[0]} />
+    return <UpdateMissionSection onClose={onClose} mission={data.result[0]} />
 }
 
-const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof driverSchema>, onClose: () => void }) => {
-    const form = useForm<z.infer<typeof driverSchema>>({
-        resolver: zodResolver(driverSchema),
+
+
+export const UpdateMissionSection = ({ mission, onClose }: { mission: TMissionSchema, onClose: () => void }) => {
+    const form = useForm<z.infer<typeof missionSchema>>({
+        resolver: zodResolver(missionSchema),
         defaultValues: {
-            em_addons: {
-                cars: [],
-                permis: driver.em_addons.permis,
-                base_salary: driver.em_addons.base_salary,
-                cnss: driver.em_addons.cnss,
-                contract_type: driver.em_addons.contract_type,
-                date_embauche: driver.em_addons.date_embauche,
-                documents: driver.em_addons.documents,
-                ipm: driver.em_addons.ipm,
-                matricule: driver.em_addons.matricule,
-                status: driver.em_addons.status,
+            miss_no: mission.miss_no,
+            miss_intitule: mission.miss_intitule,
+            miss_description: mission.miss_description,
+            miss_client: mission.miss_client,
+            miss_trajetzone: mission.miss_trajetzone,
+            miss_expecteddatedeparture: mission.miss_expecteddatedeparture,
+            miss_expecteddatearrival: mission.miss_expecteddatearrival,
+            miss_expectedhourdeparture: mission.miss_expectedhourdeparture,
+            miss_expectedhourarrival: mission.miss_expectedhourarrival,
+            miss_expectedduration: mission.miss_expectedduration,
+            miss_expecteddistance: mission.miss_expecteddistance,
+            miss_expectedfuelbudget: mission.miss_expectedfuelbudget,
+            miss_othersexpectedbudget: mission.miss_othersexpectedbudget,
+            miss_expectedtotalbudget: mission.miss_expectedtotalbudget,
+            miss_addons: {
+                car: mission.miss_addons?.car,
+                driver: mission.miss_addons?.driver,
+                status: mission.miss_addons?.status,
+                documents: mission.miss_addons?.documents,
+                datedepart: mission.miss_addons?.datedepart,
+                failedcause: mission.miss_addons?.failedcause,
+                heuredepart: mission.miss_addons?.heuredepart,
+                startingdate: mission.miss_addons?.startingdate,
+                startinghour: mission.miss_addons?.startinghour,
+                stopdate: mission.miss_addons?.stopdate,
+                stophour: mission.miss_addons?.stophour
             },
-            em_type: "1",
-            em_address: driver.em_address,
-            em_birthday: driver.em_birthday,
-            em_birthplace: driver.em_birthplace,
-            em_email: driver.em_email,
-            em_emergencynumber: driver.em_emergencynumber,
-            em_firstname: driver.em_firstname,
-            em_lastname: driver.em_lastname,
-            em_no: driver.em_no,
-            em_nationality: driver.em_nationality,
-            em_phonenumber: driver.em_phonenumber,
         },
     });
 
-    const { mutate } = useUpdateDriver();
+    const { mutate } = useUpdateMission();
 
-    const onSubmit = async (values: z.infer<typeof driverSchema>) => {
+    const onSubmit = async (values: z.infer<typeof missionSchema>) => {
+
         mutate(
             { json: values },
             {
                 onSuccess: () => {
                     onClose()
-                    toast(<ToastSuccess toastTitle="Chauffeur modifié !" />, {
+                    toast(<ToastSuccess toastTitle="Mission modifié !" />, {
                         style: {
                             backgroundColor: "green",
                         },
@@ -80,25 +90,27 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
     };
 
     return (
-        <section className="flex flex-col gap-4 p-4 ">
-
-
+        <section className="flex flex-col gap-4 p-4 min-h-full ">
+            <div className="w-full flex items-center justify-center mb-4">
+                <span className="font-bold text-primary text-2xl">
+                    Ajouter une mission
+                </span>
+            </div>
             <Form {...form}>
                 <form
-                    className="grid grid-cols-2 grid-rows-9 gap-y-4  gap-x-8 h-fit"
+                    className="grid grid-cols-2 grid-rows-10 h-full gap-x-8 gap-y-4"
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <div className="col-start-1 col-end-1 row-start-1 row-end-2">
                         <FormField
-                            name={"em_birthday"}
+                            name={"miss_intitule"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Date de naissance</FormLabel>
+                                    <FormLabel>Intitulé mission</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            type="date"
                                             className=" rounded-md bg-[#D9D9D9]/80"
                                         />
                                     </FormControl>
@@ -107,15 +119,18 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                             )}
                         />
                     </div>
-                    <div className=" row-start-2 row-end-3">
+                    <div className="col-start-1 col-end-1 row-start-2 row-end-3">
                         <FormField
-                            name={"em_nationality"}
+                            name={"miss_client"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Nationalité</FormLabel>
+                                    <FormLabel>Client</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input
+                                            {...field}
+                                            className=" rounded-md bg-[#D9D9D9]/80"
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -124,11 +139,64 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                     </div>
                     <div className="col-start-1 col-end-1 row-start-3 row-end-4">
                         <FormField
-                            name={"em_phonenumber"}
+                            name={"miss_trajetzone"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Téléphone</FormLabel>
+                                    <FormLabel>Trajet</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            className=" rounded-md bg-[#D9D9D9]/80"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className="col-start-1 col-end-1 row-start-4 row-end-5">
+                        <FormField
+                            name={"miss_expectedfuelbudget"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Budget carburant estimée</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="col-start-1 col-end-1 row-start-5 row-end-6">
+                        <FormField
+                            name={"miss_expectedtotalbudget"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Budget total estimé</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            {...field}
+                                            className=" rounded-md bg-[#D9D9D9]/80"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="col-start-1 col-end-1 row-start-6 row-end-7">
+                        <FormField
+                            name={"miss_othersexpectedbudget"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Budget autres estimée</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -141,90 +209,19 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                             )}
                         />
                     </div>
-                    <div className="col-start-1 col-end-1 row-start-4 row-end-5">
-                        <FormField
-                            name={"em_addons.permis"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Permis</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="col-start-1 col-end-1 row-start-5 row-end-6">
-                        <FormField
-                            name={"em_addons.date_embauche"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Date d'embauche</FormLabel>
-                                    <FormControl>
-                                        <Input type="date" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="col-start-1 col-end-1 row-start-6 row-end-7">
-                        <FormField
-                            name={"em_addons.cnss"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Numéro CNSS</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="col-start-1 col-end-1 row-start-7 row-end-8">
-                        <FormField
-                            name={"em_addons.base_salary"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Salaire de base</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
                     <div className="col-start-2 col-end-2 row-start-1 row-end-2">
                         <FormField
-                            name={"em_firstname"}
+                            name={"miss_expecteddatedeparture"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Prénom</FormLabel>
+                                    <FormLabel>Date prévue départ</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="col-start-2 col-end-2 row-start-2 row-end-3">
-                        <FormField
-                            name={"em_lastname"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nom</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input
+                                            {...field}
+                                            type="date"
+                                            className=" rounded-md bg-[#D9D9D9]/80"
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -233,13 +230,17 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                     </div>
                     <div className="col-start-2 col-end-2 row-start-3 row-end-4">
                         <FormField
-                            name={"em_birthplace"}
+                            name={"miss_expecteddatearrival"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Lieu de naissance</FormLabel>
+                                    <FormLabel>Date prévue arrivée</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input
+                                            type="date"
+                                            {...field}
+                                            className=" rounded-md bg-[#D9D9D9]/80"
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -248,13 +249,34 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                     </div>
                     <div className="col-start-2 col-end-2 row-start-4 row-end-5">
                         <FormField
-                            name={"em_address"}
+                            name={"miss_expectedhourarrival"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Adresse</FormLabel>
+                                    <FormLabel>Heure prévue arrivée</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input
+                                            type="time"
+                                            {...field}
+                                            className=" rounded-md bg-[#D9D9D9]/80"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+
+                    <div className="col-start-2 col-end-2 row-start-2 row-end-3">
+                        <FormField
+                            name={"miss_expectedhourdeparture"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Heure prévue de départ</FormLabel>
+                                    <FormControl>
+                                        <Input type="time" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -263,15 +285,15 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                     </div>
                     <div className="col-start-2 col-end-2 row-start-5 row-end-6">
                         <FormField
-                            name={"em_email"}
+                            name={"miss_expecteddistance"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Distance estimée</FormLabel>
                                     <FormControl>
                                         <Input
-                                            type="email"
                                             {...field}
+                                            type="number"
                                             className=" rounded-md bg-[#D9D9D9]/80"
                                         />
                                     </FormControl>
@@ -282,72 +304,61 @@ const UpdateDriverSection = ({ driver, onClose }: { driver: z.infer<typeof drive
                     </div>
                     <div className="col-start-2 col-end-2 row-start-6 row-end-7">
                         <FormField
-                            name={"em_emergencynumber"}
+                            name={"miss_expectedduration"}
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Contact d'urgence</FormLabel>
+                                    <FormLabel>Durée estimée</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Input type="number" {...field} className=" rounded-md bg-[#D9D9D9]/80" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
-                    <div className="col-start-2 col-end-2 row-start-7 row-end-8">
+
+
+
+                    <div className="col-start-1 col-end-3 row-start-7 row-end-10 h-full">
                         <FormField
-                            name={"em_addons.matricule"}
+                            name={"miss_description"}
                             control={form.control}
+
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Numéro de matricule</FormLabel>
+                                <FormItem className="h-full  block ">
+                                    <FormLabel className="gap-0 mb-4">Description</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
+                                        <Textarea
+                                            {...field}
+                                            className=" rounded-md bg-[#D9D9D9]/80 h-full"
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
-                    <div className="col-start-1 col-end-1 row-start-8 row-end-9">
-                        <FormField
-                            name={"em_addons.ipm"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Numéro IPM</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="col-start-2 col-end-2 row-start-8 row-end-9">
-                        <FormField
-                            name={"em_addons.contract_type"}
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Type de contract</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className=" rounded-md bg-[#D9D9D9]/80" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <Button variant={"destructive"}>Annuler</Button>
-                        <Button type="submit">Confirmer</Button>
+                    <div className="col-start-2 col-end-2 row-start-11">
+                        <div className="ml-auto gap-4 flex items-center w-fit">
+                            <Button
+                                variant="destructive"
+                                type="submit"
+                                className=" text-white"
+                            >
+                                Annuler
+                            </Button>
+                            <Button
+                                variant="default"
+                                type="submit"
+                                className="bg-[#34C759] text-white"
+                            >
+                                Confirmer
+                            </Button>
+                        </div>
                     </div>
                 </form>
             </Form>
         </section>
     );
 };
-
-export default UpdateDriverSection;

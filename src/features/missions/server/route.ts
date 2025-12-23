@@ -128,6 +128,32 @@ const app = new Hono()
 
 		return c.json({ message: "Mission crée" });
 	})
+	.put("/", zValidator("json", missionSchema), async (c) => {
+		const values = c.req.valid("json");
+
+		await client.query(
+			"CALL public.update_mission ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
+			[
+				values.miss_no,
+				values.miss_intitule,
+				values.miss_description,
+				values.miss_client,
+				values.miss_trajetzone,
+				values.miss_expecteddatedeparture,
+				values.miss_expecteddatearrival,
+				values.miss_expectedhourdeparture,
+				values.miss_expectedhourarrival,
+				values.miss_expectedduration,
+				values.miss_expecteddistance,
+				values.miss_expectedfuelbudget,
+				values.miss_othersexpectedbudget,
+				values.miss_expectedtotalbudget,
+				values.miss_addons,
+			]
+		);
+
+		return c.json({ message: "Mission mis à jour" });
+	})
 	.post("/uploadFile", zValidator("form", missionDocumentSchema), async (c) => {
 		const fileSchema = z.instanceof(File);
 		const bucket_id = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!;
