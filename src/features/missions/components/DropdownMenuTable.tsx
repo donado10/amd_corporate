@@ -22,8 +22,10 @@ import { AlertDialogUpdateMission } from "./AlertDialogUpdateMission";
 
 export function DropdownMenuTable({
   mission,
+  status,
   children,
 }: {
+  status: string
   mission: string;
   children: ReactNode;
 }) {
@@ -46,9 +48,9 @@ export function DropdownMenuTable({
               Voir
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-blue-600" onClick={() => setOpenDialogUpdate(true)}>
+          {status === 'créer' && <DropdownMenuItem className="text-blue-600" onClick={() => setOpenDialogUpdate(true)}>
             Modifier
-          </DropdownMenuItem>
+          </DropdownMenuItem>}
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialogUpdateMission mission={mission} open={openDialogUpdate} onOpen={(value: boolean) => { setOpenDialogUpdate(value) }} />

@@ -85,7 +85,7 @@ export const columns: ColumnDef<IMissionTableInfo>[] = [
   {
     header: "Action",
     cell: ({ row }) => (
-      <DropdownMenuTable mission={row.original.miss_no}>
+      <DropdownMenuTable status={row.original.miss_status} mission={row.original.miss_no}>
         <Button variant={"ghost"} type="button">
           <Image src={DotsIcon} alt="" width={16} height={16} />{" "}
         </Button>
