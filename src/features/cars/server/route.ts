@@ -93,6 +93,32 @@ const app = new Hono()
 
 		return c.json({ result: result.rows });
 	})
+	.put("/", zValidator("json", carSchema), async (c) => {
+		const values = c.req.valid("json");
+
+		const result = await client.query(
+			"CALL public.update_car ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
+			[
+				values.car_no,
+				values.car_fueltype,
+				values.car_tankcapacity,
+				values.car_mileage,
+				values.car_chassisnumber,
+				values.car_enginenumber,
+				values.car_fiscalpower,
+				values.car_payload,
+				values.car_acquisitiondate,
+				values.car_acquisitiontype,
+				values.car_registrationnumber,
+				values.car_circulationdate,
+				values.car_acquisitionvalue,
+				values.car_owner,
+				values.car_addons,
+			]
+		);
+
+		return c.json({ message: "véhicule mise à jour" });
+	})
 	.post("/", zValidator("json", carSchema), async (c) => {
 		const values = c.req.valid("json");
 

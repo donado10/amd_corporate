@@ -141,7 +141,7 @@ export const columns: ColumnDef<ICarTableInfo>[] = [
   {
     header: "Action",
     cell: ({ row }) => (
-      <DropdownMenuTable driver={row.original.car_no}>
+      <DropdownMenuTable car={row.original.car_no}>
         <Button variant={"ghost"} type="button">
           <Image src={DotsIcon} alt="" width={16} height={16} />{" "}
         </Button>
