@@ -65,7 +65,11 @@ export const UpdateMissionSection = ({ mission, onClose }: { mission: TMissionSc
                 startingdate: mission.miss_addons?.startingdate,
                 startinghour: mission.miss_addons?.startinghour,
                 stopdate: mission.miss_addons?.stopdate,
-                stophour: mission.miss_addons?.stophour
+                stophour: mission.miss_addons?.stophour,
+                actualconsumption: mission.miss_addons?.actualconsumption,
+                actualfuelcost: mission.miss_addons?.actualfuelcost,
+                actualtotalcost: mission.miss_addons?.actualtotalcost,
+                budgetvariance: mission.miss_addons?.budgetvariance,
             },
         },
     });

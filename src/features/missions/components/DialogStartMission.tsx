@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input"
 import { getCurrentDate, getCurrentTime } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 import useCreateMission from "../api/use-create-mission"
+import useGetMission from "../api/use-get-mission"
+import { TMissionSchema } from "../interface"
 
 
 const AlertCancelMissionHandler = ({ miss_no, label }: { miss_no: string, label: string }) => {
@@ -78,11 +80,23 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
         defaultValues: {
             miss_no: miss_no,
             status: 'terminees',
+            actualconsumption: 0,
+            actualfuelcost: 0,
+            actualtotalcost: 0,
+            budgetvariance: 0,
             stopdate: getCurrentDate() as string,
             stophour: getCurrentTime(),
         }
     })
     const { mutate } = useChangeStatusMission()
+
+    const { data, isPending } = useGetMission(miss_no)
+
+    if (isPending) {
+        return
+    }
+
+    const mission = data.result[0] as TMissionSchema
 
 
     const changeStatusMissionHandler = async (values: z.infer<typeof missionActionSchema>) => {
@@ -121,6 +135,66 @@ const AlertStopMissionHandler = ({ miss_no, label }: { miss_no: string, label: s
                                     <FormLabel>Heure d'arrêt</FormLabel>
                                     <FormControl>
                                         <Input type="time" {...field} value={getCurrentTime()} className=" rounded-md bg-[#D9D9D9]/80" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div >
+                        <FormField
+                            name={"actualfuelcost"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Coût carburant réel</FormLabel>
+                                    <FormControl>
+                                        <Input  {...field} value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div >
+                        <FormField
+                            name={"actualconsumption"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Consommation réelle</FormLabel>
+                                    <FormControl>
+                                        <Input  {...field} value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div >
+                        <FormField
+                            name={"actualtotalcost"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Coût total réel</FormLabel>
+                                    <FormControl>
+                                        <Input  {...field} value={field.value as number} onChange={(e) => { form.setValue('budgetvariance', (Number(e.currentTarget.value) - Number(mission.miss_expectedtotalbudget))); form.setValue('actualtotalcost', e.currentTarget.value) }} className=" rounded-md bg-[#D9D9D9]/80" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div >
+                        <FormField
+                            name={"budgetvariance"}
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Variance Budget</FormLabel>
+                                    <FormControl>
+                                        <Input  {...field} value={field.value as number} className=" rounded-md bg-[#D9D9D9]/80" disabled />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

@@ -9,6 +9,10 @@ export const missionActionSchema = z.object({
 	stopdate: z.string().or(z.null()).optional(),
 	stophour: z.string().or(z.null()).optional(),
 	failedcause: z.string().or(z.null()).optional(),
+	actualfuelcost: z.number().or(z.null()).optional(),
+	actualconsumption: z.number().or(z.null()).optional(),
+	actualtotalcost: z.number().or(z.null()).optional(),
+	budgetvariance: z.number().or(z.null()).optional(),
 });
 
 export const missionDocumentSchema = z.object({
@@ -85,6 +89,10 @@ export const missionSchema = z.object({
 			stopdate: z.string().or(z.null()).optional(),
 			stophour: z.string().or(z.null()).optional(),
 			failedcause: z.string().or(z.null()).optional(),
+			actualfuelcost: z.string().or(z.null()).optional(),
+			actualconsumption: z.string().or(z.null()).optional(),
+			actualtotalcost: z.string().or(z.null()).optional(),
+			budgetvariance: z.string().or(z.null()).optional(),
 		})
 		.optional(),
 });

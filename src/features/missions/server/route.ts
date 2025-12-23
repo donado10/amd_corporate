@@ -225,9 +225,27 @@ const app = new Hono()
 				);
 			}
 
+			if (values.status === "terminees") {
+				await client.query(
+					`update public.f_employee em
+				set em_addons = em.em_addons || '{"status":"disponible"}'::JSONB
+				FROM public.f_mission miss
+				where (miss.miss_addons->>'driver')::INT = em.em_no::INT and miss.miss_no=$1`,
+					[values.miss_no]
+				);
+
+				await client.query(
+					`update public.f_car car
+				set car_addons = car.car_addons || '{"status":"disponible"}'::JSONB
+				FROM public.f_mission miss
+				where (miss.miss_addons->>'car')::INT = car.car_no::INT and miss.miss_no=$1`,
+					[values.miss_no]
+				);
+			}
+
 			const result = await client.query(` ${query}`, [values.miss_no]);
 
-			return c.json({ message: "status changé", status: "" });
+			return c.json({ message: "status changé", status: values.status });
 		}
 	)
 	.delete(
