@@ -58,7 +58,7 @@ const MissionSection = () => {
 
 
       <MissionCardStatusContainer />
-      <div>
+      <div className="">
         <TableMissionContainer />
       </div>
     </section>

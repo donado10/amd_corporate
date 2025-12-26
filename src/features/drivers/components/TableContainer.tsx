@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useDriverStore } from "../store/store";
 import { TDriverTableInfoSchema } from "../interface";
 import Search from "@/features/missions/components/Search";
+import { Card } from "@/components/ui/card";
 
 
 const TableDriverContainer = () => {
@@ -59,11 +60,14 @@ const TableDriverContainer = () => {
           <SelectContractType onAction={(value) => { driverStore.setFilter({ ...driverStore.filter, contract_type: value }) }} />
         </div>
       </div>
-      <DataTable
-        data={
-          filterDriver
-        }
-      />
+      <Card className="h-[20rem] overflow-y-scroll p-2">
+
+        <DataTable
+          data={
+            filterDriver
+          }
+        />
+      </Card>
     </div>
   );
 };

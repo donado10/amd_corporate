@@ -4,12 +4,6 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "./table";
 
 import { Card } from "@/components/ui/card";
-import { ICarTableInfo } from "./interface";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
-import AddIcon from "@/assets/add.svg";
-import { usePathname } from "next/navigation";
 import { SelectAvailability } from "../tableFilter";
 import useGetCarInfoTable from "../../api/use-get-car-info-table";
 import Search from "@/features/missions/components/Search";
@@ -60,11 +54,14 @@ const TableCarContainer = () => {
           <SelectAvailability onAction={(value) => { carStore.setFilter({ ...carStore.filter, availability: value }) }} />
         </div>
       </div>
-      <DataTable
-        data={
-          filterCar
-        }
-      />
+      <Card className="h-[20rem] overflow-y-scroll p-2">
+
+        <DataTable
+          data={
+            filterCar
+          }
+        />
+      </Card>
     </div>
   );
 };

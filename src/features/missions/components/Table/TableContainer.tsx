@@ -7,6 +7,7 @@ import useGetCarInfoTable from "../../api/use-get-mission-info-table";
 import Search from "../Search";
 import { useMissionStore } from "../../store/store";
 import { TMissionTableInfoSchema } from "../../interface";
+import { Card } from "@/components/ui/card";
 
 const TableMissionContainer = () => {
   const { data, isPending } = useGetCarInfoTable();
@@ -51,11 +52,14 @@ const TableMissionContainer = () => {
           <SelectStatus onAction={(value) => { missionStore.setFilter({ ...missionStore.filter, status: value }) }} />
         </div>
       </div>
-      <DataTable
-        data={
-          filterMission
-        }
-      />
+      <Card className="h-[20rem] overflow-y-scroll p-2">
+
+        <DataTable
+          data={
+            filterMission
+          }
+        />
+      </Card>
     </div>
   );
 };
