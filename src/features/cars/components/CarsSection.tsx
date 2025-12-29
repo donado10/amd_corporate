@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import CircleAddIcon from "@/assets/circle.svg";
 import { usePathname } from "next/navigation";
-import AddIcon from "@/assets/add.svg";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import TableCarContainer from "@/features/cars/components/Table/TableContainer";
 import { DropdownHeaderMenuSection } from "@/components/DropdownHeaderMenuSection";
 import useGetStatCar from "../api/use-get-stats";
+
 
 const CarCardStatus = ({
   title,
@@ -58,14 +59,14 @@ const CarsSection = () => {
   const pathname = usePathname();
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col relative">
       <div className="flex items-center justify-between mb-8">
         <span className="  text-2xl font-semibold text-primary ">
           Véhicules
         </span>
 
         <div>
-          <DropdownHeaderMenuSection items={[{ label: "Ajouter un véhicule", link: pathname + '/create' }]} />
+          <Link href={pathname + "/create"} className=""><Image src={CircleAddIcon} alt="" width={64} height={64} /></Link>
         </div>
       </div>
       <CarCardStatusContainer />

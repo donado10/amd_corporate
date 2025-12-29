@@ -3,9 +3,12 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import TableDriverContainer from "./TableContainer";
-import { DropdownHeaderMenuSection } from "../../../components/DropdownHeaderMenuSection";
 import useGetStatDriver from "../api/use-get-stats";
 import { CardStatus } from "@/components/CardStatus";
+
+import Image from "next/image";
+import CircleAddIcon from "@/assets/circle.svg";
+import Link from "next/link";
 
 
 
@@ -45,7 +48,7 @@ const DriversSection = () => {
         </span>
 
         <div>
-          <DropdownHeaderMenuSection items={[{ label: "Ajouter un chauffeur", link: pathname + '/create' }]} />
+          <Link href={pathname + "/create"} className=""><Image src={CircleAddIcon} alt="" width={64} height={64} /></Link>
         </div>
       </div>
       <DriverCardStatusContainer />

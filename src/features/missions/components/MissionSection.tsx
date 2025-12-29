@@ -1,10 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Image from "next/image";
 import AddIcon from "@/assets/add.svg";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -12,6 +10,10 @@ import TableMissionContainer from "./Table/TableContainer";
 import { DropdownHeaderMenuSection } from "@/components/DropdownHeaderMenuSection";
 import { CardStatus } from "@/components/CardStatus";
 import useGetStatMission from "../api/use-get-stats";
+
+import Image from "next/image";
+import CircleAddIcon from "@/assets/circle.svg";
+import Link from "next/link";
 
 
 const MissionCardStatusContainer = () => {
@@ -52,7 +54,7 @@ const MissionSection = () => {
         </span>
 
         <div>
-          <DropdownHeaderMenuSection items={[{ label: "Ajouter une mission", link: pathname + '/create' }]} />
+          <Link href={pathname + "/create"} className=""><Image src={CircleAddIcon} alt="" width={64} height={64} /></Link>
         </div>
       </div>
 

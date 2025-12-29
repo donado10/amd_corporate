@@ -17,6 +17,7 @@ import useGetAvailableDriver from "@/features/drivers/api/use-get-available-driv
 import { usePathname } from "next/navigation"
 import { ReactNode, useEffect, useState } from "react"
 import useAffectationMission from "../api/use-affectation-mission"
+import { CollapsibleFilter } from "./CollapsibleFilter"
 
 
 const SelectAvailableCarContainer = ({ defaultCar, onSetCar }: { defaultCar?: string, onSetCar: (value: string | null) => void }) => {
@@ -143,6 +144,10 @@ export function SheetAffectationMission({ defaultValue, children }: { children: 
                 <SheetHeader>
                     <SheetTitle>Affectation Mission</SheetTitle>
                 </SheetHeader>
+                <div>
+                    <CollapsibleFilter />
+                    <CollapsibleFilter />
+                </div>
 
                 <div className="grid flex-1 auto-rows-min gap-6 px-4">
                     <SelectAvailableDriverContainer defaultDriver={defaultValue?.driver} onSetDriver={(value: string | null) => setDriver(value)} />
