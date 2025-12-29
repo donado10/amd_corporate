@@ -1,9 +1,9 @@
 import { client } from "@/lib/rpc";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetAvailableCar = () => {
+const useGetAvailableCar = (filter: string[]) => {
 	const query = useQuery({
-		queryKey: ["available_cars"],
+		queryKey: ["available_cars", JSON.stringify(filter)],
 		queryFn: async () => {
 			const response = await client.api.cars.availableCar.$get();
 

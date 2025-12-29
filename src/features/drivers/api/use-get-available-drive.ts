@@ -1,9 +1,9 @@
 import { client } from "@/lib/rpc";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetAvailableDriver = () => {
+const useGetAvailableDriver = (filter: string[]) => {
 	const query = useQuery({
-		queryKey: ["available_drivers"],
+		queryKey: ["available_drivers", JSON.stringify(filter)],
 		queryFn: async () => {
 			const response = await client.api.drivers.availableDriver.$get();
 

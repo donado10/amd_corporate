@@ -17,11 +17,11 @@ import useGetAvailableDriver from "@/features/drivers/api/use-get-available-driv
 import { usePathname } from "next/navigation"
 import { ReactNode, useEffect, useState } from "react"
 import useAffectationMission from "../api/use-affectation-mission"
-import { CollapsibleFilter } from "./CollapsibleFilter"
+import { CollapsibleFilterDriver, CollapsibleFilterVehicule } from "./CollapsibleFilter"
 
 
-const SelectAvailableCarContainer = ({ defaultCar, onSetCar }: { defaultCar?: string, onSetCar: (value: string | null) => void }) => {
-    const { data, isPending } = useGetAvailableCar()
+const SelectAvailableCarContainer = ({ carFilter, defaultCar, onSetCar }: { carFilter: string[], defaultCar?: string, onSetCar: (value: string | null) => void }) => {
+    const { data, isPending } = useGetAvailableCar(carFilter)
 
     if (isPending) {
         return <SelectAvailableCar items={[]} />
@@ -30,7 +30,10 @@ const SelectAvailableCarContainer = ({ defaultCar, onSetCar }: { defaultCar?: st
     if (data?.result && data?.result.length <= 0) {
         return <SelectAvailableCar items={[]} />
     }
-    return <><SelectAvailableCar defaultCar={defaultCar} onAction={(value: string | null) => { onSetCar(value) }} items={data?.result.map((d) => { return ({ value: d.car_no, label: d.car_addons.marque + ' ' + d.car_addons.modele + ' ' + d.car_addons.year }) }) ?? []} /> </>
+
+    const dataFilter = carFilter.length > 0 ? data.result.filter((car) => carFilter.includes(car.car_addons.status)) ?? [] : data.result
+
+    return <><SelectAvailableCar defaultCar={defaultCar} onAction={(value: string | null) => { onSetCar(value) }} items={dataFilter.map((d) => { return ({ value: d.car_no, label: d.car_addons.marque + ' ' + d.car_addons.modele + ' ' + d.car_addons.year }) }) ?? []} /> </>
 }
 
 function SelectAvailableCar({
@@ -72,8 +75,8 @@ function SelectAvailableCar({
 
 
 
-const SelectAvailableDriverContainer = ({ defaultDriver, onSetDriver }: { defaultDriver?: string, onSetDriver: (value: string | null) => void }) => {
-    const { data, isPending } = useGetAvailableDriver()
+const SelectAvailableDriverContainer = ({ defaultDriver, onSetDriver, driverFilter }: { driverFilter: string[], defaultDriver?: string, onSetDriver: (value: string | null) => void }) => {
+    const { data, isPending } = useGetAvailableDriver(driverFilter)
 
     if (isPending) {
         return <SelectAvailableDriver items={[]} />
@@ -82,7 +85,11 @@ const SelectAvailableDriverContainer = ({ defaultDriver, onSetDriver }: { defaul
     if (data?.result && data?.result.length <= 0) {
         return <SelectAvailableDriver items={[]} />
     }
-    return <><SelectAvailableDriver defaultDriver={defaultDriver} onAction={(value: string | null) => { onSetDriver(value) }} items={data?.result.map((d) => { return ({ value: d.em_no, label: d.em_firstname + ' ' + d.em_lastname }) }) ?? []} /> </>
+
+    const dataFilter = driverFilter.length > 0 ? data.result.filter((driver) => driverFilter.includes(driver.em_addons.status)) ?? [] : data.result
+
+
+    return <><SelectAvailableDriver defaultDriver={defaultDriver} onAction={(value: string | null) => { onSetDriver(value) }} items={dataFilter.map((d) => { return ({ value: d.em_no, label: d.em_firstname + ' ' + d.em_lastname }) }) ?? []} /> </>
 }
 
 function SelectAvailableDriver({
@@ -131,8 +138,8 @@ export function SheetAffectationMission({ defaultValue, children }: { children: 
     const { mutate } = useAffectationMission()
     const [open, setOpen] = useState<boolean | undefined>(undefined)
 
-
-
+    const [carFilter, setCarFilter] = useState<string[]>([])
+    const [driverFilter, setDriverFilter] = useState<string[]>([])
 
 
     return (
@@ -145,13 +152,45 @@ export function SheetAffectationMission({ defaultValue, children }: { children: 
                     <SheetTitle>Affectation Mission</SheetTitle>
                 </SheetHeader>
                 <div>
-                    <CollapsibleFilter />
-                    <CollapsibleFilter />
+
+
                 </div>
 
-                <div className="grid flex-1 auto-rows-min gap-6 px-4">
-                    <SelectAvailableDriverContainer defaultDriver={defaultValue?.driver} onSetDriver={(value: string | null) => setDriver(value)} />
-                    <SelectAvailableCarContainer defaultCar={defaultValue?.car} onSetCar={(value: string | null) => setCar(value)} />
+                <div className="grid flex-1 auto-rows-min gap-1 ">
+                    <div className="flex flex-col gap-2 border-b pb-4">
+
+                        <div className="">
+
+                            <CollapsibleFilterDriver filter={(action, value) => {
+                                if (action === 'add') {
+                                    setDriverFilter([...driverFilter, value!])
+                                } else {
+                                    setDriverFilter([...driverFilter.filter((driver) => driver !== value)])
+
+                                }
+                            }} />
+                        </div>
+                        <div className="px-4">
+
+                            <SelectAvailableDriverContainer driverFilter={driverFilter} defaultDriver={defaultValue?.driver} onSetDriver={(value: string | null) => setDriver(value)} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2  pb-4">
+                        <div>
+
+                            <CollapsibleFilterVehicule filter={(action, value) => {
+                                if (action === 'add') {
+                                    setCarFilter([...carFilter, value!])
+                                } else {
+                                    setCarFilter([...carFilter.filter((car) => car !== value)])
+
+                                }
+                            }} />
+                        </div>
+                        <div className="px-4">
+                            <SelectAvailableCarContainer carFilter={carFilter} defaultCar={defaultValue?.car} onSetCar={(value: string | null) => setCar(value)} />
+                        </div>
+                    </div>
 
                 </div>
                 <SheetFooter>
