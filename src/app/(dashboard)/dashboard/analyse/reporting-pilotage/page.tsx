@@ -1,9 +1,13 @@
+"use client"
+
 import React from "react";
 
-type Props = {};
+import dynamic from 'next/dynamic'; // Composant LeafletMap chargé dynamiquement 
+import Map from "@/components/Map/Map";
 
-const page = (props: Props) => {
-  return <div>page</div>;
+
+const page = () => {
+  return <div className="w-full h-[70vh] "><Map /></div>;
 };
 
 export default page;
